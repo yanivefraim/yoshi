@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #2f2e2e;
+        fill-rule: evenodd;
+        opacity: 0.8;
+      }
+    </style>
+  </defs>
+  <path id="categories_menu" data-name="categories menu" class="cls-1" d="M635,291h6v6h-6v-6Zm8,0h6v6h-6v-6Zm0,8h6v6h-6v-6Zm-8,0h6v6h-6v-6Z" transform="translate(-635 -291)"/>
+</svg>
