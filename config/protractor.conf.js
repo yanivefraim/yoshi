@@ -1,6 +1,7 @@
 'use strict';
 
 require('babel-register');
+require('ts-node/register');
 const path = require('path');
 const ld = require('lodash');
 const exists = require('../lib/utils').exists;

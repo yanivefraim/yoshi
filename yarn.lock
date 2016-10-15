@@ -456,8 +456,8 @@ babel-types@^6.0.19, babel-types@^6.15.0, babel-types@^6.16.0:
     to-fast-properties "^1.0.1"
 
 babylon@^6.0.18, babylon@^6.11.0, babylon@^6.11.2:
-  version "6.11.6"
-  resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.11.6.tgz#56dc52e624882841c7fe095257fbcb4a5bb61ae1"
+  version "6.12.0"
+  resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.12.0.tgz#953e6202e58062f7f5041fc8037e4bd4e17140a9"
 
 backo2@1.0.2:
   version "1.0.2"
@@ -696,8 +696,8 @@ camelcase@^3.0.0:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-3.0.0.tgz#32fc4b9fcdaf845fcdf7e73bb97cac2261f0ab0a"
 
 caniuse-db@^1.0.30000187, caniuse-db@^1.0.30000539, caniuse-db@^1.0.30000554:
-  version "1.0.30000555"
-  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000555.tgz#12572c4e0111781c49b01e1fdcc455e7456b8ed4"
+  version "1.0.30000557"
+  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000557.tgz#4a36c82f81b06fdd78461bfb1d3dc35afaa6deae"
 
 caseless@~0.11.0:
   version "0.11.0"
@@ -749,8 +749,8 @@ chalk@1.1.1:
     supports-color "^2.0.0"
 
 chokidar@^1.0.0, chokidar@^1.4.1, chokidar@^1.5.2:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-1.6.0.tgz#90c32ad4802901d7713de532dc284e96a63ad058"
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-1.6.1.tgz#2f4447ab5e96e50fb3d789fd90d4c72e0e4c70c2"
   dependencies:
     anymatch "^1.3.0"
     async-each "^1.0.0"
@@ -1024,7 +1024,7 @@ content-type@~1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/content-type/-/content-type-1.0.2.tgz#b7d113aee7a8dd27bd21133c4dc2529df1721eed"
 
-convert-source-map@^1.1.0, convert-source-map@1.X:
+convert-source-map@^1.1.0, convert-source-map@^1.1.1, convert-source-map@1.X:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-1.3.0.tgz#e9f3e9c6e2728efc2676696a70eb382f73106a67"
 
@@ -1211,8 +1211,8 @@ currently-unhandled@^0.4.1:
     array-find-index "^1.0.1"
 
 custom-event@~1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/custom-event/-/custom-event-1.0.0.tgz#2e4628be19dc4b214b5c02630c5971e811618062"
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/custom-event/-/custom-event-1.0.1.tgz#5d02a46850adf1b4a317946a3928fccb5bfd0425"
 
 d@^0.1.1, d@~0.1.1:
   version "0.1.1"
@@ -1351,17 +1351,13 @@ diff@^2.2.1:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/diff/-/diff-2.2.3.tgz#60eafd0d28ee906e4e8ff0a52c1229521033bf99"
 
-diff@^3.0.0:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/diff/-/diff-3.0.1.tgz#a52d90cc08956994be00877bff97110062582c35"
-
 diff@1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/diff/-/diff-1.4.0.tgz#7f28d2eb9ee7b15a97efd89ce63dcfdaa3ccbabf"
 
 doctrine@^1.2.2:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/doctrine/-/doctrine-1.4.0.tgz#e2db32defa752407b935b381e89f3740e469e599"
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/doctrine/-/doctrine-1.5.0.tgz#379dce730f6166f76cefa4e6707a159b02c5a6fa"
   dependencies:
     esutils "^2.0.2"
     isarray "^1.0.0"
@@ -1722,8 +1718,8 @@ eslint-plugin-react@^6.0.0:
     jsx-ast-utils "^1.3.1"
 
 eslint@^3.0.0, eslint@^3.6.1:
-  version "3.7.1"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-3.7.1.tgz#7faa84599e0fea422f04bc32db49054051a3f11a"
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-3.8.0.tgz#4fbbf6833d66654860c23a099c47a0f086de34b7"
   dependencies:
     chalk "^1.1.3"
     concat-stream "^1.4.6"
@@ -1747,7 +1743,7 @@ eslint@^3.0.0, eslint@^3.6.1:
     lodash "^4.0.0"
     mkdirp "^0.5.0"
     natural-compare "^1.4.0"
-    optionator "^0.8.1"
+    optionator "^0.8.2"
     path-is-inside "^1.0.1"
     pluralize "^1.2.1"
     progress "^1.1.8"
@@ -2609,9 +2605,9 @@ gulp-shell@^0.5.2:
     lodash "^4.0.0"
     through2 "^2.0.0"
 
-gulp-sourcemaps@^1.5.2, gulp-sourcemaps@^1.6.0:
-  version "1.7.3"
-  resolved "https://registry.yarnpkg.com/gulp-sourcemaps/-/gulp-sourcemaps-1.7.3.tgz#a468a2801996c969e47476fcc6dcd5a7e2aa53c1"
+gulp-sourcemaps@^1.6.0:
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/gulp-sourcemaps/-/gulp-sourcemaps-1.8.1.tgz#714bb359ac7dfe50f42aa22f4a8fbcce476da22f"
   dependencies:
     acorn "4.X"
     convert-source-map "1.X"
@@ -2623,6 +2619,16 @@ gulp-sourcemaps@^1.5.2, gulp-sourcemaps@^1.6.0:
     strip-bom "2.X"
     through2 "2.X"
     vinyl "1.X"
+
+gulp-sourcemaps@1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/gulp-sourcemaps/-/gulp-sourcemaps-1.6.0.tgz#b86ff349d801ceb56e1d9e7dc7bbcb4b7dee600c"
+  dependencies:
+    convert-source-map "^1.1.1"
+    graceful-fs "^4.1.2"
+    strip-bom "^2.0.0"
+    through2 "^2.0.0"
+    vinyl "^1.0.0"
 
 gulp-spawn-mocha@^2.2.2:
   version "2.2.2"
@@ -4521,7 +4527,7 @@ optionator@^0.5.0:
     type-check "~0.3.1"
     wordwrap "~0.0.2"
 
-optionator@^0.8.1:
+optionator@^0.8.1, optionator@^0.8.2:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/optionator/-/optionator-0.8.2.tgz#364c5e409d3f4d6301d6c0b4c05bba50180aeb64"
   dependencies:
@@ -6361,13 +6367,12 @@ ts-loader@^0.8.2:
     object-assign "^2.0.0"
     semver "^5.0.1"
 
-ts-node@^1.3.0:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-1.4.3.tgz#d96399b6257d6ab0f0c61487e23c6713594666be"
+ts-node@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-1.5.2.tgz#d1376ad812447fd01b27d9e3367e2484b181eea2"
   dependencies:
     arrify "^1.0.0"
     chalk "^1.1.1"
-    diff "^3.0.0"
     make-error "^1.1.1"
     minimist "^1.2.0"
     mkdirp "^0.5.1"
@@ -6709,13 +6714,13 @@ vinyl-fs@^0.3.0:
     vinyl "^0.4.0"
 
 vinyl-fs@~2.4.3:
-  version "2.4.3"
-  resolved "https://registry.yarnpkg.com/vinyl-fs/-/vinyl-fs-2.4.3.tgz#3d97e562ebfdd4b66921dea70626b84bde9d2d07"
+  version "2.4.4"
+  resolved "https://registry.yarnpkg.com/vinyl-fs/-/vinyl-fs-2.4.4.tgz#be6ff3270cb55dfd7d3063640de81f25d7532239"
   dependencies:
     duplexify "^3.2.0"
     glob-stream "^5.3.2"
     graceful-fs "^4.0.0"
-    gulp-sourcemaps "^1.5.2"
+    gulp-sourcemaps "1.6.0"
     is-valid-glob "^0.3.0"
     lazystream "^1.0.0"
     lodash.isequal "^4.0.0"
@@ -6870,8 +6875,8 @@ window-size@0.1.0:
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
 
 wnpm-ci@latest:
-  version "6.2.5"
-  resolved "https://registry.yarnpkg.com/wnpm-ci/-/wnpm-ci-6.2.5.tgz#43d8049ab5f3dc91dcd3eb86db9fff6553e35e08"
+  version "6.2.6"
+  resolved "https://registry.yarnpkg.com/wnpm-ci/-/wnpm-ci-6.2.6.tgz#6abadcc23c927c7b65588403b17d88ed2a51f8eb"
   dependencies:
     shelljs "^0.5.3"
     thenify "^3.2.0"
