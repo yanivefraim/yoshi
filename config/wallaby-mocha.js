@@ -24,17 +24,10 @@ module.exports = function (wallaby) {
     testFramework: 'mocha',
 
     setup(wallaby) {
-
       const mocha = wallaby.testFramework;
       mocha.timeout(30000);
-
-      require.extensions['.scss'] = function () {};
-      require.extensions['.css'] = function () {};
-
-      const jsdom = require('jsdom');
-      global.document = jsdom.jsdom('<!doctype html><html><body></body></html>');
-      global.window = document.defaultView;
-      global.navigator = global.window.navigator;
+      require('../../lib/ignore-extensions');
+      require('../../lib/setup-dom');
     },
 
     env: {
