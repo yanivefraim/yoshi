@@ -51,7 +51,7 @@ class Test {
     const args = [command].concat(options);
     const env = Object.assign({}, this.env, environment || {});
     if (this.hasTmp()) {
-      return sh.exec(`node \'${this.script}\' ${args.join(' ')}`, {cwd: this.tmp, env});
+      return sh.exec(`node '${this.script}' ${args.join(' ')}`, {cwd: this.tmp, env});
     }
   }
 
@@ -88,7 +88,7 @@ class Test {
 
   write(file, content) {
     const fullpath = path.join(this.tmp, file);
-    content = content.replace(/'/g, `'\\\''`);
+    content = content.replace(/'/g, `'\\''`);
     sh.mkdir('-p', path.dirname(fullpath));
     sh.exec(`echo '${content}'`, {silent: true}).to(fullpath);
     return this;

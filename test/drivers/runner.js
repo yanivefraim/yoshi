@@ -29,7 +29,7 @@ module.exports = class Runner {
 
     try {
       const scriptToRun = path.join(__dirname, '../../wix-node-build.js');
-      return shelljs.exec(`node \'${scriptToRun}\' ${this._args.join(' ')}`);
+      return shelljs.exec(`node '${scriptToRun}' ${this._args.join(' ')}`);
     } finally {
       shelljs.popd();
     }

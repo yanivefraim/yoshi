@@ -238,7 +238,7 @@ describe('Aggregator: Build', () => {
     it('should transpile only from the base folders', () => {
       const filesInFolders = baseFolders
         .reduce((result, dir) =>
-          Object.assign(result, {[`${dir}\/a.ts`]: 'function(){}'})
+          Object.assign(result, {[`${dir}/a.ts`]: 'function(){}'})
         , {});
 
       test.setup(Object.assign({
