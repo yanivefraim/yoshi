@@ -41,22 +41,12 @@ wix-node-build [command] [options]
 
 The following sections describe the available tasks in `wix-node-build`. You can always use the `--help` flag for every task to see its usage.
 
-### dev - **Deprecated** It was replaced by 'start' command. Please do not use it anymore
-
-Flag | Short Flag | Description
----- | ---------- | -----------
---dirs | -d | globs of source files, including tests, comma separated
---mocha | -m | Run unit tests on Mocha
-
-Put up a watcher over the project's sources, and executes `lint`, `build` and `test`.
-
 ### start
 
 Flag | Short Flag | Description | Default Value
 ---- | ---------- | ----------- | --------------
 --entry-point | -e | Entry point for the app. | `./dist/index.js`
 --watch | -w | Watches project files, rebuilds and restarts on change. | `false`
---silent | -s | Disable output of debug logs. | `false`
 
 This will run the specified (server) `entryPoint` file and mount a CDN server.
 
@@ -77,7 +67,6 @@ The following are the default values for the CDN server's port and the mount dir
 
 Flag | Short Flag | Description | Default Value
 ---- | ---------- | ----------- | ------------
---bundle | -b | Create a bundle(s) of entry point(s) specified in `package.json`. It also compiles `.scss` files into `dist` folder and adds required css to a css bundle, unless `wix.separateCss` is false (see details below) | `${context}/client.js`
 --dirs <dirs,...> | | Transpile the files inside the specified directories (comma-separated list). This option will also copy the `assets/` folder in those directories. | `app,src,test`
 --output <dir> | | The output directory for static assets. | `statics`
 --context <dir> | | The directory used for resolving entries. More info [here](https://webpack.github.io/docs/configuration.html#context). | `src`
@@ -115,7 +104,7 @@ By default, your `require`d css will bundled to a separate `app.css` bundle. You
 Flag | Short Flag | Description
 ---- | ---------- | -----------
 --duringwatch | | Runs only unit tests.
---mocha | -m | Run unit tests with Mocha
+--mocha | -m | Run unit tests with Mocha - this is the default
 --jasmine | | Run unit tests with Jasmine
 --karma | | Run tests with Karma (browser)
 --protractor | | Run e2e tests with Protractor (e2e)
@@ -132,21 +121,6 @@ wix: {
 ```
 
 * Note that when specifying multiple flags, only the first one will be considered, so you can't compose test runners (for now).
-
-*Deprecated*:
-
-~~~When in a fullstack project, running E2E tests requires `wix` section with `clientProjectName` property in `package.json`. As the stack works, `clientProjectName` should be a direct dependency as well. As the E2E tests run from the server (node) project, the client (static files) should be served in some way (and served from other server, exactly like it works in production, e.g `parastorage`), so it puts up a tiny express server that just serves these static files.~~~
-
-For example:
-
-```json
-"wix": {
-  "clientProjectName": "nex-client"
-}
-```
-
-- Unit tests run using `jasmine` / `mocha` over `.spec.js` files in `dist/` folder.
-- E2E tests run using `protractor` based on local `./protractor.conf.js`.
 
 #### Karma
 
