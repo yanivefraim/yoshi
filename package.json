@@ -12,7 +12,8 @@
     "test": "mocha './test/{,!(fixtures)/**/}/*.spec.js' --timeout 20000 --reporter mocha-env-reporter",
     "test:watch": "npm run test -- --watch",
     "build": "npm run lint -s",
-    "release": "wnpm-release --no-shrinkwrap"
+    "release": "wnpm-release",
+    "postpublish": "rm -f npm-shrinkwrap.json"
   },
   "bin": {
     "wix-node-build": "./wix-node-build.js"
