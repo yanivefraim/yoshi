@@ -54,7 +54,7 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-spawn-mocha": "^2.2.2",
     "gulp-stylelint": "^2.0.2",
-    "gulp-tslint": "^4.3.5",
+    "gulp-tslint": "^6.1.2",
     "gulp-typescript": "^2.12.1",
     "gulp-typings": "^2.0.4",
     "gulp-util": "^3.0.7",
