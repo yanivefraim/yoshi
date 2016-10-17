@@ -2,6 +2,7 @@
 
 const process = require('process');
 const path = require('path');
+const fs = require('fs');
 const sh = require('shelljs');
 const spawn = require('child_process').spawn;
 const cwd = path.join(__dirname, '..', '..');
@@ -88,9 +89,8 @@ class Test {
 
   write(file, content) {
     const fullpath = path.join(this.tmp, file);
-    content = content.replace(/'/g, `'\\''`);
     sh.mkdir('-p', path.dirname(fullpath));
-    sh.exec(`echo '${content}'`, {silent: true}).to(fullpath);
+    fs.writeFileSync(fullpath, content, 'utf8');
     return this;
   }
 
