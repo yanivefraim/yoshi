@@ -19,6 +19,4 @@ require('./lib/tasks/aggregators/test')(gulp, plugins, program);
 const options = ['mocha', 'jasmine', 'karma', 'protractor'];
 const command = _.find(options, option => program[option]);
 
-command ?
-  gulp.start(`test:${command}`) :
-  gulp.start('test');
+gulp.start(command ? `test:${command}` : 'test');

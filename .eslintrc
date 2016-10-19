@@ -1,7 +1,0 @@
-{
-  "extends": "wix",
-  "mocha": true,
-  "rules": {
-    "no-unused-expressions": 0
-  }
-}

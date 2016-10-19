@@ -7,11 +7,8 @@
   "author": "Roy Miloh <roymi@wix.com>",
   "license": "ISC",
   "scripts": {
-    "lint": "eslint './test/{,!(fixtures)/**}/*.js' lib/",
-    "start": "npm run test:watch",
+    "build": "eslint .",
     "test": "mocha './test/{,!(fixtures)/**/}/*.spec.js' --timeout 20000 --reporter mocha-env-reporter",
-    "test:watch": "npm run test -- --watch",
-    "build": "npm run lint -s",
     "release": "wnpm-release --no-shrinkwrap"
   },
   "bin": {
@@ -100,5 +97,8 @@
     "ps-tree": "^1.1.0",
     "retry-promise": "~1.0.0",
     "shelljs": "^0.7.0"
+  },
+  "eslintConfig": {
+    "extends": "wix"
   }
 }
