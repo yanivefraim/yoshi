@@ -101,13 +101,12 @@ By default, your `require`d css will bundled to a separate `app.css` bundle. You
 
 ### test
 
-Flag | Short Flag | Description
----- | ---------- | -----------
---duringwatch | | Runs only unit tests.
---mocha | -m | Run unit tests with Mocha - this is the default
---jasmine | | Run unit tests with Jasmine
---karma | | Run tests with Karma (browser)
---protractor | | Run e2e tests with Protractor (e2e)
+Flag | Description
+---- | -----------
+--mocha | Run unit tests with Mocha - this is the default
+--jasmine | Run unit tests with Jasmine
+--karma | Run tests with Karma (browser)
+--protractor | Run e2e tests with Protractor (e2e)
 
 By default, this task executes both unit test (using `mocha` as default) and e2e test using `protractor`.
 Default unit test glob is `{test,app,src}/**/*.spec.+(js|ts)`. You can change this by adding the following to your package.json:

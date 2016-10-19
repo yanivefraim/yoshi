@@ -51,18 +51,6 @@ describe('Aggregator: Test', () => {
       expect(res.stdout).to.contain('1 passing');
     });
 
-    it('should pass with exit code 0 with mocha as default while --duringwatch (no protractor)', () => {
-      const res = test
-        .setup({
-          'test/component.spec.js': 'it.only("pass", () => 1);',
-          'package.json': fx.packageJson()
-        }, [tmp => hooks.installDependency(tmp)('babel-register')])
-        .execute('test', ['--duringwatch']);
-
-      expect(res.code).to.equal(0);
-      expect(res.stdout).to.contain('Testing with Mocha');
-      expect(res.stdout).to.contain('1 passing');
-    });
   });
 
   describe('--protractor', () => {
