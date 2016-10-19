@@ -109,7 +109,7 @@ Flag | Short Flag | Description
 --karma | | Run tests with Karma (browser)
 --protractor | | Run e2e tests with Protractor (e2e)
 
-By default, this task executes both unit test (using `mocha` as default) and e2e test using `protractor`. 
+By default, this task executes both unit test (using `mocha` as default) and e2e test using `protractor`.
 Default unit test glob is `{test,app,src}/**/*.spec.+(js|ts)`. You can change this by adding the following to your package.json:
 
 ```js
@@ -137,10 +137,6 @@ Executes `TSLint` or `ESLint` (depending on the type of the project) over all ma
 ### release
 
 Bump `package.json` version and publish to npm using `wnpm-release`.
-
-### install
-
-Install your `typings` from `typings.json`.
 
 ---
 

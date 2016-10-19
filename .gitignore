@@ -1,3 +1,5 @@
 .history
 node_modules
 target
+yarn-error.log
+node-debug.log

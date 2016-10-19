@@ -6,7 +6,6 @@ program
   .arguments('<process>')
   .command('start [entryPoint]', 'start the application')
   .command('release', 'bump package.json')
-  .command('install', 'install typings')
   .command('build', 'build the application')
   .command('clean', 'remove unnecessary filder/folders')
   .command('test', 'test the application')

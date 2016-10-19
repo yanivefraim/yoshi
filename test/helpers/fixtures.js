@@ -72,7 +72,7 @@ module.exports = {
   `,
   e2eTestJasmineES6Imports: () => `
     import path from 'path';
-  
+
     it("should write some text to body", () => {
       browser.ignoreSynchronization = true;
       browser.get("http://localhost:1337");
@@ -110,12 +110,6 @@ module.exports = {
             </plugins>
         </build>
     </project>
-  `,
-  typingsJson: () => `{
-    "dependencies": {
-      "debug": "registry:npm/debug#2.0.0+20160723033700"
-    }
-  }
   `,
   httpServer: (message, port) => `
     'use strict';
