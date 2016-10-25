@@ -5,7 +5,7 @@ const tp = require('./helpers/test-phases');
 const fx = require('./helpers/fixtures');
 const hooks = require('./helpers/hooks');
 
-const notTC = {IS_BUILD_AGENT: undefined};
+const notTC = {TEAMCITY_VERSION: undefined, BUILD_NUMBER: undefined};
 
 describe('Aggregator: e2e', () => {
   let test;
@@ -19,7 +19,7 @@ describe('Aggregator: e2e', () => {
 
     it('should support single module structure by default', () => {
       const res = test
-          .setup(singleModuleWithJasmine(), [hooks.installProtractor])
+          .setup(singleModuleWithJasmine(), [hooks.installProtractor, hooks.installChromedriver])
           .execute('test', ['--protractor'], notTC);
 
       expect(res.code).to.equal(0);
@@ -31,7 +31,7 @@ describe('Aggregator: e2e', () => {
 
     it(`should support multiple modules structure and consider clientProjectName configuration`, () => {
       const res = test
-          .setup(multipleModuleWithJasmine(), [hooks.installProtractor])
+          .setup(multipleModuleWithJasmine(), [hooks.installProtractor, hooks.installChromedriver])
           .execute('test', ['--protractor'], notTC);
 
       expect(res.code).to.equal(0);
@@ -41,7 +41,7 @@ describe('Aggregator: e2e', () => {
 
     it('should run protractor with mocha', () => {
       const res = test
-          .setup(singleModuleWithMocha(), [hooks.installProtractor])
+          .setup(singleModuleWithMocha(), [hooks.installProtractor, hooks.installChromedriver])
           .execute('test', ['--protractor'], notTC);
 
       expect(res.code).to.equal(0);
@@ -49,11 +49,10 @@ describe('Aggregator: e2e', () => {
       expect(res.stdout).to.contain('1 passing (');
     });
 
-    //TODO: add this back when https://github.com/wix-private/wix-js-stack/issues/365 is fixed
-    it.skip('should run protractor with mocha and use TeamCity reporter', () => {
+    it('should run protractor with mocha and use TeamCity reporter', () => {
       const res = test
-          .setup(singleModuleWithMocha(), [hooks.installProtractor])
-          .execute('test', ['--protractor'], {IS_BUILD_AGENT: true});
+          .setup(singleModuleWithMocha(), [hooks.installProtractor, hooks.installChromedriver])
+          .execute('test', ['--protractor'], {TEAMCITY_VERSION: 1});
 
       expect(res.code).to.equal(0);
       expect(res.stdout).to.contain('Running E2E with Protractor');
@@ -62,7 +61,7 @@ describe('Aggregator: e2e', () => {
 
     it('should use babel-register', () => {
       const res = test
-        .setup(singleModuleWithJasmineAndES6Imports(), [hooks.installDependencies, hooks.installProtractor])
+        .setup(singleModuleWithJasmineAndES6Imports(), [hooks.installDependencies, hooks.installProtractor, hooks.installChromedriver])
         .execute('test', ['--protractor'], notTC);
 
       expect(res.code).to.equal(0);

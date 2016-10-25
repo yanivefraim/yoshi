@@ -54,8 +54,8 @@ if (merged.framework === 'mocha') {
   merged.mochaOpts.reporter = 'mocha-env-reporter';
 }
 
-if (!inTeamCity()) {
-  merged.chromeDriver = require.resolve('chromedriver/bin/chromedriver');
+if (!process.env.IS_BUILD_AGENT) {
+  merged.chromeDriver = path.resolve('node_modules/chromedriver/bin/chromedriver');
 }
 
 function normaliseSpecs(config) {
