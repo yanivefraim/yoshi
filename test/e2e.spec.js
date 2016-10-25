@@ -19,7 +19,7 @@ describe('Aggregator: e2e', () => {
 
     it('should support single module structure by default', () => {
       const res = test
-          .setup(singleModuleWithJasmine(), [hooks.installProtractor, hooks.installChromedriver])
+          .setup(singleModuleWithJasmine(), [hooks.installProtractor])
           .execute('test', ['--protractor'], notTC);
 
       expect(res.code).to.equal(0);
@@ -31,7 +31,7 @@ describe('Aggregator: e2e', () => {
 
     it(`should support multiple modules structure and consider clientProjectName configuration`, () => {
       const res = test
-          .setup(multipleModuleWithJasmine(), [hooks.installProtractor, hooks.installChromedriver])
+          .setup(multipleModuleWithJasmine(), [hooks.installProtractor])
           .execute('test', ['--protractor'], notTC);
 
       expect(res.code).to.equal(0);
@@ -41,7 +41,7 @@ describe('Aggregator: e2e', () => {
 
     it('should run protractor with mocha', () => {
       const res = test
-          .setup(singleModuleWithMocha(), [hooks.installProtractor, hooks.installChromedriver])
+          .setup(singleModuleWithMocha(), [hooks.installProtractor])
           .execute('test', ['--protractor'], notTC);
 
       expect(res.code).to.equal(0);
@@ -51,7 +51,7 @@ describe('Aggregator: e2e', () => {
 
     it('should run protractor with mocha and use TeamCity reporter', () => {
       const res = test
-          .setup(singleModuleWithMocha(), [hooks.installProtractor, hooks.installChromedriver])
+          .setup(singleModuleWithMocha(), [hooks.installProtractor])
           .execute('test', ['--protractor'], {TEAMCITY_VERSION: 1});
 
       expect(res.code).to.equal(0);
@@ -61,7 +61,7 @@ describe('Aggregator: e2e', () => {
 
     it('should use babel-register', () => {
       const res = test
-        .setup(singleModuleWithJasmineAndES6Imports(), [hooks.installDependencies, hooks.installProtractor, hooks.installChromedriver])
+        .setup(singleModuleWithJasmineAndES6Imports(), [hooks.installDependencies, hooks.installProtractor])
         .execute('test', ['--protractor'], notTC);
 
       expect(res.code).to.equal(0);
