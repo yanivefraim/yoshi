@@ -5,8 +5,6 @@ const tp = require('./helpers/test-phases');
 const fx = require('./helpers/fixtures');
 const hooks = require('./helpers/hooks');
 
-const notTC = {IS_BUILD_AGENT: undefined};
-
 describe('Aggregator: e2e', () => {
   let test;
   beforeEach(() => {
@@ -20,7 +18,7 @@ describe('Aggregator: e2e', () => {
     it('should support single module structure by default', () => {
       const res = test
           .setup(singleModuleWithJasmine(), [hooks.installProtractor])
-          .execute('test', ['--protractor'], notTC);
+          .execute('test', ['--protractor']);
 
       expect(res.code).to.equal(0);
       expect(res.stdout).to.contain('Running E2E with Protractor');
@@ -32,7 +30,7 @@ describe('Aggregator: e2e', () => {
     it(`should support multiple modules structure and consider clientProjectName configuration`, () => {
       const res = test
           .setup(multipleModuleWithJasmine(), [hooks.installProtractor])
-          .execute('test', ['--protractor'], notTC);
+          .execute('test', ['--protractor']);
 
       expect(res.code).to.equal(0);
       expect(res.stdout).to.contain('Running E2E with Protractor');
@@ -42,7 +40,7 @@ describe('Aggregator: e2e', () => {
     it('should run protractor with mocha', () => {
       const res = test
           .setup(singleModuleWithMocha(), [hooks.installProtractor])
-          .execute('test', ['--protractor'], notTC);
+          .execute('test', ['--protractor']);
 
       expect(res.code).to.equal(0);
       expect(res.stdout).to.contain('Running E2E with Protractor');
@@ -63,7 +61,7 @@ describe('Aggregator: e2e', () => {
     it('should use babel-register', () => {
       const res = test
         .setup(singleModuleWithJasmineAndES6Imports(), [hooks.installDependencies, hooks.installProtractor])
-        .execute('test', ['--protractor'], notTC);
+        .execute('test', ['--protractor']);
 
       expect(res.code).to.equal(0);
       expect(res.stdout).to.contain('Running E2E with Protractor');
