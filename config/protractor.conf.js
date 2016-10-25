@@ -54,6 +54,10 @@ if (merged.framework === 'mocha') {
   merged.mochaOpts.reporter = 'mocha-env-reporter';
 }
 
+if (!process.env.IS_BUILD_AGENT) {
+  merged.chromeDriver = path.resolve(__dirname, '../node_modules/chromedriver/bin/chromedriver');
+}
+
 function normaliseSpecs(config) {
   let specs = [].concat(config.specs || []);
   return Object.assign({}, config, {specs: specs.map(spec => path.resolve(spec))});
