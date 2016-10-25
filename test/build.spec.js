@@ -1104,7 +1104,7 @@ describe('Aggregator: Build', () => {
     });
   });
 
-  describe.skip('Clean', () => {
+  describe('Clean', () => {
     it('should remove \'dist\' folder before building', () => {
       const res = test
         .setup({
