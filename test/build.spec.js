@@ -5,15 +5,13 @@ const hooks = require('./helpers/hooks');
 
 describe('Aggregator: Build', () => {
   const baseFolders = ['app', 'src', 'test'];
-  //const defaultContext = 'src';
   const defaultOutput = 'statics';
+  let test;
 
-  const buildConst = 'build';
+  beforeEach(() => test = tp.create());
+  afterEach(() => test.teardown());
 
   describe('Sass', () => {
-    const test = tp.create();
-    afterEach(() => test.teardown());
-
     it('should transpile to dist/, preserve folder structure and exit with code 0', () => {
       const compiledStyle = '.a .b {\n  color: red; }';
       const resp = test
@@ -27,7 +25,7 @@ describe('Aggregator: Build', () => {
           'package.json': fx.packageJson(),
           'pom.xml': fx.pom()
         })
-        .execute(buildConst);
+        .execute('build');
 
       expect(resp.code).to.equal(0);
       expect(resp.stdout).to.contain('Compiling with Sass');
@@ -46,7 +44,7 @@ describe('Aggregator: Build', () => {
           'package.json': fx.packageJson(),
           'pom.xml': fx.pom()
         })
-        .execute(buildConst);
+        .execute('build');
 
       expect(resp.code).to.equal(1);
       expect(resp.stdout).to.contain('Compiling with Sass');
@@ -70,7 +68,7 @@ describe('Aggregator: Build', () => {
           'package.json': fx.packageJson(),
           'pom.xml': fx.pom()
         })
-        .execute(buildConst);
+        .execute('build');
 
       expect(resp.code).to.equal(0);
       expect(resp.stdout).to.contain('Compiling with Sass');
@@ -79,9 +77,6 @@ describe('Aggregator: Build', () => {
   });
 
   describe('Babel', () => {
-    const test = tp.create();
-    afterEach(() => test.teardown());
-
     it('should transpile to dist but only form app, src, test folders and index.js itself and exit with code 0', () => {
       const resp = test
         .setup({
@@ -92,7 +87,7 @@ describe('Aggregator: Build', () => {
           'package.json': fx.packageJson(),
           'pom.xml': fx.pom()
         })
-        .execute(buildConst)
+        .execute('build')
       ;
 
       expect(resp.stdout).to.contain('Compiling with Babel');
@@ -107,7 +102,7 @@ describe('Aggregator: Build', () => {
           'package.json': fx.packageJson(),
           'pom.xml': fx.pom()
         })
-        .execute(buildConst)
+        .execute('build')
       ;
       expect(resp.stdout).to.contain('Compiling with Babel');
       expect(resp.code).to.equal(0);
@@ -123,7 +118,7 @@ describe('Aggregator: Build', () => {
           'package.json': fx.packageJson(),
           'pom.xml': fx.pom()
         })
-        .execute(buildConst)
+        .execute('build')
       ;
       expect(resp.code).to.equal(1);
       expect(resp.stdout).to.contain('Unexpected token (1:9)');
@@ -138,10 +133,9 @@ describe('Aggregator: Build', () => {
             'package.json': fx.packageJson(),
             'pom.xml': fx.pom()
           })
-          .execute(buildConst)
+          .execute('build')
         ;
       expect(resp.code).to.equal(0);
-      expect(test.content('dist/a.js')).to.equal('function () {{}');
       expect(test.contains('dist/node_modules')).to.be.false;
     });
 
@@ -180,7 +174,7 @@ describe('Aggregator: Build', () => {
          'package.json': fx.packageJson(),
          'pom.xml': fx.pom()
        })
-       .execute(buildConst);
+       .execute('build');
 
       expect(resp.code).to.equal(0);
       expect(test.list('.', '-RA')).to.contain('target/.babel-cache');
@@ -188,9 +182,6 @@ describe('Aggregator: Build', () => {
   });
 
   describe('TypeScript', () => {
-    const test = tp.create();
-    afterEach(() => test.teardown());
-
     it('should transpile to dist and exit with code 0', () => {
       const resp = test
         .setup({
@@ -200,7 +191,7 @@ describe('Aggregator: Build', () => {
           'package.json': fx.packageJson(),
           'pom.xml': fx.pom()
         })
-        .execute(buildConst);
+        .execute('build');
 
       expect(resp.stdout).to.contain('Compiling TypeScript');
       expect(resp.code).to.equal(0);
@@ -215,7 +206,7 @@ describe('Aggregator: Build', () => {
         'package.json': fx.packageJson(),
         'pom.xml': fx.pom()
       })
-      .execute(buildConst);
+      .execute('build');
 
       expect(test.content('dist/app/a.js')).to.contain('//# sourceMappingURL=a.js.map');
       expect(test.list('dist/app')).to.include('a.js.map', 'a.d.ts');
@@ -229,7 +220,7 @@ describe('Aggregator: Build', () => {
           'package.json': fx.packageJson(),
           'pom.xml': fx.pom()
         })
-        .execute(buildConst);
+        .execute('build');
 
       expect(resp.code).to.equal(1);
       expect(resp.stdout).to.contain('TypeScript: 1 syntax error');
@@ -246,7 +237,7 @@ describe('Aggregator: Build', () => {
         'package.json': fx.packageJson(),
         'pom.xml': fx.pom()
       }, filesInFolders))
-        .execute(buildConst);
+        .execute('build');
 
       expect(test.list('dist/').length).to.equal(baseFolders.length);
     });
@@ -300,7 +291,7 @@ describe('Aggregator: Build', () => {
               }}`
 
         }, [hooks.installDependencies])
-        .execute(buildConst);
+        .execute('build');
 
       expect(resp.code).to.equal(0);
       expect(test.content('dist/app/a.js')).to.contain('var a = 1');
@@ -309,9 +300,6 @@ describe('Aggregator: Build', () => {
   });
 
   describe('Bundle', () => {
-    const test = tp.create();
-    afterEach(() => test.teardown());
-
     it('should generate a bundle', () => {
       const res = test
         .setup({
@@ -320,7 +308,7 @@ describe('Aggregator: Build', () => {
           'package.json': fx.packageJson(),
           'pom.xml': fx.pom()
         })
-        .execute(buildConst);
+        .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.list('dist/statics')).to.contain('app.bundle.js');
@@ -336,7 +324,7 @@ describe('Aggregator: Build', () => {
             'package.json': fx.packageJson(),
             'pom.xml': fx.pom()
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(1);
       expect(res.stdout).to.contain('Unexpected token (2:0)');
@@ -352,7 +340,7 @@ describe('Aggregator: Build', () => {
             }),
             'pom.xml': fx.pom()
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.list('dist/statics').indexOf('app.bundle.js')).to.be.at.least(0);
@@ -369,7 +357,7 @@ describe('Aggregator: Build', () => {
               entry: './app-final.js'
             })
           })
-          .execute(buildConst, ['--context=app']);
+          .execute('build', ['--context=app']);
 
       expect(res.code).to.equal(0);
       expect(test.list('dist/statics')).to.contain('app.bundle.js');
@@ -386,7 +374,7 @@ describe('Aggregator: Build', () => {
             }),
             'pom.xml': fx.pom()
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.content('dist/statics/app.bundle.js')).to.contain('thisIsWorks');
@@ -405,7 +393,7 @@ describe('Aggregator: Build', () => {
             }),
             'pom.xml': fx.pom()
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.content('dist/statics/first.bundle.js')).to.contain('thisIsWorks');
@@ -420,7 +408,7 @@ describe('Aggregator: Build', () => {
             app: './app1.js',
           }
         })
-      }).execute(buildConst, ['--output=statics1']);
+      }).execute('build', ['--output=statics1']);
 
       expect(res.code).to.equal(0);
       expect(test.list('dist/statics1').indexOf('app.bundle.js')).to.be.at.least(0);
@@ -434,7 +422,7 @@ describe('Aggregator: Build', () => {
             app: './app.js',
           }
         })
-      }).execute(buildConst, ['--context=app']);
+      }).execute('build', ['--context=app']);
 
       expect(res.code).to.equal(0);
       expect(test.list(`dist/${defaultOutput}`).indexOf('app.bundle.js')).to.be.at.least(0);
@@ -450,7 +438,7 @@ describe('Aggregator: Build', () => {
             }),
             'pom.xml': fx.pom()
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(0);
 
@@ -468,7 +456,7 @@ describe('Aggregator: Build', () => {
             }),
             'pom.xml': fx.pom()
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(test.content('dist/statics/app.bundle.js')).to.contain(`"json-content": 42`);
     });
@@ -493,7 +481,7 @@ describe('Aggregator: Build', () => {
               }
             }`
           }, [hooks.installDependencies])
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(0);
 
@@ -511,7 +499,7 @@ describe('Aggregator: Build', () => {
           }),
           'pom.xml': fx.pom()
         })
-        .execute(buildConst);
+        .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.list('dist/statics')).to.contain('app.bundle.js');
@@ -527,7 +515,7 @@ describe('Aggregator: Build', () => {
           }),
           'pom.xml': fx.pom()
         })
-        .execute(buildConst);
+        .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.list('dist/statics')).to.contain('app.bundle.js');
@@ -541,7 +529,7 @@ describe('Aggregator: Build', () => {
           'package.json': fx.packageJson(),
           'pom.xml': fx.pom()
         })
-        .execute(buildConst);
+        .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.list('dist/statics')).to.contain('app.bundle.js');
@@ -555,7 +543,7 @@ describe('Aggregator: Build', () => {
           'package.json': fx.packageJson(),
           'pom.xml': fx.pom()
         })
-        .execute(buildConst);
+        .execute('build');
 
       expect(res.code).to.equal(0);
 
@@ -568,9 +556,6 @@ describe('Aggregator: Build', () => {
   });
 
   describe('Bundle - sass', () => {
-    const test = tp.create();
-    afterEach(() => test.teardown());
-
     it.skip('should generate a bundle with css', () => {
       const res = test
           .setup({
@@ -578,7 +563,7 @@ describe('Aggregator: Build', () => {
             'src/style.scss': `.a {.b {color: red;}}`,
             'package.json': fx.packageJson({separateCss: false})
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.content('dist/statics/app.bundle.js')).to.contain('.a .b');
@@ -591,7 +576,7 @@ describe('Aggregator: Build', () => {
             'src/style.scss': `.a {.b {color: red;}}`,
             'package.json': fx.packageJson()
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(1);
       expect(test.list('dist', '-R')).to.not.include('statics/app.bundle.js');
@@ -605,7 +590,7 @@ describe('Aggregator: Build', () => {
           'package.json': fx.packageJson(),
           'pom.xml': fx.pom()
         })
-        .execute(buildConst);
+        .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.content('dist/statics/app.bundle.js')).not.to.contain('{\n  color: red; }');
@@ -622,7 +607,7 @@ describe('Aggregator: Build', () => {
             'package.json': fx.packageJson({entry: {app: './client.js', settings: './settings.js'}}),
             'pom.xml': fx.pom()
           })
-          .execute(buildConst);
+          .execute('build');
       expect(res.code).to.equal(0);
       expect(test.list('./dist/statics')).to.contain.members(['app.css', 'settings.css']);
     });
@@ -634,7 +619,7 @@ describe('Aggregator: Build', () => {
             'src/styles/my-file.scss': `.a {.b {color: red;}}`,
             'package.json': fx.packageJson()
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.content(`dist/${defaultOutput}/app.bundle.js`)).to.contain('.styles-__my-file__a__');
@@ -650,7 +635,7 @@ describe('Aggregator: Build', () => {
             'package.json': fx.packageJson({cssModules: true, separateCss: true}),
             'pom.xml': fx.pom()
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.content(`dist/${defaultOutput}/app.bundle.js`)).not.to.match(regex);
@@ -673,7 +658,7 @@ describe('Aggregator: Build', () => {
             'src/image.png': '',
             'package.json': fx.packageJson({separateCss: false})
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.content(`dist/${defaultOutput}/app.bundle.js`)).to.match(/icon.\w+.svg/g);
@@ -702,7 +687,7 @@ describe('Aggregator: Build', () => {
           'src/assets/fonts/icomoon.svg': '',
           'package.json': fx.packageJson({separateCss: false})
         })
-        .execute(buildConst);
+        .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.content(`dist/${defaultOutput}/app.bundle.js`)).to.match(/icomoon.\w+.eot/g);
@@ -721,7 +706,7 @@ describe('Aggregator: Build', () => {
                               }`,
             'package.json': fx.packageJson({separateCss: false})
           })
-          .execute(buildConst);
+          .execute('build');
 
         expect(res.code).to.equal(0);
         expect(test.content(`dist/${defaultOutput}/app.bundle.js`)).to.match(/display: -webkit-box;/g);
@@ -739,7 +724,7 @@ describe('Aggregator: Build', () => {
             'package.json': fx.packageJson({cssModules: true, separateCss: true}),
             'pom.xml': fx.pom()
           })
-          .execute(buildConst);
+          .execute('build');
 
         expect(res.code).to.equal(0);
         expect(test.content(`dist/${defaultOutput}/app.css`)).to.match(/display: -webkit-box;/g);
@@ -755,7 +740,7 @@ describe('Aggregator: Build', () => {
             'package.json': fx.packageJson(),
             'pom.xml': fx.pom()
           })
-          .execute(buildConst);
+          .execute('build');
 
         expect(res.code).to.equal(0);
         expect(test.content('dist/statics/app.bundle.js')).not.to.contain('{\n  color: red; }');
@@ -765,9 +750,6 @@ describe('Aggregator: Build', () => {
   });
 
   describe.skip('Specs Bundle', () => {
-    const test = tp.create();
-    afterEach(() => test.teardown());
-
     describe('when an entry point does not exist', () => {
       it('should not generate a bundle with that configuration', () => {
         const res = test
@@ -776,7 +758,7 @@ describe('Aggregator: Build', () => {
             'src/server.js': `module.exports = 'world'`,
             'package.json': fx.packageJson()
           })
-          .execute(buildConst);
+          .execute('build');
 
         expect(res.code).to.equal(0);
         expect(test.content('dist/statics/app.bundle.js')).not.to.equal('');
@@ -793,7 +775,7 @@ describe('Aggregator: Build', () => {
             'src/appTwo.spec.js': `const add1 = require('./client');const b = add1(2);`,
             'package.json': fx.packageJson()
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.list('dist')).to.contain('specs.bundle.js');
@@ -814,7 +796,7 @@ describe('Aggregator: Build', () => {
               }
             })
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.content('dist/specs.bundle.js')).to.contain('const a = add1(2);');
@@ -829,7 +811,7 @@ describe('Aggregator: Build', () => {
             'src/style.scss': `.a {.b {color: red;}}`,
             'package.json': fx.packageJson({separateCss: false})
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.content('dist/specs.bundle.js')).to.contain('.a .b');
@@ -843,7 +825,7 @@ describe('Aggregator: Build', () => {
             'src/style.scss': `.a {.b {color: red;}}`,
             'package.json': fx.packageJson({separateCss: true})
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.content('dist/statics/app.bundle.js')).not.to.contain('.a .b');
@@ -859,7 +841,7 @@ describe('Aggregator: Build', () => {
             'src/style.scss': `.a {.b {color: red;}}`,
             'package.json': fx.packageJson()
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.content('dist/statics/app.bundle.js')).not.to.contain('.a .b');
@@ -871,8 +853,6 @@ describe('Aggregator: Build', () => {
 
   describe('Assets', () => {
     const dirs = ['app', 'src', 'test'];
-    const test = tp.create();
-    afterEach(() => test.teardown());
 
     it('should copy files from assets folder', () => {
       const res = test
@@ -883,7 +863,7 @@ describe('Aggregator: Build', () => {
            'package.json': fx.packageJson(),
            'pom.xml': fx.pom()
          })
-         .execute(buildConst);
+         .execute('build');
 
       expect(res.code).to.equal(0);
 
@@ -908,7 +888,7 @@ describe('Aggregator: Build', () => {
            'package.json': fx.packageJson(),
            'pom.xml': fx.pom()
          }, paths))
-         .execute(buildConst);
+         .execute('build');
 
       expect(res.code).to.equal(0);
       dirs.forEach(dir =>
@@ -924,7 +904,7 @@ describe('Aggregator: Build', () => {
         'anotherSrc/assets/anotherSrcFile': 'a',
         'package.json': fx.packageJson(),
         'pom.xml': fx.pom()
-      }).execute(buildConst, '--dirs=anotherApp,anotherSrc');
+      }).execute('build', '--dirs=anotherApp,anotherSrc');
 
       expect(res.code).to.equal(0);
 
@@ -939,7 +919,7 @@ describe('Aggregator: Build', () => {
         'src/assets/some-file': 'a',
         'package.json': fx.packageJson(),
         'pom.xml': fx.pom()
-      }).execute(buildConst, ['--output=statics1']);
+      }).execute('build', ['--output=statics1']);
 
       expect(res.code).to.equal(0);
       expect(test.list(`dist/statics1/assets`)).to.include('some-file');
@@ -951,7 +931,7 @@ describe('Aggregator: Build', () => {
         'src/assets/should-not-be-here': 'a',
         'package.json': fx.packageJson(),
         'pom.xml': fx.pom()
-      }).execute(buildConst, ['--output=statics', '--context=app']);
+      }).execute('build', ['--output=statics', '--context=app']);
 
       expect(res.code).to.equal(0);
       expect(test.list(`dist/statics/assets`)).to.include('some-file');
@@ -966,7 +946,7 @@ describe('Aggregator: Build', () => {
         'src/index.ejs': 'a',
         'package.json': fx.packageJson(),
         'pom.xml': fx.pom()
-      }).execute(buildConst);
+      }).execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.list(`dist/statics`)).to.include('index.html');
@@ -984,7 +964,7 @@ describe('Aggregator: Build', () => {
         'src/file.json': '{}',
         'package.json': fx.packageJson(),
         'pom.xml': fx.pom()
-      }).execute(buildConst);
+      }).execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.list(`dist/src`)).to.include('style.scss');
@@ -994,9 +974,6 @@ describe('Aggregator: Build', () => {
   });
 
   describe('Tar.gz.xml creation', () => {
-    const test = tp.create();
-    afterEach(() => test.teardown());
-
     it('should create tar.gz.xml based on client project name', () => {
       const res = test
           .setup({
@@ -1005,7 +982,7 @@ describe('Aggregator: Build', () => {
             }),
             'pom.xml': fx.pom()
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.content('maven/assembly/tar.gz.xml').replace(/\s/g, '')).to.contain(`
@@ -1039,7 +1016,7 @@ describe('Aggregator: Build', () => {
             }),
             'pom.xml': fx.pom()
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.content('maven/assembly/tar.gz.xml').replace(/\s/g, '')).to.contain(`
@@ -1078,7 +1055,7 @@ describe('Aggregator: Build', () => {
             }),
             'pom.xml': fx.pom()
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(0);
       expect(test.content('maven/assembly/tar.gz.xml').replace(/\s/g, '')).to.contain(`
@@ -1121,16 +1098,13 @@ describe('Aggregator: Build', () => {
               </project>
             `
           })
-          .execute(buildConst);
+          .execute('build');
 
       expect(res.code).to.equal(0);
     });
   });
 
   describe.skip('Clean', () => {
-    const test = tp.create();
-    afterEach(() => test.teardown());
-
     it('should remove \'dist\' folder before building', () => {
       const res = test
         .setup({
@@ -1138,7 +1112,7 @@ describe('Aggregator: Build', () => {
           'src/new.js': 'const world = "hello!";',
           'package.json': fx.packageJson()
         })
-        .execute(buildConst);
+        .execute('build');
 
       expect(res.code).to.be.equal(0);
       expect(res.stdout).to.include('Cleaning up \'dist\'...');
