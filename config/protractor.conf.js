@@ -55,7 +55,7 @@ if (merged.framework === 'mocha') {
 }
 
 if (!process.env.IS_BUILD_AGENT) {
-  merged.chromeDriver = path.resolve('node_modules/chromedriver/bin/chromedriver');
+  merged.chromeDriver = require.resolve('chromedriver/bin/chromedriver');
 }
 
 function normaliseSpecs(config) {
