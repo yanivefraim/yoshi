@@ -3,13 +3,14 @@
 const expect = require('chai').expect;
 const tp = require('./helpers/test-phases');
 const fx = require('./helpers/fixtures');
+const outsideTeamCity = {IS_BUILD_AGENT: undefined};
 const insideTeamCity = {IS_BUILD_AGENT: true};
 const hooks = require('./helpers/hooks');
 
 describe('Aggregator: Test', () => {
   let test;
   beforeEach(() => {
-    test = tp.create();
+    test = tp.create(outsideTeamCity);
   });
   afterEach(() => test.teardown());
 
