@@ -27,7 +27,6 @@ module.exports = function (wallaby) {
       const mocha = wallaby.testFramework;
       mocha.timeout(30000);
       require('../../lib/ignore-extensions');
-      require('../../lib/setup-dom');
     },
 
     env: {
