@@ -21,9 +21,8 @@ In your `package.json`:
   "scripts": {
     "start": "wix-node-build start",
     "test": "wix-node-build test",
-    "build": "wix-node-build build",
-    "lint": "wix-node-build line",
-    "release": "wix-node-build release"
+    "build": "wix-node-build lint && wix-node-build build",
+    "release": "wix-node-build release" //only needed if you publish to npm
     ...
   }
 }
