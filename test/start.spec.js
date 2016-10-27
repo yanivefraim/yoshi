@@ -216,26 +216,6 @@ describe('Aggregator: start', () => {
     });
   });
 
-  describe('Clean', () => {
-    ['dist', 'target'].forEach(folderName =>
-      it(`should remove "${folderName}" folder before building`, () => {
-        child = test
-          .setup({
-            [`${folderName}/src/old.js`]: `const hello = "world!";`,
-            'src/new.js': 'const world = "hello!";',
-            'package.json': fx.packageJson()
-          })
-          .spawn('start');
-
-        return checkServerLogCreated().then(() => {
-          expect(test.stdout).to.contains(`Cleaning up '${folderName}'...`);
-          expect(test.list(folderName)).to.not.include('old.js');
-          expect(test.list('dist/src')).to.include('new.js');
-        });
-      })
-    );
-  });
-
   function killSpawnProcessAndHidChildren(done) {
     if (!child) {
       return done();
