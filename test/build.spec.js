@@ -642,6 +642,36 @@ describe('Aggregator: Build', () => {
       expect(test.content(`dist/${defaultOutput}/app.css`)).to.match(regex);
     });
 
+    it('should generate css modules as default', () => {
+      const regex = /\.styles-my-file__a__.{5}\s.styles-my-file__b__.{5}\s{/;
+      const res = test
+          .setup({
+            'src/client.js': 'require(\'./styles/my-file.scss\');',
+            'src/styles/my-file.scss': `.a {.b {color: red;}}`,
+            'package.json': fx.packageJson(),
+            'pom.xml': fx.pom()
+          })
+          .execute('build');
+
+      expect(res.code).to.equal(0);
+      expect(test.content(`dist/${defaultOutput}/app.bundle.js`)).not.to.match(regex);
+      expect(test.content(`dist/${defaultOutput}/app.css`)).to.match(regex);
+    });
+
+    it('should disable css modules', () => {
+      const res = test
+          .setup({
+            'src/client.js': 'require(\'./styles/my-file.scss\');',
+            'src/styles/my-file.scss': `.a {.b {color: red;}}`,
+            'package.json': fx.packageJson({cssModules: false, separateCss: true}),
+            'pom.xml': fx.pom()
+          })
+          .execute('build');
+
+      expect(res.code).to.equal(0);
+      expect(test.content(`dist/${defaultOutput}/app.css`)).to.contain('.a .b {');
+    });
+
     it.skip('should generate a bundle with svg/images', () => {
       const res = test
           .setup({

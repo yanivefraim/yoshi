@@ -32,7 +32,7 @@ module.exports = {
     return isSingleEntry(entry) ? {app: entry} : entry;
   },
   separateCss: () => getConfig('separateCss', true),
-  cssModules: () => getConfig('cssModules'),
+  cssModules: () => getConfig('cssModules', true),
   externals: () => getConfig('externals')
 };
 

@@ -5,11 +5,12 @@ const path = require('path');
 const autoprefixer = require('autoprefixer');
 const {mergeByConcat} = require('./../lib/utils');
 const webpackConfigCommon = require('./webpack.config.common');
-const {bundleEntry, separateCss} = require('./project');
+const {bundleEntry, separateCss, cssModules} = require('./project');
 
 const config = ({debug} = {}) => {
   const extractCSS = getExtractCss();
-  const sass = require('../lib/loaders/sass')(extractCSS);
+  const cssmodules = cssModules();
+  const sass = require('../lib/loaders/sass')(extractCSS, cssmodules);
 
   return mergeByConcat(webpackConfigCommon, {
     entry: bundleEntry(),

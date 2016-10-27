@@ -89,15 +89,41 @@ You can specify multiple entry points in your `package.json` file. This gives th
 }
 ```
 
-By default, your `required` css will bundled to a separate `app.css` bundle. You can leave your css in main js bundle by adding the following to your `package.json`:
-
-```json
-"wix": {
-  "separateCss": false
-}
-```
-
 **Note:** the decision whether to use `TypeScript` or `babel` is done by searching `tsconfig.json` inside the root directory.
+
+### css
+
+- By default, your `required` css will bundled to a separate `app.css` bundle. You can leave your css in main js bundle by adding the following to your `package.json`:
+
+  ```json
+  "wix": {
+    "separateCss": false
+  }
+  ```
+
+- We use [css modules](https://github.com/css-modules/css-modules) as default. You can disable this option any time by adding the following to wix section inside your `package.json`:
+
+  ```json
+  "wix": {
+    "cssModules": false
+  }
+  ```
+
+  Using css modules inside your component is easy:
+
+  ```js
+  import s from './Counter.scss';//import css/scss
+
+  <p className={s.mainColor}>{counterValue}</p>
+  ```
+
+  Using css when css modules are turned off:
+
+  ```js
+  import s from './Counter.scss';//import css/scss
+
+  <p className="mainColor">{counterValue}</p>
+  ```
 
 ### test
 
