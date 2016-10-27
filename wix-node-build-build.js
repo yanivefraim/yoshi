@@ -3,7 +3,6 @@
 const gulp = require('gulp');
 const plugins = require('gulp-load-plugins')();
 const program = require('commander');
-const runSass = require('./lib/sass').run;
 const runWebpack = require('./lib/tasks/webpack').run;
 
 program
@@ -19,8 +18,7 @@ gulp.start('build');
 
 Promise.all([
   runWebpack({debug: true}),
-  runWebpack({debug: false}),
-  runSass()
+  runWebpack({debug: false})
 ]).catch(err => {
   console.error(err);
   process.exit(1);
