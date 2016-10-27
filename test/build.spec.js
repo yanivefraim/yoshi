@@ -556,12 +556,12 @@ describe('Aggregator: Build', () => {
   });
 
   describe('Bundle - sass', () => {
-    it.skip('should generate a bundle with css', () => {
+    it('should generate a bundle with css', () => {
       const res = test
           .setup({
             'src/client.js': 'require(\'./style.scss\');',
             'src/style.scss': `.a {.b {color: red;}}`,
-            'package.json': fx.packageJson({separateCss: false})
+            'package.json': fx.packageJson({separateCss: false, cssModules: false})
           })
           .execute('build');
 
