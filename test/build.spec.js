@@ -1135,19 +1135,21 @@ describe('Aggregator: Build', () => {
   });
 
   describe('Clean', () => {
-    it('should remove \'dist\' folder before building', () => {
-      const res = test
-        .setup({
-          'dist/src/old.js': `const hello = "world!";`,
-          'src/new.js': 'const world = "hello!";',
-          'package.json': fx.packageJson()
-        })
-        .execute('build');
+    ['dist', 'target'].forEach(folderName =>
+      it(`should remove "${folderName}" folders before building`, () => {
+        const res = test
+          .setup({
+            [`${folderName}/old.js`]: `const hello = "world!";`,
+            'src/new.js': 'const world = "hello!";',
+            'package.json': fx.packageJson()
+          })
+          .execute('build');
 
-      expect(res.code).to.be.equal(0);
-      expect(res.stdout).to.include('Cleaning up \'dist\'...');
-      expect(test.list('dist/src')).to.not.include('old.js');
-      expect(test.list('dist/src')).to.include('new.js');
-    });
+        expect(res.code).to.be.equal(0);
+        expect(res.stdout).to.include(`Cleaning up '${folderName}'...`);
+        expect(test.list(folderName)).to.not.include('old.js');
+        expect(test.list('dist/src')).to.include('new.js');
+      })
+    );
   });
 });

@@ -19,6 +19,7 @@ const loadTasks = options => {
   require('./lib/tasks/sass')(gulp, plugins, options);
   require('./lib/tasks/mocha')(gulp, plugins, options);
   require('./lib/tasks/copy-assets')(gulp, plugins, options);
+  require('./lib/tasks/clean')(gulp, plugins, options);
 };
 
 start(program, loadTasks);
