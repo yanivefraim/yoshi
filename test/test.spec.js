@@ -105,58 +105,6 @@ describe('Aggregator: Test', () => {
     });
   });
 
-  describe('--jest', () => {
-    it('should pass with exit code 0', () => {
-      const res = test
-        .setup({
-          '__tests__/foo.js': `
-            describe('Foo', () => {
-              jest.mock('../foo');
-              const foo = require('../foo');
-              it('should return value', () => {
-                // foo is a mock function
-                foo.mockImplementation(() => 42);
-                expect(foo()).toBe(42);
-              });
-            });
-          `,
-          'foo.js': `module.exports = function() {
-              // some implementation;
-            };`,
-          'package.json': fx.packageJson()
-        })
-        .execute('test', ['--jest']);
-      console.log(res);
-      expect(res.code).to.equal(0);
-      expect(res.stderr).to.contain('1 passed');
-    });
-
-    it('should fail with exit code 1', () => {
-      const res = test
-        .setup({
-          '__tests__/foo.js': `
-            describe('Foo', () => {
-              jest.mock('../foo');
-              const foo = require('../foo');
-              it('should return value', () => {
-                // foo is a mock function
-                foo.mockImplementation(() => 42);
-                expect(foo()).toBe(41);
-              });
-            });
-          `,
-          'foo.js': `module.exports = function() {
-              // some implementation;
-            };`,
-          'package.json': fx.packageJson()
-        })
-        .execute('test', ['--jest']);
-      console.log(res);
-      expect(res.code).to.equal(1);
-      expect(res.stderr).to.contain('1 failed');
-    });
-  });
-
   describe('--mocha', () => {
     it('should pass with exit code 0', () => {
       // the way we detect that Mocha runs is by using it.only,
