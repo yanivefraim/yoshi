@@ -93,7 +93,7 @@ You can specify multiple entry points in your `package.json` file. This gives th
 
 ### css
 
-- By default, your `required` css will bundled to a separate `app.css` bundle. You can leave your css in main js bundle by adding the following to your `package.json`:
+- By default, your `require`d css will bundled to a separate `app.css` bundle. You can leave your css in main js bundle by adding the following to your `package.json`:
 
   ```json
   "wix": {
