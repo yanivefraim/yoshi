@@ -9,7 +9,7 @@ wix-node-build
 ## Install
 
 ```bash
-npm install --save wix-node-build
+npm install --save-dev wix-node-build
 ```
 
 ## Sample usage
