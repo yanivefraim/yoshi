@@ -3,7 +3,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const autoprefixer = require('autoprefixer');
-const {mergeByConcat} = require('./../lib/utils');
+const {mergeByConcat} = require('../lib/utils');
 const webpackConfigCommon = require('./webpack.config.common');
 const {bundleEntry, separateCss, cssModules} = require('./project');
 

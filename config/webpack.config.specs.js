@@ -1,7 +1,7 @@
 'use strict';
 const path = require('path');
 const webpackConfigCommon = require('./webpack.config.common');
-const mergeByConcat = require('./../lib/utils').mergeByConcat;
+const mergeByConcat = require('../lib/utils').mergeByConcat;
 
 module.exports = mergeByConcat(webpackConfigCommon, {
   output: {

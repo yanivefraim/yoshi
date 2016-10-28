@@ -14,9 +14,8 @@ program
   .option('--watch', 'watch for changes')
   .parse(process.argv);
 
-require('./lib/tasks/aggregators/test')(gulp, plugins, program);
-
 const options = ['mocha', 'jasmine', 'karma', 'protractor'];
-const command = _.find(options, option => program[option]);
+const command = options.find(option => program[option]);
 
+require('./lib/tasks/aggregators/test')(gulp, plugins, program);
 gulp.start(command ? `test:${command}` : 'test');

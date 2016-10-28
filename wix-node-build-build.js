@@ -13,7 +13,6 @@ program
   .parse(process.argv);
 
 require('./lib/tasks/aggregators/build')(gulp, plugins, program);
-
 gulp.start('build');
 
 Promise.all([
