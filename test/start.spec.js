@@ -8,6 +8,7 @@ const fx = require('./helpers/fixtures');
 const fetch = require('node-fetch');
 const retryPromise = require('retry-promise').default;
 const hooks = require('./helpers/hooks');
+const {outsideTeamCity} = require('./helpers/env-variables');
 const {readFileSync} = require('fs');
 
 describe('Aggregator: start', () => {
@@ -227,7 +228,7 @@ describe('Aggregator: start', () => {
         'package.json': fx.packageJson(),
         'pom.xml': fx.pom()
       })
-      .spawn('start');
+      .spawn('start', [], outsideTeamCity);
 
     return checkServerLogCreated().then(() =>
       expect(test.content('.nvmrc')).to.equal(nodeVersion)

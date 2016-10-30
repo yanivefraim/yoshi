@@ -3,7 +3,7 @@
 const process = require('process');
 const path = require('path');
 const sh = require('shelljs');
-const spawn = require('child_process').spawn;
+const {spawn} = require('child_process');
 const cwd = path.join(__dirname, '..', '..');
 
 class Test {
@@ -28,13 +28,13 @@ class Test {
     return this;
   }
 
-  spawn(command, options) {
+  spawn(command, options, environment = {}) {
     if (this.hasTmp()) {
       try {
         options = options || [];
         options = Array.isArray(options) ? options : options.split(' ');
-        // this.child = spawn('node', [`${this.script}`, `${command}`].concat(options), {cwd: this.tmp, stdio: 'inherit'});
-        this.child = spawn('node', [`${this.script}`, `${command}`].concat(options), {cwd: this.tmp});
+        const env = Object.assign({}, this.env, environment);
+        this.child = spawn('node', [`${this.script}`, `${command}`].concat(options), {cwd: this.tmp, env});
         this.child.stdout.on('data', buffer => {
           this.stdout += buffer.toString();
         });

@@ -1,6 +1,6 @@
 'use strict';
 
 module.exports = {
-  outsideTeamCity: {TEAMCITY_VERSION: undefined, BUILD_NUMBER: undefined},
+  outsideTeamCity: {TEAMCITY_VERSION: '', BUILD_NUMBER: ''},
   insideTeamCity: {TEAMCITY_VERSION: 1}
 };
