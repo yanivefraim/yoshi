@@ -20,10 +20,12 @@ describe('Loaders', () => {
   });
 
   describe('Babel', () => {
-    beforeEach(() =>
+    afterEach(() => test.teardown());
+
+    it('should transpile according .babelrc file', () => {
       test
         .setup({
-          'src/client.js': 'let aServerFunction = 1;',
+          'src/client.js': `let aServerFunction = 1;`,
           '.babelrc': `{"plugins": ["transform-es2015-block-scoping"]}`,
           'package.json': `{\n
             "name": "a",\n
@@ -32,13 +34,26 @@ describe('Loaders', () => {
             }
           }`
         }, [hooks.installDependencies])
-        .execute('build')
-    );
+        .execute('build');
 
-    afterEach(() => test.teardown());
-
-    it('should transpile according .babelrc file', () => {
       expect(test.content('dist/statics/app.bundle.js')).to.contain('var aServerFunction = 1;');
+    });
+
+    it('should apply ng-annotate loader on angular project', () => {
+      test
+        .setup({
+          'src/client.js': `angular.module('fakeModule', []).config(function($javascript){});`,
+          'package.json': `{\n
+            "name": "a",\n
+            "dependencies": {\n
+              "angular": "^1.5.0"\n
+            }
+          }`
+        })
+        .execute('build');
+
+      expect(test.content('dist/statics/app.bundle.js')).to
+        .contain(`.config(["$javascript", function ($javascript)`);
     });
   });
 
@@ -57,6 +72,23 @@ describe('Loaders', () => {
         })
         .execute('build');
       expect(test.content('dist/statics/app.bundle.js')).to.contain('var aServerFunction = 1;');
+    });
+
+    it('should apply ng-annotate loader on angular project', () => {
+      test
+        .setup({
+          'src/app.ts': `angular.module('fakeModule', []).config(function($typescript){});`,
+          'tsconfig.json': fx.tsconfig(),
+          'package.json': fx.packageJson({
+            entry: './app.ts'
+          }, {
+            angular: '1.5.0'
+          })
+        })
+        .execute('build');
+
+      expect(test.content('dist/statics/app.bundle.js')).to
+        .contain(`.config(["$typescript", function ($typescript)`);
     });
 
     it('should fail with error code 1', () => {

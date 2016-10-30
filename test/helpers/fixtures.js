@@ -1,13 +1,14 @@
 'use strict';
 
 module.exports = {
-  packageJson: wixConfig => `{\n
+  packageJson: (wixConfig = {}, dependencies = {}) => `{\n
     "name": "a",\n
     "version": "1.0.4",\n
-    "wix": ${JSON.stringify(wixConfig || {})},
+    "wix": ${JSON.stringify(wixConfig)},
     "scripts": {
       "build": "echo npm-run-build"
-    }
+    },
+    "dependencies": ${JSON.stringify(dependencies)}
   }`,
   pkgJsonWithBuild: () => `{
     "name": "b",\n

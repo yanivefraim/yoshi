@@ -22,6 +22,7 @@ module.exports = {
       (dir || globs.singleModule.clientDist());
   },
   isUniversalProject: () => getConfig('universalProject'),
+  isAngularProject: () => !!_.get(packagejson, 'dependencies.angular', false),
   servers: {
     cdn: {
       port: () => getConfig('servers.cdn.port', 3200)
