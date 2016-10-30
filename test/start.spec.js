@@ -8,6 +8,7 @@ const fx = require('./helpers/fixtures');
 const fetch = require('node-fetch');
 const retryPromise = require('retry-promise').default;
 const hooks = require('./helpers/hooks');
+const {readFileSync} = require('fs');
 
 describe('Aggregator: start', () => {
   let test, child;
@@ -214,6 +215,23 @@ describe('Aggregator: start', () => {
           expect(test.list('dist')).to.contain('specs.bundle.js');
         });
     });
+  });
+
+  it('should update .nvmrc to relevant version as shown in dockerfile', () => {
+    const nodeVersion = readFileSync(require.resolve('../templates/.nvmrc'), {encoding: 'utf-8'});
+    child = test
+      .setup({
+        'src/test.spec.js': '',
+        'src/client.js': '',
+        'entry.js': '',
+        'package.json': fx.packageJson(),
+        'pom.xml': fx.pom()
+      })
+      .spawn('start');
+
+    return checkServerLogCreated().then(() =>
+      expect(test.content('.nvmrc')).to.equal(nodeVersion)
+    );
   });
 
   function killSpawnProcessAndHidChildren(done) {

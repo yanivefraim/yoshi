@@ -14,6 +14,7 @@ program
   .parse(process.argv);
 
 const loadTasks = options => {
+  require('./lib/tasks/node')(gulp, plugins, options);
   require('./lib/tasks/babel')(gulp, plugins, options);
   require('./lib/tasks/typescript')(gulp, plugins, options);
   require('./lib/tasks/sass')(gulp, plugins, options);

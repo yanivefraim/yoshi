@@ -2,6 +2,7 @@ const expect = require('chai').expect;
 const tp = require('./helpers/test-phases');
 const fx = require('./helpers/fixtures');
 const hooks = require('./helpers/hooks');
+const {readFileSync} = require('fs');
 
 describe('Aggregator: Build', () => {
   const baseFolders = ['app', 'src', 'test'];
@@ -1148,6 +1149,20 @@ describe('Aggregator: Build', () => {
       expect(res.stdout).to.include('Cleaning up \'dist\'...');
       expect(test.list('dist/src')).to.not.include('old.js');
       expect(test.list('dist/src')).to.include('new.js');
+    });
+  });
+
+  describe('Node', () => {
+    it('should update .nvmrc to relevant version as shown in dockerfile', () => {
+      const nodeVersion = readFileSync(require.resolve('../templates/.nvmrc'), {encoding: 'utf-8'});
+      const res = test
+        .setup({
+          'package.json': fx.packageJson()
+        })
+        .execute('build');
+
+      expect(res.code).to.be.equal(0);
+      expect(test.content('.nvmrc')).to.equal(nodeVersion);
     });
   });
 });
