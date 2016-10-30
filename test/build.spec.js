@@ -2,6 +2,7 @@ const expect = require('chai').expect;
 const tp = require('./helpers/test-phases');
 const fx = require('./helpers/fixtures');
 const hooks = require('./helpers/hooks');
+const {outsideTeamCity, insideTeamCity} = require('./helpers/env-variables');
 const {readFileSync} = require('fs');
 
 describe('Aggregator: Build', () => {
@@ -1159,10 +1160,20 @@ describe('Aggregator: Build', () => {
         .setup({
           'package.json': fx.packageJson()
         })
-        .execute('build');
+        .execute('build', [], outsideTeamCity);
 
       expect(res.code).to.be.equal(0);
       expect(test.content('.nvmrc')).to.equal(nodeVersion);
+    });
+
+    it('should not update .nvmrc inside TeamCity', () => {
+      test
+        .setup({
+          'package.json': fx.packageJson()
+        })
+        .execute('build', [], insideTeamCity);
+
+      expect(test.list('.nvmrc').length).to.equal(0);
     });
   });
 });

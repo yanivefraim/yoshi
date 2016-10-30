@@ -3,8 +3,7 @@
 const expect = require('chai').expect;
 const tp = require('./helpers/test-phases');
 const fx = require('./helpers/fixtures');
-const outsideTeamCity = {TEAMCITY_VERSION: undefined, BUILD_NUMBER: undefined};
-const insideTeamCity = {TEAMCITY_VERSION: 1};
+const {outsideTeamCity, insideTeamCity} = require('./helpers/env-variables');
 const hooks = require('./helpers/hooks');
 
 describe('Aggregator: Test', () => {

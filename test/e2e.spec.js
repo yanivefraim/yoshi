@@ -4,8 +4,7 @@ const expect = require('chai').expect;
 const tp = require('./helpers/test-phases');
 const fx = require('./helpers/fixtures');
 const hooks = require('./helpers/hooks');
-
-const notTC = {TEAMCITY_VERSION: undefined, BUILD_NUMBER: undefined};
+const {outsideTeamCity, insideTeamCity} = require('./helpers/env-variables');
 
 describe('Aggregator: e2e', () => {
   let test;
@@ -20,7 +19,7 @@ describe('Aggregator: e2e', () => {
     it('should support single module structure by default', () => {
       const res = test
           .setup(singleModuleWithJasmine(), [hooks.installProtractor])
-          .execute('test', ['--protractor'], notTC);
+          .execute('test', ['--protractor'], outsideTeamCity);
 
       expect(res.code).to.equal(0);
       expect(res.stdout).to.contain('Running E2E with Protractor');
@@ -32,7 +31,7 @@ describe('Aggregator: e2e', () => {
     it(`should support multiple modules structure and consider clientProjectName configuration`, () => {
       const res = test
           .setup(multipleModuleWithJasmine(), [hooks.installProtractor])
-          .execute('test', ['--protractor'], notTC);
+          .execute('test', ['--protractor'], outsideTeamCity);
 
       expect(res.code).to.equal(0);
       expect(res.stdout).to.contain('Running E2E with Protractor');
@@ -42,7 +41,7 @@ describe('Aggregator: e2e', () => {
     it('should run protractor with mocha', () => {
       const res = test
           .setup(singleModuleWithMocha(), [hooks.installProtractor])
-          .execute('test', ['--protractor'], notTC);
+          .execute('test', ['--protractor'], outsideTeamCity);
 
       expect(res.code).to.equal(0);
       expect(res.stdout).to.contain('Running E2E with Protractor');
@@ -52,7 +51,7 @@ describe('Aggregator: e2e', () => {
     it('should run protractor with mocha and use TeamCity reporter', () => {
       const res = test
           .setup(singleModuleWithMocha(), [hooks.installProtractor])
-          .execute('test', ['--protractor'], {TEAMCITY_VERSION: 1});
+          .execute('test', ['--protractor'], insideTeamCity);
 
       expect(res.code).to.equal(0);
       expect(res.stdout).to.contain('Running E2E with Protractor');
@@ -62,7 +61,7 @@ describe('Aggregator: e2e', () => {
     it('should use babel-register', () => {
       const res = test
         .setup(singleModuleWithJasmineAndES6Imports(), [hooks.installDependencies, hooks.installProtractor])
-        .execute('test', ['--protractor'], notTC);
+        .execute('test', ['--protractor'], outsideTeamCity);
 
       expect(res.code).to.equal(0);
       expect(res.stdout).to.contain('Running E2E with Protractor');
