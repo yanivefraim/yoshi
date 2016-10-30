@@ -10,7 +10,7 @@ const retryPromise = require('retry-promise').default;
 const hooks = require('./helpers/hooks');
 const {readFileSync} = require('fs');
 
-describe('Aggregator: start', () => {
+describe.only('Aggregator: start', () => {
   let test, child;
 
   beforeEach(() => {
@@ -77,13 +77,13 @@ describe('Aggregator: start', () => {
     it('should not start a server if --no-server is passed', () => {
       child = test
         .setup({
-          'dist/statics/image.png': '',
+          'src/assets/image.png': '',
           'index.js': `console.log('should not run');`,
           'package.json': fx.packageJson({servers: {cdn: {port: 3005}}})
         })
         .spawn('start', ['--no-server']);
 
-      return cdnIsServing('image.png')
+      return cdnIsServing('assets/image.png')
         .then(() => expect(test.stdout).not.to.contain('should not run'));
     });
   });
@@ -92,32 +92,32 @@ describe('Aggregator: start', () => {
     it('should run cdn server with default dir', () => {
       child = test
         .setup({
-          'dist/statics/test.json': '{a: 1}',
-          'dist/index.js': 'var a = 1;',
+          'src/assets/test.json': '{a: 1}',
+          'src/index.js': 'var a = 1;',
           'package.json': fx.packageJson({servers: {cdn: {port: 3005}}})
         })
         .spawn('start');
 
-      return cdnIsServing('test.json');
+      return cdnIsServing('assets/test.json');
     });
 
     it('should run cdn server with configured dir', () => {
       child = test
         .setup({
-          'dist/statics/test.json': '{a: 1}',
-          'dist/index.js': 'var a = 1;',
+          'src/assets/test.json': '{a: 1}',
+          'src/index.js': 'var a = 1;',
           'package.json': fx.packageJson({servers: {cdn: {port: 3005, dir: 'dist/statics'}}})
         })
         .spawn('start');
 
-      return cdnIsServing('test.json');
+      return cdnIsServing('assets/test.json');
     });
 
     it('should run cdn server from node_modules, on n-build project, using default dir', () => {
       child = test
         .setup({
           'node_modules/my-client-project/dist/test.json': '{a: 1}',
-          'dist/index.js': 'var a = 1;',
+          'src/index.js': 'var a = 1;',
           'package.json': fx.packageJson({clientProjectName: 'my-client-project', servers: {cdn: {port: 3005}}})
         })
         .spawn('start');
@@ -129,7 +129,7 @@ describe('Aggregator: start', () => {
       child = test
         .setup({
           'node_modules/my-client-project/dist/statics/test.json': '{a: 1}',
-          'dist/index.js': 'var a = 1;',
+          'src/index.js': 'var a = 1;',
           'package.json': fx.packageJson({clientProjectName: 'my-client-project', servers: {cdn: {port: 3005, dir: 'dist/statics'}}})
         })
         .spawn('start');
@@ -156,7 +156,7 @@ describe('Aggregator: start', () => {
     this.timeout(30000);
 
     describe('when using typescript', () => {
-      it(`should rebuild and restart server after a file has been changed with typescript files`, () => {
+      it.only(`should rebuild and restart server after a file has been changed with typescript files`, () => {
         child = test
           .setup({
             'target/server.log': '', // TODO: understand why test fails with Error: ENOENT: no such file or directory, open 'target/server.log'
@@ -231,6 +231,26 @@ describe('Aggregator: start', () => {
 
     return checkServerLogCreated().then(() =>
       expect(test.content('.nvmrc')).to.equal(nodeVersion)
+    );
+  });
+
+  describe('Clean', () => {
+    ['dist', 'target'].forEach(folderName =>
+      it(`should remove "${folderName}" folder before building`, () => {
+        child = test
+          .setup({
+            [`${folderName}/src/old.js`]: `const hello = "world!";`,
+            'src/new.js': 'const world = "hello!";',
+            'package.json': fx.packageJson()
+          })
+          .spawn('start');
+
+        return checkServerLogCreated().then(() => {
+          expect(test.stdout).to.contains(`Cleaning up '${folderName}'...`);
+          expect(test.list(folderName)).to.not.include('old.js');
+          expect(test.list('dist/src')).to.include('new.js');
+        });
+      })
     );
   });
 
