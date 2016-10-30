@@ -227,6 +227,22 @@ describe('Aggregator: Test', () => {
       expect(res.code).to.equal(0);
       expect(res.stdout).to.contain('1 passing');
     });
+
+    it('should require "test/mocha-setup.js" configuration file', () => {
+      const res = test
+        .setup({
+          'test/mocha-setup.js': 'global.foo = 123',
+          'test/some.spec.js': `
+            const assert = require('assert');
+            it("pass", () => assert.equal(global.foo, 123))`,
+          'package.json': fx.packageJson()
+        })
+        .execute('test', ['--mocha']);
+
+      console.log(test.list('test'));
+      expect(res.code).to.equal(0);
+      expect(res.stdout).to.contain('1 passing');
+    });
   });
 
   describe('--jasmine', () => {

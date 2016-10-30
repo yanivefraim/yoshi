@@ -146,6 +146,25 @@ wix: {
 
 * Note that when specifying multiple flags, only the first one will be considered, so you can't compose test runners (for now).
 
+* Mocah tests setup:
+
+  You can add a `test/test-setup.js` file, with mocha tests specific setup. Mocha will `require` this file, if exists.
+  Example for such `test/test-setup.js`:
+
+  ```js
+  import 'babel-polyfill';
+  import 'isomorphic-fetch';
+
+  import {serverFetchUtils} from 'wix-fetch-utils';
+  import sinonChai from 'sinon-chai';
+  import chaiAsPromised from 'chai-as-promised';
+  import chai from 'chai';
+
+  chai.use(sinonChai);
+  chai.use(chaiAsPromised);
+  serverFetchUtils();
+  ```
+
 #### Karma
 
 When running tests using Karma, make sure you have the right configurations in your `package.json` as described in [`wix.specs`](#wixspecs) section. In addition, if you have a `karma.conf.js` file, the configurations will be merged with our [built-in configurations](config/karma.conf.js).
