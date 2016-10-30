@@ -210,7 +210,6 @@ describe('Aggregator: Test', () => {
         }, [tmp => hooks.installDependency(tmp)('babel-register')])
         .execute('test', ['--mocha'], insideTeamCity);
 
-      console.log(res.stdout);
       expect(res.code).to.equal(0);
       expect(res.stdout).to.contain('##teamcity[');
     });
