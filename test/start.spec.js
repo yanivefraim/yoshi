@@ -10,7 +10,7 @@ const retryPromise = require('retry-promise').default;
 const hooks = require('./helpers/hooks');
 const {readFileSync} = require('fs');
 
-describe.only('Aggregator: start', () => {
+describe('Aggregator: start', () => {
   let test, child;
 
   beforeEach(() => {
@@ -156,7 +156,7 @@ describe.only('Aggregator: start', () => {
     this.timeout(30000);
 
     describe('when using typescript', () => {
-      it.only(`should rebuild and restart server after a file has been changed with typescript files`, () => {
+      it(`should rebuild and restart server after a file has been changed with typescript files`, () => {
         child = test
           .setup({
             'target/server.log': '', // TODO: understand why test fails with Error: ENOENT: no such file or directory, open 'target/server.log'
