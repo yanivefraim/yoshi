@@ -146,7 +146,7 @@ wix: {
 
 * Note that when specifying multiple flags, only the first one will be considered, so you can't compose test runners (for now).
 
-* Mocah tests setup:
+* Mocha tests setup:
 
   You can add a `test/mocha-setup.js` file, with mocha tests specific setup. Mocha will `require` this file, if exists.
   Example for such `test/mocha-setup.js`:
@@ -154,15 +154,12 @@ wix: {
   ```js
   import 'babel-polyfill';
   import 'isomorphic-fetch';
-
-  import {serverFetchUtils} from 'wix-fetch-utils';
   import sinonChai from 'sinon-chai';
   import chaiAsPromised from 'chai-as-promised';
   import chai from 'chai';
 
   chai.use(sinonChai);
   chai.use(chaiAsPromised);
-  serverFetchUtils();
   ```
 
 #### Karma
