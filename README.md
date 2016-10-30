@@ -148,8 +148,8 @@ wix: {
 
 * Mocah tests setup:
 
-  You can add a `test/test-setup.js` file, with mocha tests specific setup. Mocha will `require` this file, if exists.
-  Example for such `test/test-setup.js`:
+  You can add a `test/mocha-setup.js` file, with mocha tests specific setup. Mocha will `require` this file, if exists.
+  Example for such `test/mocha-setup.js`:
 
   ```js
   import 'babel-polyfill';
