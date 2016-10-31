@@ -28,6 +28,7 @@ module.exports = {
         "moduleResolution": "node",
         "sourceMap": true,
         "outDir": "dist",
+        "rootDir": ".",
         "declaration": true,
         "noImplicitAny": false
       },

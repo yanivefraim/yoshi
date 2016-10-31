@@ -244,36 +244,6 @@ describe('Aggregator: Build', () => {
       expect(test.list('dist/').length).to.equal(baseFolders.length);
     });
 
-    it('should build from specified directory', () => {
-      const resp = test.setup({
-        'src/nope.ts': 'const nope = "nope";',
-        'custom/yep.ts': 'const yep = "yep";',
-        'package.json': fx.packageJson(),
-        'tsconfig.json': fx.tsconfig(),
-        'pom.xml': fx.pom()
-      }).execute('build --dirs=custom');
-
-      expect(resp.code).to.equal(0);
-      expect(test.content('dist/custom/yep.js')).to.contain('yep');
-      expect(test.contains('dist/src')).to.be.false;
-    });
-
-    it('should build from multiple specified directories', () => {
-      const resp = test.setup({
-        'src/nope.ts': 'const nope = "nope";',
-        'custom/yep.ts': 'const yep = "yep";',
-        'another/yep.tsx': 'const yep2 = "yep2";',
-        'package.json': fx.packageJson(),
-        'tsconfig.json': fx.tsconfig(),
-        'pom.xml': fx.pom()
-      }).execute('build --dirs=custom,another');
-
-      expect(resp.code).to.equal(0);
-      expect(test.content('dist/custom/yep.js')).to.contain('yep');
-      expect(test.content('dist/another/yep.js')).to.contain('yep2');
-      expect(test.contains('dist/src')).to.be.false;
-    });
-
     it('should also transpile with babel after typescript', () => {
       const resp = test
         .setup({
