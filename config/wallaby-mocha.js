@@ -4,6 +4,7 @@ module.exports = function (wallaby) {
     files: [
       {pattern: 'test/**/*.spec.js*', ignore: true},
       {pattern: 'test/**/*.js'},
+      {pattern: 'src/assets/**', instrument: false},
       {pattern: 'src/**', instrument: true},
       {pattern: 'src/**/*.spec.js*', ignore: true},
       {pattern: 'target/**/*.json', instrument: false},
@@ -26,7 +27,7 @@ module.exports = function (wallaby) {
     setup(wallaby) {
       const mocha = wallaby.testFramework;
       mocha.timeout(30000);
-      require('../../lib/ignore-extensions');
+      require('wix-node-build/lib/ignore-extensions');
     },
 
     env: {
