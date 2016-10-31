@@ -11,6 +11,7 @@ program
   .option('-n, --no-server', 'run without starting entry-point')
   .option('-w, --watch', 'deprecated, for backward comp.')
   .option('-s, --silent', 'deprecated, for backward comp.')
+  .option('-h, --hot', 'use hot module replacement')
   .parse(process.argv);
 
 const loadTasks = options => {

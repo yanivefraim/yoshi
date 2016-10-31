@@ -89,6 +89,27 @@ describe('Aggregator: start', () => {
     });
   });
 
+  describe('--hot', () => {
+    it('should create bundle with enabled hot module replacement', () => {
+      test
+        .setup({
+          'src/client.js': `console.log('client-content');`,
+          'index.js': `console.log('should run');`,
+          'package.json': fx.packageJson({servers: {cdn: {port: 3005}}})
+        })
+        .spawn('start', ['--hot']);
+
+      return cdnIsServing('app.bundle.js')
+        .then(file => {
+          file = file.replace(/\s+/g, ' ');
+          expect(file)
+            .to.include(`if (false) { throw new Error("[HMR] Hot Module Replacement is disabled."); }`)
+            .and.include(`console.log('client-content');`)
+            .and.not.include('Cannot find module');
+        });
+    });
+  });
+
   describe('CDN server', () => {
     it('should run cdn server with default dir', () => {
       child = test
@@ -289,7 +310,12 @@ describe('Aggregator: start', () => {
 
   function cdnIsServing(name) {
     return retryPromise({backoff: 100}, () =>
-      fetch(`http://localhost:3005/${name}`).then(res => expect(res.status).to.equal(200)));
+      fetch(`http://localhost:3005/${name}`)
+        .then(res => {
+          expect(res.status).to.equal(200);
+          return res.text();
+        })
+    );
   }
 
   function checkServerIsRespondingWith(expected) {
