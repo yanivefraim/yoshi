@@ -82,6 +82,7 @@ describe('Aggregator: Build', () => {
     it('should transpile to dist but only form app, src, test folders and index.js itself and exit with code 0', () => {
       const resp = test
         .setup({
+          '.babelrc': '{}',
           'app/b.jsx': 'const b = 2;',
           'src/a/a.js': 'const a = 1;',
           'test/a/a.spec.js': 'const test = \'test\';',
@@ -100,12 +101,35 @@ describe('Aggregator: Build', () => {
     it('should transpile preserve folder structure, create source maps', () => {
       const resp = test
         .setup({
+          '.babelrc': '{}',
           'src/a/a.js': 'const a = 1;',
           'package.json': fx.packageJson(),
           'pom.xml': fx.pom()
         })
         .execute('build')
       ;
+
+      expect(resp.stdout).to.contain('Compiling with Babel');
+      expect(resp.code).to.equal(0);
+      expect(test.content('dist/src/a/a.js')).to.contain('const a = 1;');
+      expect(test.content('dist/src/a/a.js')).to.contain('//# sourceMappingURL=a.js.map');
+      expect(test.contains('dist/src/a/a.js.map')).to.be.true;
+    });
+
+    it('should transpile when there is babel config inside package.json', () => {
+      const resp = test
+        .setup({
+          'package.json': `{
+            "name": "a",\n
+            "version": "1.0.4",\n
+            "babel": {}
+          }`,
+          'src/a/a.js': 'const a = 1;',
+          'pom.xml': fx.pom()
+        })
+        .execute('build')
+      ;
+
       expect(resp.stdout).to.contain('Compiling with Babel');
       expect(resp.code).to.equal(0);
       expect(test.content('dist/src/a/a.js')).to.contain('const a = 1;');
@@ -116,6 +140,7 @@ describe('Aggregator: Build', () => {
     it('should fail with exit code 1', () => {
       const resp = test
         .setup({
+          '.babelrc': '{}',
           'src/a.js': 'function ()',
           'package.json': fx.packageJson(),
           'pom.xml': fx.pom()
@@ -143,6 +168,7 @@ describe('Aggregator: Build', () => {
 
     it('should build from specified directory', () => {
       const resp = test.setup({
+        '.babelrc': '{}',
         'src/nope.js': 'const nope = "nope";',
         'custom/yep.js': 'const yep = "yep";',
         'package.json': fx.packageJson(),
@@ -156,6 +182,7 @@ describe('Aggregator: Build', () => {
 
     it('should build from multiple specified directories', () => {
       const resp = test.setup({
+        '.babelrc': '{}',
         'src/nope.js': 'const nope = "nope";',
         'custom/yep.js': 'const yep = "yep";',
         'another/yep.js': 'const yep = "yep";',
@@ -172,6 +199,7 @@ describe('Aggregator: Build', () => {
     it('should store transpilation output into file system cache', () => {
       const resp = test
        .setup({
+         '.babelrc': '{}',
          'src/foo.js': 'const foo = `bar`;',
          'package.json': fx.packageJson(),
          'pom.xml': fx.pom()
@@ -298,6 +326,23 @@ describe('Aggregator: Build', () => {
       expect(resp.code).to.equal(0);
       expect(test.list('dist/app')).not.to.contain('a.js');
       expect(test.content('dist/app/b.js')).to.contain('var b = 2');
+    });
+  });
+
+  describe('No transpilation', () => {
+    it('should not transpile if no tsconfig/babelrc', () => {
+      const resp = test
+        .setup({
+          'src/b.ts': 'const b = 2;',
+          'src/a/a.js': 'const a = 1;',
+          'package.json': fx.packageJson()
+        })
+        .execute('build')
+      ;
+
+      expect(resp.stdout).to.not.contain('Compiling with Babel');
+      expect(resp.code).to.equal(0);
+      expect(test.list('/')).not.to.include('dist');
     });
   });
 
@@ -1141,6 +1186,7 @@ describe('Aggregator: Build', () => {
       it(`should remove "${folderName}" folders before building`, () => {
         const res = test
           .setup({
+            '.babelrc': '{}',
             [`${folderName}/old.js`]: `const hello = "world!";`,
             'src/new.js': 'const world = "hello!";',
             'package.json': fx.packageJson()

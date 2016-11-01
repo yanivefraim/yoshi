@@ -34,9 +34,10 @@ module.exports = {
   },
   separateCss: () => getConfig('separateCss', true),
   cssModules: () => getConfig('cssModules', true),
-  externals: () => getConfig('externals')
+  externals: () => getConfig('externals'),
+  babel: () => _.get(packagejson, 'babel')
 };
 
-function getConfig(key, defaultVal) {
-  return _.get(config, key, typeof defaultVal === 'undefined' ? false : defaultVal);
+function getConfig(key, defaultVal = false) {
+  return _.get(config, key, defaultVal);
 }
