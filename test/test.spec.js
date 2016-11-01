@@ -141,7 +141,9 @@ describe('Aggregator: Test', () => {
       expect(res.stdout).to.contain('2 passing');
     });
 
-    it('should fail with exit code 1', () => {
+    it('should fail with exit code 1', function () {
+      this.timeout(60000);
+
       const res = test
         .setup({
           'test/some.spec.js': `it("fail", () => { throw new Error() });`,
@@ -214,7 +216,9 @@ describe('Aggregator: Test', () => {
       expect(res.stdout).to.contain('##teamcity[');
     });
 
-    it('should run js tests with runtime babel-register transpilation', () => {
+    it('should run js tests with runtime babel-register transpilation', function () {
+      this.timeout(60000);
+
       const res = test
         .setup({
           '.babelrc': `{"presets": ["es2015"]}`,
