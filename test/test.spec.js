@@ -214,7 +214,7 @@ describe('Aggregator: Test', () => {
       expect(res.stdout).to.contain('##teamcity[');
     });
 
-    it('should run typescript tests with runtime complilation for ts projects', () => {
+    it('should run typescript tests with runtime compilation for ts projects', () => {
       const res = test
         .setup({
           'tsconfig.json': fx.tsconfig(),
@@ -236,6 +236,22 @@ describe('Aggregator: Test', () => {
             it("pass", () => assert.equal(global.foo, 123))`,
           'package.json': fx.packageJson()
         })
+        .execute('test', ['--mocha']);
+
+      expect(res.code).to.equal(0);
+      expect(res.stdout).to.contain('1 passing');
+    });
+
+    it('should require "test/mocha-setup.ts" configuration file', () => {
+      const res = test
+        .setup({
+          'test/mocha-setup.ts': 'global["foo"] = 123;',
+          'tsconfig.json': fx.tsconfig(),
+          'test/some.spec.ts': `
+            const assert = require('assert');
+            it("pass", () => assert.equal(global["foo"], 123));`,
+          'package.json': fx.packageJson()
+        }, [tmp => hooks.installDependency(tmp)('ts-node'), tmp => hooks.installDependency(tmp)('@types/node'), tmp => hooks.installDependency(tmp)('@types/mocha')])
         .execute('test', ['--mocha']);
 
       expect(res.code).to.equal(0);
