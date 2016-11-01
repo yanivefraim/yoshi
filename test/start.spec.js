@@ -276,6 +276,23 @@ describe('Aggregator: start', () => {
     );
   });
 
+  describe('when there are runtime errors', () => {
+    it('should display a warning message on the terminal', () => {
+      child = test
+        .setup({
+          'index.js': `throw new Error('wix:error')`,
+          'package.json': fx.packageJson(),
+          'pom.xml': fx.pom()
+
+        })
+        .spawn('start');
+
+      return checkServerLogCreated()
+        .then(wait(1000))
+        .then(() => expect(test.stdout).to.contains(`There are errors! Please check ./target/server.log`));
+    });
+  });
+
   function killSpawnProcessAndHidChildren(done) {
     if (!child) {
       return done();
@@ -341,5 +358,9 @@ describe('Aggregator: start', () => {
 
   function checkServerRestarted() {
     return checkServerIsDown().then(() => checkServerIsUp());
+  }
+
+  function wait(time) {
+    return () => new Promise(resolve => setTimeout(resolve, time));
   }
 });
