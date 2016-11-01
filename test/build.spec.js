@@ -274,7 +274,7 @@ describe('Aggregator: Build', () => {
       expect(test.contains('dist/src')).to.be.false;
     });
 
-    it('should also transpile with babel after typescript', () => {
+    it('should not transpile with babel if there is tsconfig', () => {
       const resp = test
         .setup({
           'app/a.js': 'const a = 1;',
@@ -296,7 +296,7 @@ describe('Aggregator: Build', () => {
         .execute('build');
 
       expect(resp.code).to.equal(0);
-      expect(test.content('dist/app/a.js')).to.contain('var a = 1');
+      expect(test.list('dist/app')).not.to.contain('a.js');
       expect(test.content('dist/app/b.js')).to.contain('var b = 2');
     });
   });
