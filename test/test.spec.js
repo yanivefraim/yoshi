@@ -214,6 +214,26 @@ describe('Aggregator: Test', () => {
       expect(res.stdout).to.contain('##teamcity[');
     });
 
+    it('should run js tests with runtime babel-register transpilation', () => {
+      const res = test
+        .setup({
+          '.babelrc': `{"presets": ["es2015"]}`,
+          'test/some.js': 'export default x => x',
+          'test/some.spec.js': `import identity from './some'; it.only("pass", () => 1);`,
+          'package.json': `{
+              "name": "a",\n
+              "version": "1.0.4",\n
+              "dependencies": {\n
+                "babel-preset-es2015": "latest"\n
+              }
+            }`
+        }, [tmp => hooks.installDependency(tmp)('babel-register'), hooks.installDependencies])
+        .execute('test', ['--mocha']);
+
+      expect(res.code).to.equal(0);
+      expect(res.stdout).to.contain('1 passing');
+    });
+
     it('should run typescript tests with runtime compilation for ts projects', () => {
       const res = test
         .setup({
