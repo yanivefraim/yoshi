@@ -101,17 +101,23 @@ describe('Aggregator: Build', () => {
     it('should transpile preserve folder structure, create source maps', () => {
       const resp = test
         .setup({
-          '.babelrc': '{}',
+          '.babelrc': `{"presets": ["es2015"]}`,
           'src/a/a.js': 'const a = 1;',
-          'package.json': fx.packageJson(),
+          'package.json': `{
+              "name": "a",\n
+              "version": "1.0.4",\n
+              "dependencies": {\n
+                "babel-preset-es2015": "latest"\n
+              }
+            }`,
           'pom.xml': fx.pom()
-        })
+        }, [hooks.installDependencies])
         .execute('build')
       ;
 
       expect(resp.stdout).to.contain('Compiling with Babel');
       expect(resp.code).to.equal(0);
-      expect(test.content('dist/src/a/a.js')).to.contain('const a = 1;');
+      expect(test.content('dist/src/a/a.js')).to.contain('var a = 1;');
       expect(test.content('dist/src/a/a.js')).to.contain('//# sourceMappingURL=a.js.map');
       expect(test.contains('dist/src/a/a.js.map')).to.be.true;
     });
