@@ -91,7 +91,7 @@ describe('Aggregator: start', () => {
 
   describe('--hot', () => {
     it('should create bundle with enabled hot module replacement', () => {
-      test
+      child = test
         .setup({
           'src/client.js': `console.log('client-content');`,
           'index.js': `console.log('should run');`,
