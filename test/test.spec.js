@@ -251,6 +251,23 @@ describe('Aggregator: Test', () => {
       expect(res.stdout).to.contain('1 passing');
     });
 
+    it('should not transpile tests if no tsconfig/.babelrc/babel configuration', () => {
+
+      const res = test
+        .setup({
+          'test/some.js': 'export default x => x',
+          'test/some.spec.js': `import identity from './some'; it.only("pass", () => 1);`,
+          'package.json': `{
+              "name": "a",\n
+              "version": "1.0.4"
+            }`
+        })
+        .execute('test', ['--mocha']);
+
+      expect(res.code).to.equal(1);
+      expect(res.stderr).to.contain('Unexpected token import');
+    });
+
     it('should require "test/mocha-setup.js" configuration file', () => {
       const res = test
         .setup({
