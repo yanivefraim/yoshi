@@ -350,6 +350,22 @@ describe('Aggregator: Build', () => {
       expect(resp.code).to.equal(0);
       expect(test.list('/')).not.to.include('dist');
     });
+
+    it('should not transpile if no-server-transpile flag', () => {
+      const resp = test
+        .setup({
+          '.babelrc': '{}',
+          'src/b.ts': 'const b = 2;',
+          'src/a/a.js': 'const a = 1;',
+          'package.json': fx.packageJson({'no-server-transpile': true})
+        })
+        .execute('build')
+      ;
+
+      expect(resp.stdout).to.not.contain('Compiling with Babel');
+      expect(resp.code).to.equal(0);
+      expect(test.list('/')).not.to.include('dist');
+    });
   });
 
   describe('Bundle', () => {

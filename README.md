@@ -72,7 +72,7 @@ Flag | Short Flag | Description | Default Value
 
 This task will perform the following:
 
-1. Compile using `TypeScript` (`*.ts`) or `babel` (`*.js`) files into `dist/`.
+1. Compile using `TypeScript` (`*.ts`) or `babel` (`*.js`) files into `dist/`. In case you do not want to transpile server (node), you can remove `.babelrc`/`tsconfig`/package json's `babel` key. If you still need those (for transpiling client code), please use `wix.no-server-transpile`.
 2. Copy assets to `dist` folder (ejs/html/images...). Files located in `${dirs}/assets` will be copied to the output directory specified in flag.
 3. Bundle the entry points using Webpack and compile `sass` files when `--bundle` flag is on.
 
@@ -229,3 +229,7 @@ For example:
   }
 }
 ```
+
+##### `wix.no-server-transpile`
+
+In case you don't want to transpile your server (node) code, and you still need `.babelrc`/`tsconfig`, you can add `no-server-transpile` flag to skip server transpiling.
