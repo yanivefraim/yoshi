@@ -13,6 +13,7 @@ const config = {
 
   resolve: {
     root: context,
+    alias: projectConfig.getPathAliases(),
     extensions: ['', '.ts', '.js', '.tsx', '.jsx']
   },
 

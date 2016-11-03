@@ -35,7 +35,8 @@ module.exports = {
   separateCss: () => getConfig('separateCss', true),
   cssModules: () => getConfig('cssModules', true),
   externals: () => getConfig('externals'),
-  babel: () => _.get(packagejson, 'babel')
+  babel: () => _.get(packagejson, 'babel'),
+  getPathAliases: () => getConfig('pathAliases', {})
 };
 
 function getConfig(key, defaultVal = false) {
