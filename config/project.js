@@ -36,8 +36,7 @@ module.exports = {
   cssModules: () => getConfig('cssModules', true),
   externals: () => getConfig('externals'),
   babel: () => _.get(packagejson, 'babel'),
-  noServerTranspile: () => getConfig('no-server-transpile'),
-  getPathAliases: () => getConfig('pathAliases', {})
+  noServerTranspile: () => getConfig('no-server-transpile')
 };
 
 function getConfig(key, defaultVal = false) {

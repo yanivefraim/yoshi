@@ -3,7 +3,6 @@
 const tp = require('./helpers/test-phases');
 const fx = require('./helpers/fixtures');
 const expect = require('chai').expect;
-const hooks = require('./helpers/hooks');
 
 describe('Webpack basic configs', () => {
   let res, test;
@@ -80,8 +79,6 @@ describe('Webpack basic configs', () => {
         });
     });
 
-    afterEach(() => test.teardown());
-
     it('should have a default entry point ./client.js and output client.js', () => {
       test.setup({
         'src/client.js': 'const some = 1'
@@ -89,28 +86,6 @@ describe('Webpack basic configs', () => {
       .execute('build');
 
       expect(test.content('dist/statics/app.bundle.js')).to.contain('const some');
-    });
-
-    it('should resolve paths imported from package.json', function () {
-      this.timeout(30000);
-      test.setup({
-        '.babelrc': `{"presets": ["es2015"]}`,
-        'src/components/modules/submodule/index.js': 'export const component = 123;',
-        'src/client.js': `import {component} from 'submodule'`,
-        'package.json': `{
-            "name": "a",\n
-            "version": "1.0.4",\n
-            "dependencies": {\n
-              "babel-preset-es2015": "latest"\n
-            },
-            "wix": {
-              "pathAliases": {"submodule": "components/modules/submodule"}
-            }
-          }`,
-        'pom.xml': fx.pom()
-      }, [hooks.installDependencies])
-      .execute('build');
-      expect(test.content('dist/statics/app.bundle.js')).to.contain('123');
     });
   });
 });
