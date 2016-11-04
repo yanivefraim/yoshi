@@ -2,6 +2,7 @@
 const path = require('path');
 const webpackConfigCommon = require('./webpack.config.common');
 const mergeByConcat = require('../lib/utils').mergeByConcat;
+const {cssModules} = require('./project');
 
 module.exports = mergeByConcat(webpackConfigCommon, {
   output: {
@@ -10,7 +11,7 @@ module.exports = mergeByConcat(webpackConfigCommon, {
   },
   module: {
     loaders: [
-      require('../lib/loaders/sass')().server
+      require('../lib/loaders/sass')(false, cssModules()).server
     ]
   },
   externals: {

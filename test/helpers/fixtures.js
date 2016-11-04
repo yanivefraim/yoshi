@@ -128,5 +128,9 @@ module.exports = {
     server.listen(port, hostname, () => {
       console.log('Running a server...');
     });
+  `,
+  karmaWithJasmine: () => `
+    'use strict';
+    module.exports = {frameworks: ['jasmine']};
   `
 };

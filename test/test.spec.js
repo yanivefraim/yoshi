@@ -356,7 +356,7 @@ describe('Aggregator: Test', () => {
         const res = test
           .setup({
             'src/test.spec.js': 'it("pass", function () { expect(1).toBe(1); });',
-            'karma.conf.js': 'module.exports = {frameworks: ["jasmine"]}',
+            'karma.conf.js': fx.karmaWithJasmine(),
             'package.json': fx.packageJson(),
             'pom.xml': fx.pom()
           })
@@ -371,7 +371,7 @@ describe('Aggregator: Test', () => {
         const res = test
           .setup({
             'src/test.spec.js': 'it("fail", function () { expect(1).toBe(2); });',
-            'karma.conf.js': 'module.exports = {frameworks: ["jasmine"]}',
+            'karma.conf.js': fx.karmaWithJasmine(),
             'package.json': fx.packageJson(),
             'pom.xml': fx.pom()
           })
@@ -386,7 +386,7 @@ describe('Aggregator: Test', () => {
         const res = test
           .setup({
             'node_modules/phantomjs-polyfill/bind-polyfill.js': 'var a = 1;',
-            'karma.conf.js': 'module.exports = {frameworks: ["jasmine"]}',
+            'karma.conf.js': fx.karmaWithJasmine(),
             'src/test.spec.js': 'it("pass", function () { expect(a).toBe(1); });',
             'package.json': fx.packageJson(),
             'pom.xml': fx.pom()
@@ -479,7 +479,7 @@ describe('Aggregator: Test', () => {
             .setup({
               'src/test.spec.js': 'it("pass", function () { expect(1).toBe(1); });',
               'src/test1.spec.js': 'it("pass", function () { expect(2).toBe(2); });',
-              'karma.conf.js': 'module.exports = {frameworks: ["jasmine"]}',
+              'karma.conf.js': fx.karmaWithJasmine(),
               'package.json': fx.packageJson()
             })
             .execute('test', ['--karma']);
@@ -494,7 +494,7 @@ describe('Aggregator: Test', () => {
             .setup({
               'some/other/app.glob.js': 'it("pass", function () { expect(1).toBe(1); });',
               'some/other/app2.glob.js': 'it("pass", function () { expect(2).toBe(2); });',
-              'karma.conf.js': 'module.exports = {frameworks: ["jasmine"]}',
+              'karma.conf.js': fx.karmaWithJasmine(),
               'pom.xml': fx.pom(),
               'package.json': fx.packageJson({
                 specs: {
@@ -509,18 +509,31 @@ describe('Aggregator: Test', () => {
         expect(test.content('dist/specs.bundle.js')).to.contain('expect(2).toBe(2);');
       });
 
-      it.skip('should generate a bundle with css', () => {
+      it('should not include css into a specs bundle', () => {
         const res = test
-            .setup({
-              'src/client.js': `require('./style.css');const add1 = a => {return a + 1;};module.exports = add1;`,
-              'src/app.spec.js': `const add1 = require('./client');const a = add1(2);`,
-              'src/style.scss': `.a {.b {color: red;}}`,
-              'package.json': fx.packageJson({separateCss: false})
-            })
-            .execute('build', ['--bundle']);
-
+          .setup({
+            'src/style.scss': `.a {.b {color: red;}}`,
+            'src/client.js': `require('./style.scss'); module.exports = function (a) {return a + 1;};`,
+            'src/client.spec.js': `const add1 = require('./client'); it('pass', function () {expect(add1(1)).toBe(2);});`,
+            'karma.conf.js': fx.karmaWithJasmine(),
+            'package.json': fx.packageJson({separateCss: false})
+          })
+          .execute('test', ['--karma']);
         expect(res.code).to.equal(0);
-        expect(test.content('dist/specs.bundle.js')).to.contain('.a .b');
+        expect(test.content('dist/specs.bundle.js')).not.to.contain('.a .b');
+      });
+
+      it('should contain css modules inside specs bundle', () => {
+        const res = test
+          .setup({
+            'src/style.scss': `.module {color: red;}`,
+            'src/client.js': `var style = require('./style.scss'); module.exports = function () {return style.module;};`,
+            'src/client.spec.js': `const getModule = require('./client'); it('pass', function () {expect(getModule()).toContain('style__module__');});`,
+            'karma.conf.js': fx.karmaWithJasmine(),
+            'package.json': fx.packageJson({cssModules: true})
+          })
+          .execute('test', ['--karma']);
+        expect(res.code).to.equal(0);
       });
     });
   });
