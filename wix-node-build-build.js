@@ -3,7 +3,7 @@
 const gulp = require('gulp');
 const plugins = require('gulp-load-plugins')();
 const program = require('commander');
-const runWebpack = require('./lib/tasks/webpack').run;
+const {runWebpack} = require('./lib/tasks/webpack');
 
 program
   .option('--dirs <dir,...>', 'directories to build from (comma-separated list)')
