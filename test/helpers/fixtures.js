@@ -6,7 +6,8 @@ const fx = {
     "version": "1.0.4",\n
     "wix": ${JSON.stringify(wixConfig)},
     "scripts": {
-      "build": "echo npm-run-build"
+      "build": "echo npm-run-build",
+      "test": "echo Testing with Mocha"
     },
     "dependencies": ${JSON.stringify(dependencies)}
   }`,
