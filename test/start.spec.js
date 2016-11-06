@@ -26,6 +26,7 @@ describe('Aggregator: start', () => {
   });
 
   describe('tests', function () {
+    /* eslint-disable */
     it.only('should run tests initially', () => {
       child = test
         .setup({
@@ -43,6 +44,7 @@ describe('Aggregator: start', () => {
         // expect(test.stdout).to.contains('Testing with Mocha')
       });
     });
+    /* eslint-enable */
   });
 
   describe('--entry-point', () => {
