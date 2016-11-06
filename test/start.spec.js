@@ -240,8 +240,7 @@ describe('Aggregator: start', () => {
       });
     });
 
-    //TBD: shahar to find out why this test is not passing
-    describe.skip('when using no transpile', () => {
+    describe('when using no transpile', () => {
       it(`should rebuild and restart server after a file has been changed`, () => {
         child = test
           .setup({
@@ -384,7 +383,7 @@ describe('Aggregator: start', () => {
 
   function checkServerIsRespondingWith(expected) {
     return retryPromise({backoff: 1000}, () =>
-      fetch(`http://localhost:6666/`)
+      fetch(`http://localhost:${fx.defaultServerPort()}/`)
         .then(res => res.text())
         .then(body => body === expected ? Promise.resolve() : Promise.reject())
     );
@@ -392,14 +391,14 @@ describe('Aggregator: start', () => {
 
   function checkServerIsUp(opts) {
     return retryPromise(_.merge({backoff: 100}, opts), () =>
-      fetch(`http://localhost:6666/`)
+      fetch(`http://localhost:${fx.defaultServerPort()}/`)
     );
   }
 
   function checkServerIsDown() {
     return retryPromise({backoff: 10}, () =>
       new Promise((resolve, reject) => {
-        fetch('http://localhost:6666/').then(reject, resolve);
+        fetch(`http://localhost:${fx.defaultServerPort()}/`).then(reject, resolve);
       }));
   }
 

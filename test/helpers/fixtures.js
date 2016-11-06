@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = {
+const fx = {
   packageJson: (wixConfig = {}, dependencies = {}) => `{\n
     "name": "a",\n
     "version": "1.0.4",\n
@@ -112,13 +112,14 @@ module.exports = {
         </build>
     </project>
   `,
+  defaultServerPort: () => 6666,
   httpServer: (message, port) => `
     'use strict';
 
     const http = require('http');
 
     const hostname = 'localhost';
-    const port = ${port || 6666};
+    const port = ${port || fx.defaultServerPort()};
     const server = http.createServer((req, res) => {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'text/plain');
@@ -134,3 +135,5 @@ module.exports = {
     module.exports = {frameworks: ['jasmine']};
   `
 };
+
+module.exports = fx;
