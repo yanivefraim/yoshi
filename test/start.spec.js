@@ -1,7 +1,8 @@
 'use strict';
 
 const _ = require('lodash/fp');
-const expect = require('chai').expect;
+const express = require('express');
+const {expect} = require('chai');
 const psTree = require('ps-tree');
 const tp = require('./helpers/test-phases');
 const fx = require('./helpers/fixtures');
@@ -175,6 +176,25 @@ describe('Aggregator: start', () => {
     });
   });
 
+  describe('when the default port is taken', () => {
+    let server;
+
+    beforeEach(() => server = takePort(3000));
+    afterEach(() => server.close());
+
+    it('it should use the next available port', () => {
+      child = test
+        .setup({
+          'index.js': `console.log('port', process.env.PORT)`,
+          'package.json': fx.packageJson()
+        })
+        .spawn('start');
+
+      return checkServerLogCreated()
+        .then(() => expect(test.content('target/server.log')).to.contains('port 3001'));
+    });
+  });
+
   describe('Watch', function () {
     this.timeout(30000);
 
@@ -341,6 +361,10 @@ describe('Aggregator: start', () => {
         Promise.resolve() :
         Promise.reject()
     );
+  }
+
+  function takePort(port) {
+    return express().listen(port);
   }
 
   function fetchCDN(port) {

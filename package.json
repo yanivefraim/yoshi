@@ -31,6 +31,7 @@
     "chromedriver": "^2.24.1",
     "commander": "^2.9.0",
     "css-loader": "^0.23.1",
+    "detect-port": "^1.0.5",
     "eslint": "^3.6.1",
     "eslint-config-wix": "latest",
     "express": "^4.13.4",
