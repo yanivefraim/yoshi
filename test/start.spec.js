@@ -39,6 +39,7 @@ describe('Aggregator: start', () => {
 
       return checkServerLogCreated().then(() => {
         console.log(test.stdout);
+        console.log(test.stderr);
         // expect(test.stdout).to.contains('Testing with Mocha')
       });
     });

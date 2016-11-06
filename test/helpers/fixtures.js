@@ -1,54 +1,51 @@
 'use strict';
 
 const fx = {
-  packageJson: (wixConfig = {}, dependencies = {}) => `{\n
-    "name": "a",\n
-    "version": "1.0.4",\n
-    "wix": ${JSON.stringify(wixConfig)},
-    "scripts": {
-      "build": "echo npm-run-build",
-      "test": "echo Testing with Mocha"
+  packageJson: (wixConfig = {}, dependencies = {}) => JSON.stringify({
+    name: 'a',
+    version: '1.0.4',
+    wix: wixConfig,
+    scripts: {
+      build: 'echo npm-run-build',
+      test: 'echo Testing with Mocha'
     },
-    "dependencies": ${JSON.stringify(dependencies)}
-  }`,
-  pkgJsonWithBuild: () => `{
-    "name": "b",\n
-    "version": "1.1.0",\n
-    "scripts": {
-      "build": "wix-node-build build"
+    dependencies
+  }, null, 2),
+  pkgJsonWithBuild: () => JSON.stringify({
+    name: 'b',
+    version: '1.1.0',
+    scripts: {
+      build: 'wix-node-build build'
     }
-  }`,
+  }, null, 2),
   css: () => '.a {\ncolor: red;\n}\n',
   scss: () => '.a {\n.b {\ncolor: red;\n}\n}\n',
   scssInvalid: () => '.a {\n.b\ncolor: red;\n}\n}\n',
-  tsconfig: () => `
-    {
-      "compilerOptions": {
-        "module": "commonjs",
-        "target": "es5",
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "outDir": "dist",
-        "declaration": true,
-        "noImplicitAny": false
-      },
-      "exclude": [
-        "node_modules",
-        "dist"
-      ]
-    }`,
-  tslint: () => `
-    {
-      "rules": {
-        "radix": true
-      }
-    }`,
-  eslintrc: () => `
-    {
-      "rules": {
-        "radix": "error"
-      }
-    }`,
+  tsconfig: () => JSON.stringify({
+    compilerOptions: {
+      module: 'commonjs',
+      target: 'es5',
+      moduleResolution: 'node',
+      sourceMap: true,
+      outDir: 'dist',
+      declaration: true,
+      noImplicitAny: false
+    },
+    exclude: [
+      'node_modules',
+      'dist'
+    ]
+  }, null, 2),
+  tslint: () => JSON.stringify({
+    rules: {
+      radix: true
+    }
+  }, null, 2),
+  eslintrc: () => JSON.stringify({
+    rules: {
+      radix: 'error'
+    }
+  }, null, 2),
   protractorConf: framework => `
     const http = require("http");
 

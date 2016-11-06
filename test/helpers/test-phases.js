@@ -16,6 +16,7 @@ class Test {
     this.env = Object.assign({}, process.env, env);
     this.child = null;
     this.stdout = '';
+    this.stderr = '';
   }
 
   setup(tree, hooks) {
@@ -37,6 +38,9 @@ class Test {
         this.child = spawn('node', [`${this.script}`, `${command}`].concat(options), {cwd: this.tmp, env});
         this.child.stdout.on('data', buffer => {
           this.stdout += buffer.toString();
+        });
+        this.child.stderr.on('data', buffer => {
+          this.stderr += buffer.toString();
         });
         return this.child;
       } catch (e) {
@@ -61,6 +65,7 @@ class Test {
         // this.child.kill('SIGKILL');
         this.child = null;
         this.stdout = '';
+        this.stderr = '';
       }
 
       sh.rm('-rf', this.tmp);
