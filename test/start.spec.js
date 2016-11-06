@@ -26,7 +26,7 @@ describe('Aggregator: start', () => {
   });
 
   describe('tests', function () {
-    it('should run tests initially', () => {
+    it.only('should run tests initially', () => {
       child = test
         .setup({
           'src/test.spec.js': '',
