@@ -48,20 +48,6 @@ describe('Aggregator: Lint', () => {
       expect(res.code).to.equal(1);
       expect(res.stdout).to.contain('Missing radix parameter');
     });
-
-    it('should fail with exit code 0 when the process is in watch mode', () => {
-      const resp = test
-        .setup({
-          'app/a.ts': 'parseInt(\'1\');',
-          'package.json': fx.packageJson(),
-          'tsconfig.json': fx.tsconfig(),
-          'tslint.json': fx.tslint()
-        })
-        .execute('lint', null, {WATCH_MODE: true});
-
-      expect(resp.code).to.equal(0);
-      expect(resp.stdout).to.contain('Missing radix parameter');
-    });
   });
 
   describe('ESLint', () => {
@@ -89,13 +75,6 @@ describe('Aggregator: Lint', () => {
       expect(res.code).to.equal(1);
       expect(res.stdout).to.contain('1:1  error  Missing radix parameter  radix');
     });
-
-    it('should fail with exit code 0 when the process is in watch mode', () => {
-      const resp = setup({'app/a.js': 'parseInt(\'1\');'}).execute('lint', null, {WATCH_MODE: true});
-      expect(resp.code).to.equal(0);
-      expect(resp.stdout).to.contain('1:1  error  Missing radix parameter  radix');
-    });
-
   });
 
   describe('Stylelint', () => {

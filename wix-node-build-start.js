@@ -3,7 +3,7 @@
 const gulp = require('gulp');
 const plugins = require('gulp-load-plugins')();
 const program = require('commander');
-const suffix = require('./lib/utils').suffix;
+const {suffix, watchMode} = require('./lib/utils');
 const {startWebpack} = require('./lib/tasks/webpack');
 const runServer = require('./lib/tasks/run-server');
 
@@ -16,10 +16,10 @@ program
   .parse(process.argv);
 
 const options = Object.assign(program, {
-  done: () => program.server && runServer(gulp, program),
-  watch: true
+  done: () => program.server && runServer({entryPoint: program.entryPoint})
 });
 
+watchMode(true);
 require('./lib/tasks/aggregators/build')(gulp, plugins, options);
 gulp.start('start');
 
