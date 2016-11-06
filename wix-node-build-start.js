@@ -20,7 +20,7 @@ const options = Object.assign(program, {
   watch: true
 });
 
-require('./lib/tasks/aggregators/build')(gulp, plugins, options);
+require('./lib/tasks/aggregators/start')(gulp, plugins, options);
 gulp.start('start');
 
 startWebpack({hot: program.hot});
