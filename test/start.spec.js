@@ -26,7 +26,6 @@ describe('Aggregator: start', () => {
   });
 
   describe('tests', function () {
-    /* eslint-disable */
     it.only('should run tests initially', () => {
       child = test
         .setup({
@@ -38,12 +37,8 @@ describe('Aggregator: start', () => {
         })
         .spawn('start');
 
-      return checkStdout('Testing with Mocha').catch(() => {
-        console.log('aaa', test.stdout);
-        console.log('bbb', test.stderr);
-      });
+      return checkStdout('Testing with Mocha');
     });
-    /* eslint-enable */
   });
 
   describe('--entry-point', () => {
