@@ -38,10 +38,9 @@ describe('Aggregator: start', () => {
         })
         .spawn('start');
 
-      return checkServerLogCreated().then(() => {
-        console.log(test.stdout);
-        console.log(test.stderr);
-        // expect(test.stdout).to.contains('Testing with Mocha')
+      return checkStdout('Testing with Mocha').catch(() => {
+        console.log('aaa', test.stdout);
+        console.log('bbb', test.stderr);
       });
     });
     /* eslint-enable */
@@ -361,6 +360,14 @@ describe('Aggregator: start', () => {
   function checkServerLogCreated() {
     return retryPromise({backoff: 100}, () =>
       test.contains('target/server.log') ?
+        Promise.resolve() :
+        Promise.reject()
+    );
+  }
+
+  function checkStdout(str) {
+    return retryPromise({backoff: 100}, () =>
+      test.stdout.indexOf(str) > -1 ?
         Promise.resolve() :
         Promise.reject()
     );
