@@ -35,7 +35,7 @@ const merged = ld.mergeWith({
       jasmine.getEnv().addReporter(new TeamCityReporter());
     }
 
-    const port = projectConfig.servers.cdn.port() || 3200;
+    const port = projectConfig.servers.cdn.port();
     serverApi.start({port, filesPath: clientFilesPath()}).then(server => {
       cdnServer = server;
     });
