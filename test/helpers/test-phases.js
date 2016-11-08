@@ -38,9 +38,11 @@ class Test {
         this.child = spawn('node', [`${this.script}`, `${command}`].concat(options), {cwd: this.tmp, env});
         this.child.stdout.on('data', buffer => {
           this.stdout += buffer.toString();
+          console.log(buffer.toString());
         });
         this.child.stderr.on('data', buffer => {
           this.stderr += buffer.toString();
+          console.log(buffer.toString());
         });
         return this.child;
       } catch (e) {

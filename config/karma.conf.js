@@ -1,20 +1,28 @@
 'use strict';
 
-const path = require('path');
-const {tryRequire, inTeamCity} = require('../lib/utils');
 const _ = require('lodash');
+const path = require('path');
+const {tryRequire, inTeamCity, watchMode} = require('../lib/utils');
+const globs = require('../lib/globs');
+
+const specsGlob = globs.specs();
 
 const baseConfig = {
   basePath: process.cwd(),
   browsers: ['PhantomJS'],
   frameworks: ['mocha'],
-  singleRun: true,
+  singleRun: !watchMode(),
   files: [
     'node_modules/phantomjs-polyfill/bind-polyfill.js',
-    'dist/specs.bundle.js'
+    specsGlob
   ],
+  preprocessors: {
+    [specsGlob]: ['webpack']
+  },
+  webpack: require('./webpack.config.specs'),
   exclude: [],
   plugins: [
+    require('karma-webpack'),
     require('karma-jasmine'),
     require('karma-mocha'),
     require('karma-phantomjs-launcher'),
