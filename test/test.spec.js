@@ -438,8 +438,24 @@ describe('Aggregator: Test', () => {
           .execute('test', ['--karma']);
 
         expect(res.code).to.equal(0);
-        expect(res.stdout).to.contain('Testing with Karma');
-        expect(res.stdout).to.contain('Executed 1 of 1 SUCCESS');
+        expect(res.stdout)
+          .to.contain('Testing with Karma')
+          .and.contain('Executed 1 of 1 SUCCESS');
+      });
+
+      it('should use appropriate reporter for TeamCity', () => {
+        const res = test
+          .setup({
+            'src/test.spec.js': 'it("just passes", function () {});',
+            'package.json': fx.packageJson()
+          })
+          .execute('test', ['--karma'], insideTeamCity);
+
+        expect(res.code).to.equal(0);
+        expect(res.stdout)
+          .to.contain('Testing with Karma')
+          .and.contain('##teamcity[blockOpened name=\'JavaScript Unit Tests\']')
+          .and.contain('##teamcity[blockClosed name=\'JavaScript Unit Tests\']');
       });
     });
 

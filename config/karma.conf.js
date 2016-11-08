@@ -1,31 +1,40 @@
 'use strict';
 
 const path = require('path');
-const tryRequire = require('../lib/utils').tryRequire;
+const {tryRequire, inTeamCity} = require('../lib/utils');
 const _ = require('lodash');
 
-module.exports = function (config) {
-  const projectConfig = tryRequire(path.resolve('karma.conf.js')) || {files: []};
-  const baseConfig = {
-    basePath: process.cwd(),
-    browsers: ['PhantomJS'],
-    frameworks: ['mocha'],
-    singleRun: true,
-    files: [
-      'node_modules/phantomjs-polyfill/bind-polyfill.js',
-      'dist/specs.bundle.js'
-    ],
-    exclude: [],
-    plugins: [
-      require('karma-jasmine'),
-      require('karma-mocha'),
-      require('karma-phantomjs-launcher'),
-      require('karma-chrome-launcher')
-    ],
-    colors: true
-  };
+const baseConfig = {
+  basePath: process.cwd(),
+  browsers: ['PhantomJS'],
+  frameworks: ['mocha'],
+  singleRun: true,
+  files: [
+    'node_modules/phantomjs-polyfill/bind-polyfill.js',
+    'dist/specs.bundle.js'
+  ],
+  exclude: [],
+  plugins: [
+    require('karma-jasmine'),
+    require('karma-mocha'),
+    require('karma-phantomjs-launcher'),
+    require('karma-chrome-launcher')
+  ],
+  colors: true
+};
 
-  const merged = _.mergeWith(baseConfig, projectConfig, customizer);
+const teamCityConfig = {
+  plugins: [require('karma-teamcity-reporter')],
+  reporters: ['teamcity']
+  // coverageReporter: {
+  //   reporters: [{type: 'teamcity'}]
+  // }
+};
+
+module.exports = config => {
+  const projectConfig = tryRequire(path.resolve('karma.conf.js')) || {files: []};
+  const configuration = inTeamCity() ? _.mergeWith(baseConfig, teamCityConfig, customizer) : baseConfig;
+  const merged = _.mergeWith(configuration, projectConfig, customizer);
   config.set(merged);
 };
 
