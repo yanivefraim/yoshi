@@ -430,11 +430,7 @@ describe('Aggregator: Test', () => {
     describe('with default (mocha) configuration', () => {
       it('should pass with exit code 0', () => {
         const res = test
-          .setup({
-            'src/test.spec.js': 'it.only("pass", function () {});',
-            'karma.conf.js': 'module.exports = {}',
-            'package.json': fx.packageJson()
-          })
+          .setup(passingMochaTest())
           .execute('test', ['--karma']);
 
         expect(res.code).to.equal(0);
@@ -445,10 +441,7 @@ describe('Aggregator: Test', () => {
 
       it('should use appropriate reporter for TeamCity', () => {
         const res = test
-          .setup({
-            'src/test.spec.js': 'it("just passes", function () {});',
-            'package.json': fx.packageJson()
-          })
+          .setup(passingMochaTest())
           .execute('test', ['--karma'], insideTeamCity);
 
         expect(res.code).to.equal(0);
@@ -565,6 +558,13 @@ function passingJasmineTest() {
 function failingJasmineTest() {
   return {
     'test/some.spec.js': 'it("should fail", () => expect(1).toBe(2));',
+    'package.json': fx.packageJson()
+  };
+}
+
+function passingMochaTest() {
+  return {
+    'src/test.spec.js': `it('should just pass', function () {});`,
     'package.json': fx.packageJson()
   };
 }
