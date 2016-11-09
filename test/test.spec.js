@@ -104,7 +104,7 @@ describe('Aggregator: Test', () => {
     });
   });
 
-  describe('--jest', () => {
+  describe.only('--jest', () => {
     it('should pass with exit code 0', () => {
       const res = test
         .setup({
