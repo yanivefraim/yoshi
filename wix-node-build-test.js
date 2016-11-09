@@ -10,11 +10,12 @@ program
   .option('--mocha', 'run unit tests on mocha')
   .option('--jasmine', 'run unit tests on jasmine')
   .option('--karma', 'run unit tests on karma')
+  .option('--jest', 'run unit tests on jest')
   .option('--protractor', 'run e2e on protractor')
   .option('--watch', 'watch for changes')
   .parse(process.argv);
 
-const options = ['mocha', 'jasmine', 'karma', 'protractor'];
+const options = ['mocha', 'jasmine', 'karma', 'jest', 'protractor'];
 const command = options.find(option => program[option]);
 
 require('./lib/tasks/aggregators/test')(gulp, plugins, program);
