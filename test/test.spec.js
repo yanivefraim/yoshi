@@ -397,6 +397,7 @@ describe('Aggregator: Test', () => {
       expect(res.code).to.equal(0);
       expect(res.stdout).to.contain('##teamcity[progressStart \'Running Jasmine Tests\']');
     });
+
   });
 
   describe('--karma', function () {
@@ -530,6 +531,70 @@ describe('Aggregator: Test', () => {
         expect(res.code).to.equal(1);
         expect(res.stdout).to.contain('Testing with Karma');
         expect(res.stdout).to.contain('Executed 1 of 1 (1 FAILED)');
+      });
+    });
+
+    describe('Specs Bundle', () => {
+      it('should generate a bundle', () => {
+        const res = test
+            .setup({
+              'src/test.spec.js': 'it("pass", function () { expect(1).toBe(1); });',
+              'src/test1.spec.js': 'it("pass", function () { expect(2).toBe(2); });',
+              'karma.conf.js': fx.karmaWithJasmine(),
+              'package.json': fx.packageJson()
+            })
+            .execute('test', ['--karma']);
+
+        expect(res.code).to.equal(0);
+        expect(test.content('dist/specs.bundle.js')).to.contain('expect(1).toBe(1);');
+        expect(test.content('dist/specs.bundle.js')).to.contain('expect(2).toBe(2);');
+      });
+
+      it('should consider custom specs.browser globs if configured', () => {
+        const res = test
+            .setup({
+              'some/other/app.glob.js': 'it("pass", function () { expect(1).toBe(1); });',
+              'some/other/app2.glob.js': 'it("pass", function () { expect(2).toBe(2); });',
+              'karma.conf.js': fx.karmaWithJasmine(),
+              'pom.xml': fx.pom(),
+              'package.json': fx.packageJson({
+                specs: {
+                  browser: 'some/other/*.glob.js'
+                }
+              })
+            })
+            .execute('test', ['--karma']);
+
+        expect(res.code).to.equal(0);
+        expect(test.content('dist/specs.bundle.js')).to.contain('expect(1).toBe(1);');
+        expect(test.content('dist/specs.bundle.js')).to.contain('expect(2).toBe(2);');
+      });
+
+      it('should not include css into a specs bundle', () => {
+        const res = test
+          .setup({
+            'src/style.scss': `.a {.b {color: red;}}`,
+            'src/client.js': `require('./style.scss'); module.exports = function (a) {return a + 1;};`,
+            'src/client.spec.js': `const add1 = require('./client'); it('pass', function () {expect(add1(1)).toBe(2);});`,
+            'karma.conf.js': fx.karmaWithJasmine(),
+            'package.json': fx.packageJson({separateCss: false})
+          })
+          .execute('test', ['--karma']);
+        expect(res.code).to.equal(0);
+        expect(test.content('dist/specs.bundle.js')).not.to.contain('.a .b');
+      });
+
+      it('should contain css modules inside specs bundle', () => {
+        const res = test
+          .setup({
+            'src/style.scss': `.module {color: red;}`,
+            'src/client.js': `var style = require('./style.scss'); module.exports = function () {return style.module;};`,
+            'src/client.spec.js': `const getModule = require('./client'); it('pass', function () {expect(getModule()).toContain('style__module__');});`,
+            'karma.conf.js': fx.karmaWithJasmine(),
+            'package.json': fx.packageJson({cssModules: true})
+          })
+          .execute('test', ['--karma']);
+        expect(res.code).to.equal(0);
       });
     });
   });
