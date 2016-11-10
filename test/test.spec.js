@@ -419,6 +419,20 @@ describe('Aggregator: Test', () => {
         expect(res.stdout).to.contain('Executed 1 of 1 SUCCESS');
       });
 
+      it('should exit with code 1 in case webpack fails', () => {
+        const res = test
+          .setup({
+            'src/client.spec.js': `require('./ballsack');`,
+            'karma.conf.js': fx.karmaWithJasmine(),
+            'package.json': fx.packageJson()
+          })
+          .execute('test', ['--karma']);
+
+        expect(res.code).to.equal(1);
+        expect(res.stdout).to.contain(`Module not found: Error: Cannot resolve 'file' or 'directory' ./ballsack`);
+        expect(res.stdout).not.to.contain('Testing with Karma');
+      });
+
       it('should fail with exit code 1', () => {
         const res = test
           .setup({
