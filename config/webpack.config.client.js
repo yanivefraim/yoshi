@@ -33,7 +33,7 @@ const config = ({debug, hot} = {}) => {
       ...debug ? [] : [
         new webpack.optimize.UglifyJsPlugin({
           compress: {
-            warnings: true,
+            warnings: false,
           },
         })
       ]
