@@ -2,20 +2,27 @@ module.exports = function (wallaby) {
   process.env.NODE_PATH += `:${require('path').join(wallaby.localProjectDir, 'node_modules')}`;
   return {
     files: [
-      {pattern: 'test/**/*.spec.js*', ignore: true},
-      {pattern: 'test/**/*.js'},
+      {pattern: 'src/templates/**', instrument: false},
+      {pattern: 'test/**/*.spec.[j|t]s', ignore: true},
+      {pattern: 'test/**/*.spec.[j|t]sx', ignore: true},
+      {pattern: 'src/**/*.spec.[j|t]s', ignore: true},
+      {pattern: 'src/**/*.spec.[j|t]sx', ignore: true},
       {pattern: 'src/assets/**', instrument: false},
       {pattern: 'src/**', instrument: true},
-      {pattern: 'src/**/*.spec.js*', ignore: true},
       {pattern: 'target/**/*.json', instrument: false},
       {pattern: 'templates/**', instrument: false},
       {pattern: 'index.js', instrument: true},
-      {pattern: 'package.json', instrument: false}
+      {pattern: 'package.json', instrument: false},
+      'test/**/*.[j|t]s',
+      'test/**/*.[j|t]sx',
+      'src/**/*.scss'
     ],
 
     tests: [
-      {pattern: 'test/**/*.spec.js*'},
-      {pattern: 'src/**/*.spec.js*'},
+      {pattern: 'test/**/*.spec.[j|t]s'},
+      {pattern: 'test/**/*.spec.[j|t]sx'},
+      {pattern: 'src/**/*.spec.[j|t]s'},
+      {pattern: 'src/**/*.spec.[j|t]sx'},
     ],
 
     compilers: {
@@ -25,17 +32,21 @@ module.exports = function (wallaby) {
     testFramework: 'mocha',
 
     setup(wallaby) {
-      const tryRequire = require('wix-node-build/lib/utils').tryRequire;
+      require('babel-polyfill');
       const mocha = wallaby.testFramework;
       mocha.timeout(30000);
       require('wix-node-build/lib/ignore-extensions');
-      tryRequire('./test/mocha-setup');
+      try {
+        require('./test/mocha-setup');
+      } catch (e) {
+        console.log('warning - no mocha setup file found: test/mocha-setup');
+      }
     },
 
     env: {
       type: 'node',
       params: {
-        env: `SRC_PATH=./src;NODE_ENV=test`
+        env: `SRC_PATH=./src;NODE_ENV=test;`
       }
     },
     workers: {
