@@ -1060,15 +1060,19 @@ describe('Aggregator: Build', () => {
       const res = test.setup({
         'src/style.scss': fx.scss(),
         'src/style.css': fx.css(),
+        'src/some.d.ts': '',
         'src/file.json': '{}',
         'package.json': fx.packageJson(),
         'pom.xml': fx.pom()
       }).execute('build');
 
       expect(res.code).to.equal(0);
-      expect(test.list(`dist/src`)).to.include('style.scss');
-      expect(test.list(`dist/src`)).to.include('style.css');
-      expect(test.list(`dist/src`)).to.include('file.json');
+      expect(test.list('dist/src')).to.include.members([
+        'style.scss',
+        'style.css',
+        'file.json',
+        'some.d.ts'
+      ]);
     });
   });
 
