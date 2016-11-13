@@ -193,7 +193,7 @@ describe('Loaders', () => {
       expect(test.content('dist/statics/app.bundle.js')).to.contain('"json-content": 42')
     );
   });
-  
+
   describe('HTML', () => {
     beforeEach(() =>
       test
