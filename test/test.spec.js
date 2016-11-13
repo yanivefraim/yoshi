@@ -397,7 +397,6 @@ describe('Aggregator: Test', () => {
       expect(res.code).to.equal(0);
       expect(res.stdout).to.contain('##teamcity[progressStart \'Running Jasmine Tests\']');
     });
-
   });
 
   describe('--karma', function () {

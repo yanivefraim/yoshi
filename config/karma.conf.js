@@ -8,7 +8,6 @@ const baseConfig = {
   basePath: process.cwd(),
   browsers: ['PhantomJS'],
   frameworks: ['mocha'],
-  singleRun: true,
   files: [
     'node_modules/phantomjs-polyfill/bind-polyfill.js',
     'dist/specs.bundle.js'
