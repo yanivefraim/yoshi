@@ -148,6 +148,7 @@ Flag | Description
 --mocha | Run unit tests with Mocha - this is the default
 --jasmine | Run unit tests with Jasmine
 --karma | Run tests with Karma (browser)
+--jest | Run tests with Jest
 --protractor | Run e2e tests with Protractor (e2e)
 
 By default, this task executes both unit test (using `mocha` as default) and e2e test using `protractor`.
