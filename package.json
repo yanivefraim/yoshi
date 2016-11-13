@@ -56,6 +56,7 @@
     "gulp-typescript": "^3.0.0",
     "gulp-util": "^3.0.7",
     "gulp-watch": "^4.3.6",
+    "html-loader": "^0.4.4",
     "jasmine": "2.4.1",
     "jasmine-reporters": "~2.2.0",
     "jest-cli": "^17.0.0",

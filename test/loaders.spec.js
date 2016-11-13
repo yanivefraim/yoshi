@@ -193,4 +193,19 @@ describe('Loaders', () => {
       expect(test.content('dist/statics/app.bundle.js')).to.contain('"json-content": 42')
     );
   });
+  
+  describe('HTML', () => {
+    beforeEach(() =>
+      test
+        .setup({
+          'src/client.js': `require('./some.html')`,
+          'src/some.html': '<div>This is a HTML file</div>'
+        })
+        .execute('build')
+    );
+
+    it('should embed html file into bundle', () =>
+      expect(test.content('dist/statics/app.bundle.js')).to.contain('<div>This is a HTML file</div>')
+    );
+  });
 });
