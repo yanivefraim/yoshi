@@ -512,8 +512,7 @@ describe('Aggregator: Test', () => {
         expect(res.code).to.equal(0);
         expect(res.stdout)
           .to.contain('Testing with Karma')
-          .and.contain('##teamcity[blockOpened name=\'JavaScript Unit Tests\']')
-          .and.contain('##teamcity[blockClosed name=\'JavaScript Unit Tests\']');
+          .and.contain('##teamcity[testStarted name=\'should just pass\']');
       });
     });
 
