@@ -55,6 +55,25 @@ describe('Loaders', () => {
       expect(test.content('dist/statics/app.bundle.js')).to
         .contain(`.config(["$javascript", function ($javascript)`);
     });
+
+    it('should run over specified 3rd party modules', () => {
+      const res = test
+        .setup({
+          'src/client.js': `require('wix-style-react/src')`,
+          'node_modules/wix-style-react/src/index.js': 'let a = 1',
+          '.babelrc': `{"plugins": ["transform-es2015-block-scoping"]}`,
+          'package.json': `{\n
+            "name": "a",\n
+            "dependencies": {\n
+              "babel-plugin-transform-es2015-block-scoping": "latest"\n
+            }
+          }`
+        }, [hooks.installDependencies])
+        .execute('build');
+
+      expect(res.code).to.equal(0);
+      expect(test.content('dist/statics/app.bundle.js')).to.contain('var a = 1');
+    });
   });
 
   describe('Typescript', () => {
@@ -107,7 +126,6 @@ describe('Loaders', () => {
       expect(resp.stdout).to.contain('TypeScript: 1 syntax error');
     });
   });
-
 
   describe('Sass', () => {
     afterEach(() => test.teardown());

@@ -268,26 +268,28 @@ describe('Aggregator: Test', () => {
       expect(res.stdout).to.contain('##teamcity[');
     });
 
-    it('should run js tests with runtime babel-register transpilation', function () {
-      this.timeout(60000);
+    describe('with babel-register', () => {
+      it('should transpile both sources and specified 3rd party modules in runtime', function () {
+        this.timeout(60000);
 
-      const res = test
-        .setup({
-          '.babelrc': `{"presets": ["es2015"]}`,
-          'test/some.js': 'export default x => x',
-          'test/some.spec.js': `import identity from './some'; it.only("pass", () => 1);`,
-          'package.json': `{
+        const res = test
+          .setup({
+            '.babelrc': `{"plugins": ["babel-plugin-transform-es2015-modules-commonjs"]}`,
+            'node_modules/wix-style-react/src/index.js': 'export default 1',
+            'test/some.js': `import x from 'wix-style-react/src'; export default x => x`,
+            'test/some.spec.js': `import identity from './some'; it.only("pass", () => 1);`,
+            'package.json': `{
               "name": "a",\n
-              "version": "1.0.4",\n
               "dependencies": {\n
-                "babel-preset-es2015": "latest"\n
+                "babel-plugin-transform-es2015-modules-commonjs": "latest"\n
               }
             }`
-        }, [tmp => hooks.installDependency(tmp)('babel-register'), hooks.installDependencies])
-        .execute('test', ['--mocha']);
+          }, [hooks.installDependencies])
+          .execute('test', ['--mocha']);
 
-      expect(res.code).to.equal(0);
-      expect(res.stdout).to.contain('1 passing');
+        expect(res.code).to.equal(0);
+        expect(res.stdout).to.contain('1 passing');
+      });
     });
 
     it('should run typescript tests with runtime compilation for ts projects', () => {

@@ -7,6 +7,10 @@ const globs = require('../lib/globs');
 
 const config = packagejson.wix || {};
 const isSingleEntry = entry => typeof entry === 'string' || Array.isArray(entry);
+const externalUnprocessedModules = [
+  'wix-style-react/src'
+];
+const allSourcesButExternalModules = /^(?!.*?node_modules).*$/;
 
 module.exports = {
   specs: {
@@ -36,7 +40,10 @@ module.exports = {
   cssModules: () => getConfig('cssModules', true),
   externals: () => getConfig('externals'),
   babel: () => _.get(packagejson, 'babel'),
-  noServerTranspile: () => getConfig('noServerTranspile')
+  noServerTranspile: () => getConfig('noServerTranspile'),
+  unprocessedModules: () => externalUnprocessedModules
+    .map(m => new RegExp(`node_modules/${m}`))
+    .concat(allSourcesButExternalModules)
 };
 
 function getConfig(key, defaultVal = false) {
