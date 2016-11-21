@@ -154,6 +154,74 @@ describe('Aggregator: Test', () => {
       expect(res.code).to.equal(1);
       expect(res.stderr).to.contain('1 failed');
     });
+
+    it('should use the right reporter when running inside TeamCity', () => {
+      const res = test
+        .setup({
+          '__tests__/foo.js': `
+            describe('Foo', () => {
+              jest.mock('../foo');
+              const foo = require('../foo');
+              it('should return value', () => {
+                // foo is a mock function
+                foo.mockImplementation(() => 42);
+                expect(foo()).toBe(42);
+              });
+            });
+          `,
+          'foo.js': `module.exports = function() {
+              // some implementation;
+            };`,
+          'package.json': `{
+            "name": "a",\n
+            "dependencies": {\n
+              "jest-teamcity-reporter": "latest"\n
+            }
+          }`
+        }, [hooks.installDependencies])
+        .execute('test', ['--jest'], insideTeamCity);
+      console.log(res);
+      expect(res.code).to.equal(0);
+      expect(res.stdout).to.contain('##teamcity[');
+    });
+
+    it('should work load jest configuration and work with css', () => {
+      const res = test
+        .setup({
+          '__tests__/foo.js': `
+            describe('Foo', () => {
+              jest.mock('../foo');
+              const foo = require('../foo');
+              it('should return value', () => {
+                // foo is a mock function
+                foo.mockImplementation(() => 42);
+                expect(foo()).toBe(42);
+              });
+            });
+          `,
+          'foo.js': `
+            const s = require('./foo.scss');
+            module.exports = function() {
+              const a = s.a;
+            };`,
+          'foo.scss': `.a {.b {color: red;}}`,
+          'package.json': `{
+            "name": "a",\n
+            "jest": {
+              "moduleNameMapper": {
+                ".scss$": "identity-obj-proxy"
+              }
+            },
+            "devDependencies": {
+              "identity-obj-proxy": "^3.0.0"
+            }
+          }`
+        }, [hooks.installDependencies])
+        .execute('test', ['--jest']);
+      console.log(res);
+      expect(res.code).to.equal(0);
+      expect(res.stderr).to.contain('1 passed');
+    });
   });
 
   describe('--mocha', () => {

@@ -43,7 +43,8 @@ module.exports = {
   noServerTranspile: () => getConfig('noServerTranspile'),
   unprocessedModules: () => externalUnprocessedModules
     .map(m => new RegExp(`node_modules/${m}`))
-    .concat(allSourcesButExternalModules)
+    .concat(allSourcesButExternalModules),
+  jestConfig: () => _.get(packagejson, 'jest', {})
 };
 
 function getConfig(key, defaultVal = false) {
