@@ -58,7 +58,9 @@ describe('Aggregator: e2e', () => {
       expect(res.stdout).to.contain('##teamcity[testStarted name=\'should write some text to body\' captureStandardOutput=\'true\']');
     });
 
-    it('should use babel-register', () => {
+    it('should use babel-register', function () {
+      this.timeout(60000);
+
       const res = test
         .setup(singleModuleWithJasmineAndES6Imports(), [hooks.installDependencies, hooks.installProtractor])
         .execute('test', ['--protractor'], outsideTeamCity);

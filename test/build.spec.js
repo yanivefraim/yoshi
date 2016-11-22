@@ -98,7 +98,9 @@ describe('Aggregator: Build', () => {
       expect(test.list('dist')).to.include('src', 'app', 'test', 'index.js');
     });
 
-    it('should transpile preserve folder structure, create source maps', () => {
+    it('should preserve folder structure, create source maps', function () {
+      this.timeout(60000);
+
       const resp = test
         .setup({
           '.babelrc': `{"presets": ["es2015"]}`,
