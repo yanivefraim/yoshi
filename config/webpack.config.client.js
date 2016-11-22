@@ -8,18 +8,18 @@ const {mergeByConcat, isSingleEntry} = require('../lib/utils');
 const webpackConfigCommon = require('./webpack.config.common');
 const projectConfig = require('./project');
 
-const config = ({debug, hot} = {}) => {
+const config = ({debug, hot, separateCss = projectConfig.separateCss()} = {}) => {
   const entry = bundleEntry();
+  const cssModules = projectConfig.cssModules();
   const extractCSS = getExtractCss();
-  const cssmodules = projectConfig.cssModules();
-
-  const sass = require('../lib/loaders/sass')(extractCSS, cssmodules);
 
   return mergeByConcat(webpackConfigCommon, {
     entry: hot ? addHotEntries(entry) : entry,
 
     module: {
-      loaders: [sass.client]
+      loaders: [
+        require('../lib/loaders/sass')(extractCSS, cssModules).client
+      ]
     },
 
     plugins: [
@@ -52,7 +52,7 @@ const config = ({debug, hot} = {}) => {
   });
 
   function getExtractCss() {
-    if (projectConfig.separateCss()) {
+    if (separateCss) {
       const ExtractTextPlugin = require('extract-text-webpack-plugin');
       return new ExtractTextPlugin(debug ? '[name].css' : '[name].min.css');
     }
