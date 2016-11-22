@@ -4,14 +4,15 @@ const _ = require('lodash');
 const webpack = require('webpack');
 const path = require('path');
 const autoprefixer = require('autoprefixer');
-const {mergeByConcat} = require('../lib/utils');
+const {mergeByConcat, isSingleEntry} = require('../lib/utils');
 const webpackConfigCommon = require('./webpack.config.common');
-const {bundleEntry, separateCss, cssModules, servers} = require('./project');
+const projectConfig = require('./project');
 
 const config = ({debug, hot} = {}) => {
   const entry = bundleEntry();
   const extractCSS = getExtractCss();
-  const cssmodules = cssModules();
+  const cssmodules = projectConfig.cssModules();
+
   const sass = require('../lib/loaders/sass')(extractCSS, cssmodules);
 
   return mergeByConcat(webpackConfigCommon, {
@@ -42,7 +43,7 @@ const config = ({debug, hot} = {}) => {
     output: {
       path: path.resolve('./dist/statics'),
       filename: debug ? '[name].bundle.js' : '[name].bundle.min.js',
-      publicPath: hot ? `http://localhost:${servers.cdn.port()}/` : undefined
+      publicPath: hot ? `http://localhost:${projectConfig.servers.cdn.port()}/` : undefined
     },
 
     postcss: () => [autoprefixer],
@@ -51,7 +52,7 @@ const config = ({debug, hot} = {}) => {
   });
 
   function getExtractCss() {
-    if (separateCss()) {
+    if (projectConfig.separateCss()) {
       const ExtractTextPlugin = require('extract-text-webpack-plugin');
       return new ExtractTextPlugin(debug ? '[name].css' : '[name].min.css');
     }
@@ -68,5 +69,10 @@ const config = ({debug, hot} = {}) => {
     });
   }
 };
+
+function bundleEntry() {
+  const entry = projectConfig.entry() || projectConfig.defaultEntry();
+  return isSingleEntry(entry) ? {app: entry} : entry;
+}
 
 module.exports = config;

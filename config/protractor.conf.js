@@ -6,8 +6,7 @@ const path = require('path');
 const ld = require('lodash');
 const exists = require('../lib/utils').exists;
 const inTeamCity = require('../lib/utils').inTeamCity;
-const serverApi = require('../lib/server-api');
-const projectConfig = require('./project');
+const {start} = require('../lib/server-api');
 const globs = require('../lib/globs');
 
 const userConfPath = path.resolve('protractor.conf.js');
@@ -15,14 +14,6 @@ const userConf = exists(userConfPath) ? require(userConfPath).config : null;
 const onPrepare = (userConf && userConf.onPrepare) || ld.noop;
 const onComplete = (userConf && userConf.onComplete) || ld.noop;
 let cdnServer;
-
-function clientFilesPath() {
-  const clientProjectName = projectConfig.clientProjectName();
-
-  return clientProjectName ?
-    `node_modules/${clientProjectName}/${globs.multipleModules.clientDist()}` :
-    globs.singleModule.clientDist();
-}
 
 const merged = ld.mergeWith({
   framework: 'jasmine',
@@ -35,8 +26,7 @@ const merged = ld.mergeWith({
       jasmine.getEnv().addReporter(new TeamCityReporter());
     }
 
-    const port = projectConfig.servers.cdn.port();
-    serverApi.start({port, filesPath: clientFilesPath()}).then(server => {
+    start({host: 'localhost'}).then(server => {
       cdnServer = server;
     });
     onPrepare.call(merged);

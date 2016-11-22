@@ -23,4 +23,7 @@ watchMode(true);
 require('./lib/tasks/aggregators/build')(gulp, plugins, options);
 gulp.start('start');
 
-startWebpack({hot: program.hot});
+startWebpack({
+  hot: program.hot,
+  debug: true
+});

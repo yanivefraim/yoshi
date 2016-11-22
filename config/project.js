@@ -6,7 +6,6 @@ const packagejson = require(path.resolve('package.json'));
 const globs = require('../lib/globs');
 
 const config = packagejson.wix || {};
-const isSingleEntry = entry => typeof entry === 'string' || Array.isArray(entry);
 const externalUnprocessedModules = [
   'wix-style-react/src'
 ];
@@ -32,10 +31,8 @@ module.exports = {
       port: () => getConfig('servers.cdn.port', 3200)
     }
   },
-  bundleEntry: () => {
-    const entry = getConfig('entry', {app: './client'});
-    return isSingleEntry(entry) ? {app: entry} : entry;
-  },
+  entry: () => getConfig('entry'),
+  defaultEntry: () => './client',
   separateCss: () => getConfig('separateCss', true),
   cssModules: () => getConfig('cssModules', true),
   externals: () => getConfig('externals'),

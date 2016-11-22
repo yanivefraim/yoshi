@@ -311,8 +311,8 @@ describe('Aggregator: Build', () => {
     it('should not transpile with babel if there is tsconfig', () => {
       const resp = test
         .setup({
-          'app/a.js': 'const a = 1;',
-          'app/b.ts': 'const b = 2;',
+          'src/a.js': 'const a = 1;',
+          'src/b.ts': 'const b = 2;',
           'tsconfig.json': fx.tsconfig(),
           '.babelrc': `{"plugins": ["transform-es2015-block-scoping"]}`,
           'pom.xml': fx.pom(),
@@ -330,8 +330,8 @@ describe('Aggregator: Build', () => {
         .execute('build');
 
       expect(resp.code).to.equal(0);
-      expect(test.list('dist/app')).not.to.contain('a.js');
-      expect(test.content('dist/app/b.js')).to.contain('var b = 2');
+      expect(test.list('dist/src')).not.to.contain('a.js');
+      expect(test.content('dist/src/b.js')).to.contain('var b = 2');
     });
   });
 
@@ -621,6 +621,34 @@ describe('Aggregator: Build', () => {
 
       expect(test.list('dist/statics')).to.contain('app.bundle.min.js.map');
       expect(test.list('dist/statics')).to.contain('app.bundle.min.js.map');
+    });
+
+    it('should exit with code 1 with a custom entry that does not exist', () => {
+      const res = test
+        .setup({
+          'tsconfig.json': fx.tsconfig(),
+          'package.json': fx.packageJson({
+            entry: './hello'
+          }),
+          'pom.xml': fx.pom()
+        })
+        .execute('build');
+
+      expect(res.code).to.equal(1);
+      expect(test.list('dist/statics')).not.to.contain('app.bundle.js');
+    });
+
+    it('should exit with code 1 without a custom entry and default entry not existing', () => {
+      const res = test
+        .setup({
+          'tsconfig.json': fx.tsconfig(),
+          'package.json': fx.packageJson(),
+          'pom.xml': fx.pom()
+        })
+        .execute('build');
+
+      expect(res.code).to.equal(0);
+      expect(test.list('dist/statics')).not.to.contain('app.bundle.js');
     });
   });
 
