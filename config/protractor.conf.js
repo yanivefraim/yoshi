@@ -53,7 +53,7 @@ const merged = ld.mergeWith({
 }, userConf, a => typeof a === 'function' ? a : undefined);
 
 if (merged.framework === 'mocha') {
-  merged.mochaOpts.reporter = 'mocha-env-reporter';
+  merged.mochaOpts.reporter = inTeamCity() ? 'mocha-teamcity-reporter' : 'mocha-env-reporter';
 }
 
 // TBD: remove this when CI support protractor 4. See commit https://github.com/wix/wix-node-build/commit/12dbae41543b4d8589b2268e0e1932e89bcd9d92
