@@ -46,11 +46,13 @@ const merged = ld.mergeWith({
       cdnServer.close();
     }
     onComplete(merged);
+  },
+  mochaOpts: {
+    timeout: 30000
   }
 }, userConf, a => typeof a === 'function' ? a : undefined);
 
 if (merged.framework === 'mocha') {
-  merged.mochaOpts = merged.mochaOpts || {};
   merged.mochaOpts.reporter = 'mocha-env-reporter';
 }
 
