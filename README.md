@@ -252,6 +252,11 @@ For example:
 
 In case you don't want to transpile your server (node) code, and you still need `.babelrc`/`tsconfig`, you can add `noServerTranspile` flag to skip server transpiling.
 
+##Examples
+
+1. [React Fullstack Seed](https://github.com/wix/react-fullstack-seed)
+2. [React Universal Seed](https://github.com/wix/react-universal-seed)
+
 ##FAQ
 
 - [How to add external assets to my client part of the project?](docs/faq/ASSETS.md)
