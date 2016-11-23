@@ -1,7 +1,5 @@
 'use strict';
 
-require('babel-register');
-require('ts-node/register');
 const path = require('path');
 const ld = require('lodash');
 const exists = require('../lib/utils').exists;
@@ -19,17 +17,17 @@ const merged = ld.mergeWith({
   framework: 'jasmine',
   specs: [globs.e2e()],
   onPrepare: () => {
-    require('babel-register');
+    require('../lib/require-hooks');
 
     if (merged.framework === 'jasmine' && inTeamCity()) {
       const TeamCityReporter = require('jasmine-reporters').TeamCityReporter;
       jasmine.getEnv().addReporter(new TeamCityReporter());
     }
 
-    start({host: 'localhost'}).then(server => {
+    return start({host: 'localhost'}).then(server => {
       cdnServer = server;
+      return onPrepare.call(merged);
     });
-    onPrepare.call(merged);
   },
   onComplete: () => {
     if (cdnServer) {
@@ -52,7 +50,7 @@ if (!process.env.IS_BUILD_AGENT && !merged.chromeDriver) {
 }
 
 function normaliseSpecs(config) {
-  let specs = [].concat(config.specs || []);
+  const specs = [].concat(config.specs || []);
   return Object.assign({}, config, {specs: specs.map(spec => path.resolve(spec))});
 }
 
