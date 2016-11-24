@@ -79,13 +79,14 @@ describe('Aggregator: Build', () => {
   });
 
   describe('Babel', () => {
-    it('should transpile to dist but only form app, src, test folders and index.js itself and exit with code 0', () => {
+    it('should transpile to dist but only form app, src, test, testkit folders and index.js itself and exit with code 0', () => {
       const resp = test
         .setup({
           '.babelrc': '{}',
           'app/b.jsx': 'const b = 2;',
           'src/a/a.js': 'const a = 1;',
           'test/a/a.spec.js': 'const test = \'test\';',
+          'testkit/a.js': 'const a = 1;',
           'index.js': 'const name = \'name\';',
           'package.json': fx.packageJson(),
           'pom.xml': fx.pom()
@@ -95,7 +96,7 @@ describe('Aggregator: Build', () => {
 
       expect(resp.stdout).to.contain('Compiling with Babel');
       expect(resp.code).to.equal(0);
-      expect(test.list('dist')).to.include('src', 'app', 'test', 'index.js');
+      expect(test.list('dist')).to.include.members(['src', 'app', 'test', 'testkit', 'index.js']);
     });
 
     it('should preserve folder structure, create source maps', function () {
