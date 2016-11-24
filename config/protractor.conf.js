@@ -1,6 +1,6 @@
 'use strict';
 
-require('babel-register');
+require('../lib/require-hooks');
 const path = require('path');
 const ld = require('lodash');
 const exists = require('../lib/utils').exists;
@@ -18,8 +18,6 @@ const merged = ld.mergeWith({
   framework: 'jasmine',
   specs: [globs.e2e()],
   onPrepare: () => {
-    require('../lib/require-hooks');
-
     if (merged.framework === 'jasmine' && inTeamCity()) {
       const TeamCityReporter = require('jasmine-reporters').TeamCityReporter;
       jasmine.getEnv().addReporter(new TeamCityReporter());
