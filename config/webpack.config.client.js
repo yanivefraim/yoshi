@@ -7,6 +7,7 @@ const autoprefixer = require('autoprefixer');
 const {mergeByConcat, isSingleEntry} = require('../lib/utils');
 const webpackConfigCommon = require('./webpack.config.common');
 const projectConfig = require('./project');
+const DynamicPublicPath = require('../lib/plugins/dynamic-public-path');
 
 const config = ({debug, hot, separateCss = projectConfig.separateCss()} = {}) => {
   const entry = bundleEntry();
@@ -24,6 +25,8 @@ const config = ({debug, hot, separateCss = projectConfig.separateCss()} = {}) =>
 
     plugins: [
       ...hot ? [new webpack.HotModuleReplacementPlugin()] : [],
+
+      new DynamicPublicPath(),
 
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': debug ? '"development"' : '"production"'

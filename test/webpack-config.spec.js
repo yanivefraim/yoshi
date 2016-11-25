@@ -72,13 +72,6 @@ describe('Webpack basic configs', () => {
   });
 
   describe('Client configurations', () => {
-    beforeEach(() => {
-      test = test
-        .setup({
-          'package.json': fx.packageJson()
-        });
-    });
-
     it('should have a default entry point ./client.js and output client.js', () => {
       test.setup({
         'src/client.js': 'const some = 1'
@@ -86,6 +79,20 @@ describe('Webpack basic configs', () => {
       .execute('build');
 
       expect(test.content('dist/statics/app.bundle.js')).to.contain('const some');
+    });
+
+    it('should prepend dynamic public path (AKA __webpack_public_path__)', () => {
+      test.setup({
+        'src/image.jpg': '(^_^)'.repeat(2500),
+        'src/client.js': `const img = require('./image.jpg');`
+      })
+      .execute('build');
+
+      const content = test.content('dist/statics/app.bundle.js');
+
+      // Make sure it was the last override of __webpack_require__.p
+      expect(content.split('__webpack_require__.p = ').pop().indexOf(`window && window.__STATICS_BASE_URL__ || '';`)).to.equal(0);
+      expect(content).to.contain('module.exports = __webpack_require__.p + "image.jpg?');
     });
   });
 });
