@@ -265,20 +265,27 @@ describe('Aggregator: Build', () => {
       expect(resp.stdout).to.contain('TypeScript: 1 syntax error');
     });
 
-    it('should transpile only from the base folders', () => {
+    it('should transpile from the base folders with consider tsconfig include & exclude', () => {
       const filesInFolders = baseFolders
+        .map(dir => `${dir}/a.ts`)
+        .concat(['app/b.ts', 'outOfBase/a.ts'])
         .reduce((result, dir) =>
-          Object.assign(result, {[`${dir}/a.ts`]: 'function(){}'})
+          Object.assign(result, {[dir]: 'function(){}'})
         , {});
 
       test.setup(Object.assign({
-        'tsconfig.json': fx.tsconfig(),
+        'tsconfig.json': fx.tsconfig({
+          include: ['outOfBase/a.ts'],
+          exclude: ['app/b.ts']
+        }),
         'package.json': fx.packageJson(),
         'pom.xml': fx.pom()
       }, filesInFolders))
         .execute('build');
 
-      expect(test.list('dist/').length).to.equal(baseFolders.length);
+      expect(test.list('dist/').length).to.equal(baseFolders.length + 1);
+      expect(test.list('dist/')).to.include('outOfBase');
+      expect(test.list('dist/')).not.to.include('b.js');
     });
 
     it('should build from specified directory', () => {

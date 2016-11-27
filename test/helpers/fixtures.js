@@ -1,4 +1,5 @@
 'use strict';
+const _ = require('lodash');
 
 const fx = {
   packageJson: (wixConfig = {}, dependencies = {}) => JSON.stringify({
@@ -21,7 +22,7 @@ const fx = {
   css: () => '.a {\ncolor: red;\n}\n',
   scss: () => '.a {\n.b {\ncolor: red;\n}\n}\n',
   scssInvalid: () => '.a {\n.b\ncolor: red;\n}\n}\n',
-  tsconfig: () => JSON.stringify({
+  tsconfig: (options = {}) => JSON.stringify(_.merge({
     compilerOptions: {
       module: 'commonjs',
       target: 'es5',
@@ -35,7 +36,7 @@ const fx = {
       'node_modules',
       'dist'
     ]
-  }, null, 2),
+  }, options), null, 2),
   tslint: () => JSON.stringify({
     rules: {
       radix: true
