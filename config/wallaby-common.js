@@ -13,6 +13,7 @@ module.exports = function (wallaby) {
       {pattern: 'templates/**', instrument: false},
       {pattern: 'index.js', instrument: true},
       {pattern: 'package.json', instrument: false},
+      'testkit/**/*.[j|t]s',
       'test/**/*.[j|t]s',
       'test/**/*.[j|t]sx',
       'src/**/*.scss'
@@ -28,20 +29,6 @@ module.exports = function (wallaby) {
     compilers: {
       '**/*.js*': wallaby.compilers.babel()
     },
-
-    //testFramework: 'mocha',
-
-    // setup(wallaby) {
-    //   require('babel-polyfill');
-    //   const mocha = wallaby.testFramework;
-    //   mocha.timeout(30000);
-    //   require('wix-node-build/lib/ignore-extensions');
-    //   try {
-    //     require('./test/mocha-setup');
-    //   } catch (e) {
-    //     console.log('warning - no mocha setup file found: test/mocha-setup');
-    //   }
-    // },
 
     env: {
       type: 'node',
