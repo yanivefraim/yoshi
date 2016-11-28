@@ -91,7 +91,7 @@ describe('Webpack basic configs', () => {
       const content = test.content('dist/statics/app.bundle.js');
 
       // Make sure it was the last override of __webpack_require__.p
-      expect(content.split('__webpack_require__.p = ').pop().indexOf(`window && window.__STATICS_BASE_URL__ || '';`)).to.equal(0);
+      expect(content.split('__webpack_require__.p = ').pop().indexOf(`typeof window !== 'undefined' && window.__STATICS_BASE_URL__ || '';`)).to.equal(0);
       expect(content).to.contain('module.exports = __webpack_require__.p + "image.jpg?');
     });
   });
