@@ -107,5 +107,8 @@
   },
   "eslintConfig": {
     "extends": "wix"
+  },
+  "optionalDependencies": {
+    "wix-eyes-env": "^1.0.18"
   }
 }
