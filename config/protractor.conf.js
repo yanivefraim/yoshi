@@ -1,5 +1,14 @@
 'use strict';
 
+try {
+  //Private wix applitools key
+  require('wix-eyes-env');
+} catch (e) {
+  //skip wix' key for applitools
+  //In case you want to use applitools & eyes.it (https://github.com/wix/eyes.it)
+  //in your project, please use your own key
+}
+
 require('../lib/require-hooks');
 const path = require('path');
 const ld = require('lodash');
