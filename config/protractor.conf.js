@@ -1,13 +1,12 @@
 'use strict';
+const tryRequire = require('../lib/utils');
 
-try {
-  //Private wix applitools key
-  require('wix-eyes-env');
-} catch (e) {
-  //skip wix' key for applitools
-  //In case you want to use applitools & eyes.it (https://github.com/wix/eyes.it)
-  //in your project, please use your own key
-}
+
+//Private wix applitools key
+//skip wix' key for applitools
+//In case you want to use applitools & eyes.it (https://github.com/wix/eyes.it)
+//in your project, please use your own key
+tryRequire('wix-eyes-env');
 
 require('../lib/require-hooks');
 const path = require('path');
