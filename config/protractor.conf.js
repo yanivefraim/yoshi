@@ -1,5 +1,5 @@
 'use strict';
-const tryRequire = require('../lib/utils');
+const {tryRequire} = require('../lib/utils');
 
 
 //Private wix applitools key
