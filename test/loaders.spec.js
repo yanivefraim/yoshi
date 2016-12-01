@@ -140,6 +140,19 @@ describe('Loaders', () => {
       it('should also expose css classes as camelcase', () => {
         expect(test.content('dist/statics/app.bundle.js')).to.match(/"someRule":"some-css__some-rule__\w{5}"/);
       });
+
+      it('should allow import sass from node_modules', () => {
+        test
+          .setup({
+            'src/client.js': `require('./foo.css');`,
+            'src/foo.css': '@import "bar/bar";',
+            'node_modules/bar/bar.scss': '.bar{color:red}',
+            'package.json': fx.packageJson({}),
+          })
+          .execute('build');
+
+        expect(test.content('dist/statics/app.css')).to.contain('color: red');
+      });
     });
 
     describe('detach css', () => {
