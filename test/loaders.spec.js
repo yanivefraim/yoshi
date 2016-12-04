@@ -153,6 +153,43 @@ describe('Loaders', () => {
 
         expect(test.content('dist/statics/app.css')).to.contain('color: red');
       });
+
+      it('should not have css modules for files within node_modules', () => {
+        test
+          .setup({
+            'src/client.js': `require('foo/bar.css');`,
+            'node_modules/foo/bar.css': '.foo {color:red}',
+            'package.json': fx.packageJson({}),
+          })
+          .execute('build');
+
+        expect(test.content('dist/statics/app.css')).to.contain('.foo {\n  color: red; }');
+      });
+
+      it('should have css modules for modules not from node_modules', () => {
+        test
+          .setup({
+            'src/client.js': `require('./foo/bar.css');`,
+            'src/foo/bar.css': '.foo {color:red}',
+            'package.json': fx.packageJson({}),
+          })
+          .execute('build');
+
+        expect(test.content('dist/statics/app.css')).not.to.contain('.foo {\n  color: red; }');
+      });
+
+      it('should have css modules for any of the unprocessed modules', () => {
+        test
+          .setup({
+            'src/client.js': `require('wix-style-react/src/bar');`,
+            'node_modules/wix-style-react/src/bar.js': `require('./bar.css');`,
+            'node_modules/wix-style-react/src/bar.css': '.foo {color:red}',
+            'package.json': fx.packageJson({}),
+          })
+          .execute('build');
+
+        expect(test.content('dist/statics/app.css')).not.to.contain('.foo {\n  color: red; }');
+      });
     });
 
     describe('detach css', () => {

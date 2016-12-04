@@ -19,7 +19,7 @@ const config = ({debug, hot, separateCss = projectConfig.separateCss()} = {}) =>
 
     module: {
       loaders: [
-        require('../lib/loaders/sass')(extractCSS, cssModules).client
+        require('../lib/loaders/sass')(extractCSS, cssModules)
       ]
     },
 
