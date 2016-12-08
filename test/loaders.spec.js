@@ -141,6 +141,10 @@ describe('Loaders', () => {
         expect(test.content('dist/statics/app.bundle.js')).to.match(/"someRule":"some-css__some-rule__\w{5}"/);
       });
 
+      it('should apply auto-prefixer', () => {
+        expect(test.content('dist/statics/app.css')).to.contain('-webkit-appearance');
+      });
+
       it('should allow import sass from node_modules', () => {
         test
           .setup({
@@ -177,7 +181,10 @@ describe('Loaders', () => {
         .setup({
           'src/client.js': `require('./some-css.scss');require('./foo.css');`,
           'src/server.js': `require('./some-css.scss');require('./foo.css');`,
-          'src/some-css.scss': '.some-rule { .child { color: red } }',
+          'src/some-css.scss': `// comment
+                                  @import "./imported";
+                                  .some-rule { .child { color: red; } }`,
+          'src/imported.scss': '.foo{appearance: none;}',
           'src/foo.css': '.foo-rule { color: blue }',
           'package.json': fx.packageJson(config || {}),
         })
