@@ -259,6 +259,7 @@ Note that this is not a recommended workflow. It can be very error prone:
  1. It might be for example that your app babel config and the node module babel config will be conflicting.
  2. Any babel plugin that is used by your dependencies will need to be installed by your app as well.
  3. You'll need to also add nested dependencies that need transpiling into array, which can be confusing. 
+
 Anyway, if you don't have a better alternative you can pass array with module names in this property.
 
 ##Examples
