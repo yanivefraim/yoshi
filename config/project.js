@@ -8,7 +8,7 @@ const globs = require('../lib/globs');
 const config = packagejson.wix || {};
 const externalUnprocessedModules = [
   'wix-style-react/src'
-];
+].concat(getConfig('externalUnprocessedModules', []));
 const allSourcesButExternalModules = /^(?!.*?node_modules).*$/;
 
 module.exports = {

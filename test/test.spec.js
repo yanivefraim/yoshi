@@ -338,8 +338,6 @@ describe('Aggregator: Test', () => {
 
     describe('with babel-register', () => {
       it('should transpile both sources and specified 3rd party modules in runtime', function () {
-        this.timeout(60000);
-
         const res = test
           .setup({
             '.babelrc': `{"plugins": ["babel-plugin-transform-es2015-modules-commonjs"]}`,
@@ -350,6 +348,29 @@ describe('Aggregator: Test', () => {
               "name": "a",\n
               "dependencies": {\n
                 "babel-plugin-transform-es2015-modules-commonjs": "latest"\n
+              }
+            }`
+          }, [hooks.installDependencies])
+          .execute('test', ['--mocha']);
+
+        expect(res.code).to.equal(0);
+        expect(res.stdout).to.contain('1 passing');
+      });
+
+      it('should transpile both sources and specified 3rd party modules in runtime', function () {
+        const res = test
+          .setup({
+            '.babelrc': `{"plugins": ["babel-plugin-transform-es2015-modules-commonjs"]}`,
+            'node_modules/my-unprocessed-module/index.js': 'export default 1',
+            'test/some.js': `import x from 'my-unprocessed-module'; export default x => x`,
+            'test/some.spec.js': `import identity from './some'; it.only("pass", () => 1);`,
+            'package.json': `{
+              "name": "a",\n
+              "dependencies": {\n
+                "babel-plugin-transform-es2015-modules-commonjs": "latest"\n
+              },
+              "wix": {
+                "externalUnprocessedModules": ["my-unprocessed-module"]
               }
             }`
           }, [hooks.installDependencies])
