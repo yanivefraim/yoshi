@@ -357,7 +357,7 @@ describe('Aggregator: Test', () => {
         expect(res.stdout).to.contain('1 passing');
       });
 
-      it('should transpile both sources and specified 3rd party modules in runtime', function () {
+      it('should transpile explicitly configured externalUnprocessedModules', function () {
         const res = test
           .setup({
             '.babelrc': `{"plugins": ["babel-plugin-transform-es2015-modules-commonjs"]}`,

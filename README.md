@@ -248,7 +248,7 @@ For example:
 }
 ```
 
-##### `wix.no-server-transpile`
+##### `wix.noServerTranspile`
 
 In case you don't want to transpile your server (node) code, and you still need `.babelrc`/`tsconfig`, you can add `noServerTranspile` flag to skip server transpiling.
 
