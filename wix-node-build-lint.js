@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 
+const {watchMode} = require('./lib/utils');
+if (watchMode()) {
+  process.exit(0);
+}
+
 const program = require('commander');
 const gulp = require('gulp');
 const plugins = require('gulp-load-plugins')();
