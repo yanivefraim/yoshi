@@ -246,4 +246,19 @@ describe('Loaders', () => {
       expect(test.content('dist/statics/app.bundle.js')).to.contain('<div>This is a HTML file</div>')
     );
   });
+
+  describe('raw', () => {
+    beforeEach(() =>
+      test
+        .setup({
+          'src/client.js': `require('./some.md')`,
+          'src/some.md': '### title'
+        })
+        .execute('build')
+    );
+
+    it('should embed html file into bundle', () =>
+      expect(test.content('dist/statics/app.bundle.js')).to.contain('### title')
+    );
+  });
 });

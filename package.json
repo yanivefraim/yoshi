@@ -79,6 +79,7 @@
     "phantomjs-polyfill": "0.0.2",
     "postcss-loader": "^0.10.1",
     "protractor": "~3.3.0",
+    "raw-loader": "^0.5.1",
     "run-sequence": "^1.1.5",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
