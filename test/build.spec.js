@@ -1094,9 +1094,8 @@ describe('Aggregator: Build', () => {
       expect(test.list(`dist/src`)).to.include('index.ejs');
     });
 
-    it('should copy server assets except scss to dist', () => {
+    it('should copy server assets to dist', () => {
       const res = test.setup({
-        'src/style.scss': fx.scss(),
         'src/style.css': fx.css(),
         'src/some.d.ts': '',
         'src/file.json': '{}',
@@ -1105,13 +1104,11 @@ describe('Aggregator: Build', () => {
       }).execute('build');
 
       expect(res.code).to.equal(0);
-      expect(test.list('dist/src'))
-        .to.include.members([
-          'style.css',
-          'file.json',
-          'some.d.ts'
-        ])
-        .and.not.to.include('style.scss');
+      expect(test.list('dist/src')).to.include.members([
+        'style.css',
+        'file.json',
+        'some.d.ts'
+      ]);
     });
   });
 
