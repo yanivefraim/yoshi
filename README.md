@@ -258,7 +258,7 @@ You can explicitly ask build process to transpile some node modules in case thos
 Note that this is not a recommended workflow. It can be very error prone:
  1. It might be for example that your app babel config and the node module babel config will be conflicting.
  2. Any babel plugin that is used by your dependencies will need to be installed by your app as well.
- 3. You'll need to also add nested dependencies that need transpiling into array, which can be confusing. 
+ 3. You'll need to also add nested dependencies that need transpiling into array, which can be confusing.
 
 Anyway, if you don't have a better alternative you can pass array with module names in this property.
 
@@ -271,3 +271,4 @@ Anyway, if you don't have a better alternative you can pass array with module na
 
 - [How to add external assets to my client part of the project?](docs/faq/ASSETS.md)
 - [How do I setup Enzyme test environment?](docs/faq/SETUP-TESTING-WITH-ENZYME.md)
+-  [How to disable css modules in specific places](docs/faq/DISABLE-SPECIFIC-CSS-MODULES.md)
