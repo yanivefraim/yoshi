@@ -14,7 +14,7 @@ describe('Aggregator: Build', () => {
   afterEach(() => test.teardown());
 
   describe('Sass', () => {
-    it('should transpile to dist/, preserve folder structure and exit with code 0', () => {
+    it('should transpile to dist/, preserve folder structure, extensions and exit with code 0', () => {
       const compiledStyle = '.a .b {\n  color: red; }';
       const resp = test
         .setup({
@@ -31,9 +31,9 @@ describe('Aggregator: Build', () => {
 
       expect(resp.code).to.equal(0);
       expect(resp.stdout).to.contain('Compiling with Sass');
-      expect(test.content('dist/app/a/style.css')).to.contain(compiledStyle);
-      expect(test.content('dist/src/b/style.css')).to.contain(compiledStyle);
-      expect(test.content('dist/test/c/style.css')).to.contain(compiledStyle);
+      expect(test.content('dist/app/a/style.scss')).to.contain(compiledStyle);
+      expect(test.content('dist/src/b/style.scss')).to.contain(compiledStyle);
+      expect(test.content('dist/test/c/style.scss')).to.contain(compiledStyle);
     });
 
     it('should fail with exit code 1', () => {
@@ -74,7 +74,7 @@ describe('Aggregator: Build', () => {
 
       expect(resp.code).to.equal(0);
       expect(resp.stdout).to.contain('Compiling with Sass');
-      expect(test.content('dist/app/a/style.css')).to.contain('.a {\n  color: black; }');
+      expect(test.content('dist/app/a/style.scss')).to.contain('.a {\n  color: black; }');
     });
   });
 
@@ -1094,7 +1094,7 @@ describe('Aggregator: Build', () => {
       expect(test.list(`dist/src`)).to.include('index.ejs');
     });
 
-    it('should copy server assets to dist', () => {
+    it('should copy server assets except scss to dist', () => {
       const res = test.setup({
         'src/style.scss': fx.scss(),
         'src/style.css': fx.css(),
@@ -1105,12 +1105,13 @@ describe('Aggregator: Build', () => {
       }).execute('build');
 
       expect(res.code).to.equal(0);
-      expect(test.list('dist/src')).to.include.members([
-        'style.scss',
-        'style.css',
-        'file.json',
-        'some.d.ts'
-      ]);
+      expect(test.list('dist/src'))
+        .to.include.members([
+          'style.css',
+          'file.json',
+          'some.d.ts'
+        ])
+        .and.not.to.include('style.scss');
     });
   });
 
