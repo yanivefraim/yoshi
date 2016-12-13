@@ -6,7 +6,7 @@ const fx = require('./helpers/fixtures');
 const {outsideTeamCity, insideTeamCity} = require('./helpers/env-variables');
 const hooks = require('./helpers/hooks');
 
-describe('Aggregator: Test', () => {
+describe.skip('Aggregator: Test', () => {
   let test;
   beforeEach(() => {
     test = tp.create(outsideTeamCity);
