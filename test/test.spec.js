@@ -426,7 +426,7 @@ describe('Aggregator: Test', () => {
       expect(res.stdout).to.contain('1 passing');
     });
 
-    it('should require "test/mocha-setup.ts" configuration file', () => {
+    it.skip('should require "test/mocha-setup.ts" configuration file', () => {
       const res = test
         .setup({
           'test/mocha-setup.ts': 'global["foo"] = 123;',
