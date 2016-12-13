@@ -16,7 +16,7 @@ describe('Aggregator: e2e', () => {
   describe('should run protractor with a cdn server', function () {
     this.timeout(60000);
 
-    it('should support single module structure by default', () => {
+    it.skip('should support single module structure by default', () => {
       const res = test
           .setup(singleModuleWithJasmine(), [hooks.installProtractor])
           .execute('test', ['--protractor'], outsideTeamCity);
