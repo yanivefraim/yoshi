@@ -58,7 +58,7 @@ describe('Aggregator: e2e', () => {
       expect(res.stdout).to.contain('##teamcity[testStarted name=\'should write some text to body\' captureStandardOutput=\'true\']');
     });
 
-    it.skip('should use babel-register', function () {
+    it('should use babel-register', function () {
       this.timeout(60000);
 
       const res = test

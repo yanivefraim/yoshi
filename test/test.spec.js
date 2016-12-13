@@ -14,7 +14,7 @@ describe('Aggregator: Test', () => {
   afterEach(() => test.teardown());
 
   describe('defaults', () => {
-    it.skip('should pass with exit code 0 with mocha as default', () => {
+    it('should pass with exit code 0 with mocha as default', () => {
       const res = test
         .setup({
           'test/component.spec.js': 'it.only("pass", () => 1);',
@@ -426,7 +426,7 @@ describe('Aggregator: Test', () => {
       expect(res.stdout).to.contain('1 passing');
     });
 
-    it.skip('should require "test/mocha-setup.ts" configuration file', () => {
+    it('should require "test/mocha-setup.ts" configuration file', () => {
       const res = test
         .setup({
           'test/mocha-setup.ts': 'global["foo"] = 123;',
