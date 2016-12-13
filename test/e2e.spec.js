@@ -6,7 +6,7 @@ const fx = require('./helpers/fixtures');
 const hooks = require('./helpers/hooks');
 const {outsideTeamCity, insideTeamCity} = require('./helpers/env-variables');
 
-describe.skip('Aggregator: e2e', () => {
+describe('Aggregator: e2e', () => {
   let test;
   beforeEach(() => {
     test = tp.create();
@@ -16,7 +16,7 @@ describe.skip('Aggregator: e2e', () => {
   describe('should run protractor with a cdn server', function () {
     this.timeout(60000);
 
-    it.skip('should support single module structure by default', () => {
+    it('should support single module structure by default', () => {
       const res = test
           .setup(singleModuleWithJasmine(), [hooks.installProtractor])
           .execute('test', ['--protractor'], outsideTeamCity);

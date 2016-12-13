@@ -6,7 +6,7 @@ const fx = require('./helpers/fixtures');
 const {outsideTeamCity, insideTeamCity} = require('./helpers/env-variables');
 const hooks = require('./helpers/hooks');
 
-describe.skip('Aggregator: Test', () => {
+describe('Aggregator: Test', () => {
   let test;
   beforeEach(() => {
     test = tp.create(outsideTeamCity);
@@ -426,7 +426,7 @@ describe.skip('Aggregator: Test', () => {
       expect(res.stdout).to.contain('1 passing');
     });
 
-    it.skip('should require "test/mocha-setup.ts" configuration file', () => {
+    it('should require "test/mocha-setup.ts" configuration file', () => {
       const res = test
         .setup({
           'test/mocha-setup.ts': 'global["foo"] = 123;',
