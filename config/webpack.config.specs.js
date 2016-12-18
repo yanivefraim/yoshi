@@ -19,7 +19,7 @@ module.exports = mergeByConcat(webpackConfigCommon, {
   },
   module: {
     loaders: [
-      require('../lib/loaders/sass')(false, cssModules()).server
+      require('../lib/loaders/sass')(false, cssModules()).specs
     ]
   },
   externals: {
