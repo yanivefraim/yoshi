@@ -215,6 +215,28 @@ describe('Loaders', () => {
 
       expect(test.content('dist/statics/app.bundle.js')).to.match(/"large-image.png\?\w+"/);
     });
+
+    it('should load fonts', () => {
+      test
+        .setup({
+          'src/client.js': `require('./font.ttf');
+            require('./font.woff');
+            require('./font.woff2');
+            require('./font.eot');`,
+          'src/font.ttf': _.repeat('a', 10001),
+          'src/font.woff': _.repeat('a', 10001),
+          'src/font.woff2': _.repeat('a', 10001),
+          'src/font.eot': _.repeat('a', 10001),
+        })
+        .execute('build');
+
+      const content = test.content('dist/statics/app.bundle.js');
+
+      expect(content).to.match(/"font.ttf\?\w+"/);
+      expect(content).to.match(/"font.woff\?\w+"/);
+      expect(content).to.match(/"font.woff2\?\w+"/);
+      expect(content).to.match(/"font.eot\?\w+"/);
+    });
   });
 
   describe('Json', () => {
