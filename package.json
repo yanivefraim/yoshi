@@ -83,6 +83,7 @@
     "raw-loader": "^0.5.1",
     "run-sequence": "^1.1.5",
     "sass-loader": "^4.0.0",
+    "screenshot-reporter": "^1.1.2",
     "style-loader": "^0.13.1",
     "through2": "^2.0.1",
     "ts-loader": "^1.2.2",
@@ -111,6 +112,7 @@
     "extends": "wix"
   },
   "optionalDependencies": {
+    "screenshot-reporter-env": "^1.0.12",
     "wix-eyes-env": "^1.0.18"
   }
 }

@@ -8,6 +8,11 @@ const {tryRequire} = require('../lib/utils');
 //in your project, please use your own key
 tryRequire('wix-eyes-env');
 
+// Private Wix environment config for screenshot reporter
+// Read how to set your own params (if needed) here: https://github.com/wix/screenshot-reporter#usage
+tryRequire('screenshot-reporter-env');
+
+
 require('../lib/require-hooks');
 const path = require('path');
 const ld = require('lodash');
@@ -30,6 +35,11 @@ const merged = ld.mergeWith({
       const TeamCityReporter = require('jasmine-reporters').TeamCityReporter;
       jasmine.getEnv().addReporter(new TeamCityReporter());
     }
+
+    try {
+      const ScreenshotReporter = require('screenshot-reporter');
+      jasmine.getEnv().addReporter(new ScreenshotReporter());
+    } catch (e) {}
 
     return start({host: 'localhost'}).then(server => {
       cdnServer = server;
