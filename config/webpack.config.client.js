@@ -1,6 +1,5 @@
 'use strict';
 
-const _ = require('lodash');
 const webpack = require('webpack');
 const path = require('path');
 const autoprefixer = require('autoprefixer');
@@ -9,13 +8,12 @@ const webpackConfigCommon = require('./webpack.config.common');
 const projectConfig = require('./project');
 const DynamicPublicPath = require('../lib/plugins/dynamic-public-path');
 
-const config = ({debug, hot, separateCss = projectConfig.separateCss()} = {}) => {
-  const entry = bundleEntry();
+const config = ({debug, separateCss = projectConfig.separateCss()} = {}) => {
   const cssModules = projectConfig.cssModules();
   const extractCSS = getExtractCss();
 
   return mergeByConcat(webpackConfigCommon, {
-    entry: hot ? addHotEntries(entry) : entry,
+    entry: getEntry(),
 
     module: {
       loaders: [
@@ -24,8 +22,7 @@ const config = ({debug, hot, separateCss = projectConfig.separateCss()} = {}) =>
     },
 
     plugins: [
-      ...hot ? [new webpack.HotModuleReplacementPlugin()] : [],
-
+      new webpack.optimize.OccurenceOrderPlugin(),
       new DynamicPublicPath(),
 
       new webpack.DefinePlugin({
@@ -45,8 +42,7 @@ const config = ({debug, hot, separateCss = projectConfig.separateCss()} = {}) =>
 
     output: {
       path: path.resolve('./dist/statics'),
-      filename: debug ? '[name].bundle.js' : '[name].bundle.min.js',
-      publicPath: hot ? `http://localhost:${projectConfig.servers.cdn.port()}/` : undefined
+      filename: debug ? '[name].bundle.js' : '[name].bundle.min.js'
     },
 
     postcss: () => [autoprefixer],
@@ -60,20 +56,9 @@ const config = ({debug, hot, separateCss = projectConfig.separateCss()} = {}) =>
       return new ExtractTextPlugin(debug ? '[name].css' : '[name].min.css');
     }
   }
-
-  function addHotEntries(entries) {
-    return _.mapValues(entries, entry => {
-      entry = _.isArray(entry) ? entry : [entry];
-      return [
-        require.resolve('webpack-hot-middleware/client') + '?dynamicPublicPath=true&path=__webpack_hmr&reload=true',
-        require.resolve('webpack/hot/dev-server'),
-        ...entry
-      ];
-    });
-  }
 };
 
-function bundleEntry() {
+function getEntry() {
   const entry = projectConfig.entry() || projectConfig.defaultEntry();
   return isSingleEntry(entry) ? {app: entry} : entry;
 }
