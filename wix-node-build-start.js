@@ -12,6 +12,7 @@ program
   .option('-n, --no-server', 'run without starting entry-point')
   .option('-w, --watch', 'deprecated, for backward comp.')
   .option('-s, --silent', 'deprecated, for backward comp.')
+  .option('-h, --hot', 'use hot module replacement')
   .parse(process.argv);
 
 const options = Object.assign(program, {
@@ -22,4 +23,7 @@ watchMode(true);
 require('./lib/tasks/aggregators/build')(gulp, plugins, options);
 gulp.start('start');
 
-startWebpack({debug: true});
+startWebpack({
+  hot: program.hot,
+  debug: true
+});
