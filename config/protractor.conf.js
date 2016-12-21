@@ -30,6 +30,7 @@ let cdnServer;
 const merged = ld.mergeWith({
   framework: 'jasmine',
   specs: [globs.e2e()],
+  directConnect: true,
   onPrepare: () => {
     if (merged.framework === 'jasmine' && inTeamCity()) {
       const TeamCityReporter = require('jasmine-reporters').TeamCityReporter;
