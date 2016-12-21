@@ -93,7 +93,8 @@
     "typescript": "^2.1.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",
-    "webpack-dev-middleware": "^1.6.1",
+    "webpack-dev-middleware": "~1.9.0",
+    "webpack-hot-middleware": "~2.13.2",
     "wnpm-ci": "latest",
     "xml2js": "^0.4.16"
   },

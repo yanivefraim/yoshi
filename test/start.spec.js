@@ -8,7 +8,6 @@ const tp = require('./helpers/test-phases');
 const fx = require('./helpers/fixtures');
 const fetch = require('node-fetch');
 const retryPromise = require('retry-promise').default;
-const hooks = require('./helpers/hooks');
 const {outsideTeamCity} = require('./helpers/env-variables');
 const {readFileSync} = require('fs');
 
@@ -89,24 +88,18 @@ describe('Aggregator: start', () => {
     });
   });
 
-  describe('--hot', () => {
+  describe('HMR', () => {
     it('should create bundle with enabled hot module replacement', () => {
       child = test
         .setup({
-          'src/client.js': `console.log('client-content');`,
-          'index.js': `console.log('should run');`,
-          'package.json': fx.packageJson({servers: {cdn: {port: 3005}}})
+          'src/client.js': `module.exports.wat = 'hmr';\n`,
+          'package.json': fx.packageJson()
         })
-        .spawn('start', ['--hot']);
+        .spawn('start');
 
-      return cdnIsServing('app.bundle.js')
-        .then(file => {
-          file = file.replace(/\s+/g, ' ');
-          expect(file)
-            .to.include(`if (false) { throw new Error("[HMR] Hot Module Replacement is disabled."); }`)
-            .and.include(`console.log('client-content');`)
-            .and.not.include('Cannot find module');
-        });
+      return checkServerIsServing({port: 3200, file: 'app.bundle.js'})
+        .then(content =>
+          expect(content).and.contain(`if (false) {\n\t  throw new Error("[HMR] Hot Module Replacement is disabled.");`));
     });
   });
 
@@ -210,7 +203,7 @@ describe('Aggregator: start', () => {
           })
           .spawn('start');
 
-        return checkServerIsUp({max: 100})
+        return checkServerIsServing({max: 100})
           .then(() => checkServerIsRespondingWith('hello'))
           .then(() => test.modify('src/server.ts', `declare var require: any; ${fx.httpServer('world')}`))
           .then(() => checkServerIsRespondingWith('world'));
@@ -231,7 +224,7 @@ describe('Aggregator: start', () => {
           })
           .spawn('start');
 
-        return checkServerIsUp()
+        return checkServerIsServing()
           .then(() => checkServerIsRespondingWith('hello'))
           .then(() => test.modify('src/server.js', fx.httpServer('world')))
           .then(() => checkServerIsRespondingWith('world'));
@@ -251,30 +244,30 @@ describe('Aggregator: start', () => {
           })
           .spawn('start');
 
-        return checkServerIsUp()
+        return checkServerIsServing()
           .then(() => checkServerIsRespondingWith('hello'))
           .then(() => test.modify('src/server.js', fx.httpServer('world')))
           .then(() => checkServerIsRespondingWith('world'));
       });
     });
 
-    it.skip('should make a new bundle after the file has beend changed', () => {
-      test.setup({
-        'index.js': fx.httpServer(),
-        'src/client.js': 'require(\'./menu\').create();',
-        'src/client.spec.js': 'require(\'./menu\').create();',
-        'src/menu.js': 'module.exports.create = function () {console.log(\'Initializing the menu!\')}',
-        'package.json': fx.pkgJsonWithBuild()
-      }, [hooks.linkWixNodeBuild]).execute('build', '--bundle');
-      child = test.spawn('start', '-w');
+    describe('client side code', () => {
+      it('should recreate and serve a bundle after file changes', () => {
+        const file = {port: 3200, file: 'app.bundle.js'};
+        const newSource = `module.exports = 'wat';\n`;
 
-      return checkServerIsUp()
-        .then(() => test.modify('src/client.js', content => 'const menu = ' + content))
-        .then(() => checkServerRestarted())
-        .then(() => {
-          expect(test.content('dist/statics/main.bundle.js')).to.contain('const menu =');
-          expect(test.list('dist')).to.contain('specs.bundle.js');
-        });
+        child = test
+          .setup({
+            'src/client.js': `module.exports = function () {};\n`,
+            'package.json': fx.packageJson()
+          })
+          .spawn('start');
+
+        return checkServerIsServing(file)
+          .then(() => test.modify('src/client.js', newSource))
+          .then(() => checkServerReturnsDifferentContent(file))
+          .then(content => expect(content).to.contain(newSource));
+      });
     });
   });
 
@@ -395,24 +388,29 @@ describe('Aggregator: start', () => {
     );
   }
 
-  function checkServerIsUp(opts) {
-    return retryPromise(_.merge({backoff: 100}, opts), () =>
-      fetch(`http://localhost:${fx.defaultServerPort()}/`)
-    );
-  }
-
-  function checkServerIsDown() {
-    return retryPromise({backoff: 10}, () =>
-      new Promise((resolve, reject) => {
-        fetch(`http://localhost:${fx.defaultServerPort()}/`).then(reject, resolve);
-      }));
-  }
-
-  function checkServerRestarted() {
-    return checkServerIsDown().then(() => checkServerIsUp());
-  }
-
   function wait(time) {
     return () => new Promise(resolve => setTimeout(resolve, time));
+  }
+
+  function checkServerIsServing({backoff = 100, max = 10, port = fx.defaultServerPort(), file = ''} = {}) {
+    return retryPromise({backoff, max}, () => fetch(`http://localhost:${port}/${file}`).then(res => res.text()));
+  }
+
+  function checkServerReturnsDifferentContent({backoff = 100, max = 10, port = fx.defaultServerPort(), file = ''} = {}) {
+    const url = `http://localhost:${port}/${file}`;
+    let response;
+    return retryPromise({backoff, max}, () => new Promise((resolve, reject) =>
+      fetch(url)
+        .then(res => res.text())
+        .then(content => {
+          if (response && response !== content) {
+            resolve(content);
+          } else {
+            reject(`response of ${url} did not change`);
+          }
+          response = content;
+        })
+        .catch(reject)
+    ));
   }
 });
