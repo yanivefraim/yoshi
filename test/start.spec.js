@@ -112,7 +112,7 @@ describe('Aggregator: start', () => {
 
       return checkServerIsServing({port: 3200, file: 'app.bundle.js'})
         .then(content =>
-          expect(content).to.contain(`__webpack_require__.p = "http://localhost:3200";`));
+          expect(content).to.contain(`__webpack_require__.p = "http://localhost:3200/";`));
     });
   });
 
