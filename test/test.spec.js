@@ -699,6 +699,34 @@ describe('Aggregator: Test', () => {
           .execute('test', ['--karma']);
         expect(res.code).to.equal(0);
       });
+
+      it('should allow import sass from node_modules', () => {
+        const res = test
+          .setup({
+            'src/client.spec.js': `require('./foo.css'); it('pass', function () {expect(1).toBe(1);});`,
+            'src/foo.css': '@import "bar/bar";',
+            'node_modules/bar/bar.scss': '.bar{color:red}',
+            'karma.conf.js': fx.karmaWithJasmine(),
+            'package.json': fx.packageJson(),
+          })
+          .execute('test', ['--karma']);
+
+        expect(res.code).to.equal(0);
+      });
+
+      it('should support TPA style params', () => {
+        const res = test
+          .setup({
+            'src/client.spec.js': `require('./foo.css'); it('pass', function () {expect(1).toBe(1);});`,
+            'src/foo.css': '.foo{color: unquote("{{color-1}}");font: unquote("; {{body-m}}");font-size: 16px;}',
+            'karma.conf.js': fx.karmaWithJasmine(),
+            'package.json': fx.packageJson({
+              tpaStyle: true
+            }),
+          })
+          .execute('test', ['--karma']);
+        expect(res.code).to.equal(0);
+      });
     });
   });
 });

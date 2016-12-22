@@ -10,6 +10,7 @@ const DynamicPublicPath = require('../lib/plugins/dynamic-public-path');
 
 const config = ({debug, separateCss = projectConfig.separateCss()} = {}) => {
   const cssModules = projectConfig.cssModules();
+  const tpaStyle = projectConfig.tpaStyle();
   const extractCSS = getExtractCss();
 
   return mergeByConcat(webpackConfigCommon, {
@@ -17,7 +18,7 @@ const config = ({debug, separateCss = projectConfig.separateCss()} = {}) => {
 
     module: {
       loaders: [
-        require('../lib/loaders/sass')(extractCSS, cssModules).client
+        require('../lib/loaders/sass')(extractCSS, cssModules, tpaStyle).client
       ]
     },
 

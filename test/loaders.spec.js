@@ -157,6 +157,22 @@ describe('Loaders', () => {
 
         expect(test.content('dist/statics/app.css')).to.contain('color: red');
       });
+
+      it('should support TPA style params', () => {
+        test
+          .setup({
+            'src/client.js': `require('./foo.css');`,
+            'src/foo.css': '.foo{color: unquote("{{color-1}}");font: unquote("; {{body-m}}");font-size: 16px;}',
+            'package.json': fx.packageJson({
+              tpaStyle: true
+            }),
+          })
+          .execute('build');
+
+        expect(test.content('dist/statics/app.css')).to.contain('font-size: 16px');
+        expect(test.content('dist/statics/app.css')).not.to.contain('color-1');
+        expect(test.content('dist/statics/app.css')).not.to.contain('body-m');
+      });
     });
 
     describe('detach css', () => {

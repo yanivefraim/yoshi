@@ -35,6 +35,7 @@ module.exports = {
   defaultEntry: () => './client',
   separateCss: () => getConfig('separateCss', true),
   cssModules: () => getConfig('cssModules', true),
+  tpaStyle: () => getConfig('tpaStyle', false),
   externals: () => getConfig('externals'),
   babel: () => _.get(packagejson, 'babel'),
   noServerTranspile: () => getConfig('noServerTranspile'),

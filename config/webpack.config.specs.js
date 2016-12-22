@@ -4,7 +4,7 @@ const glob = require('glob');
 const path = require('path');
 const webpackConfigCommon = require('./webpack.config.common');
 const mergeByConcat = require('../lib/utils').mergeByConcat;
-const {cssModules} = require('./project');
+const {cssModules, tpaStyle} = require('./project');
 const globs = require('../lib/globs');
 const projectConfig = require('./project');
 
@@ -19,7 +19,7 @@ module.exports = mergeByConcat(webpackConfigCommon, {
   },
   module: {
     loaders: [
-      require('../lib/loaders/sass')(false, cssModules()).specs
+      require('../lib/loaders/sass')(false, cssModules(), tpaStyle()).specs
     ]
   },
   externals: {
