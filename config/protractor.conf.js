@@ -65,7 +65,7 @@ if (merged.framework === 'mocha') {
 }
 
 // TBD: remove this when CI support protractor 4. See commit https://github.com/wix/wix-node-build/commit/12dbae41543b4d8589b2268e0e1932e89bcd9d92
-if (!process.env.IS_BUILD_AGENT && !merged.chromeDriver) {
+if (!merged.chromeDriver) {
   merged.chromeDriver = require.resolve('chromedriver/bin/chromedriver');
 }
 
