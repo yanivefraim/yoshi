@@ -89,9 +89,10 @@ describe('Webpack basic configs', () => {
       .execute('build');
 
       const content = test.content('dist/statics/app.bundle.js');
+      const value = `typeof window !== 'undefined' && window.__STATICS_BASE_URL__ || __webpack_require__.p;`;
 
       // Make sure it was the last override of __webpack_require__.p
-      expect(content.split('__webpack_require__.p = ').pop().indexOf(`typeof window !== 'undefined' && window.__STATICS_BASE_URL__ || '';`)).to.equal(0);
+      expect(content.split('__webpack_require__.p = ').pop().indexOf(value)).to.equal(0);
       expect(content).to.contain('module.exports = __webpack_require__.p + "image.jpg?');
     });
   });

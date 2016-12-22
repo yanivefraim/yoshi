@@ -99,7 +99,20 @@ describe('Aggregator: start', () => {
 
       return checkServerIsServing({port: 3200, file: 'app.bundle.js'})
         .then(content =>
-          expect(content).and.contain(`if (false) {\n\t  throw new Error("[HMR] Hot Module Replacement is disabled.");`));
+          expect(content).to.contain(`if (false) {\n\t  throw new Error("[HMR] Hot Module Replacement is disabled.");`));
+    });
+
+    it('should set proper public path', () => {
+      child = test
+        .setup({
+          'src/client.js': `module.exports.wat = 'hmr';\n`,
+          'package.json': fx.packageJson()
+        })
+        .spawn('start');
+
+      return checkServerIsServing({port: 3200, file: 'app.bundle.js'})
+        .then(content =>
+          expect(content).to.contain(`__webpack_require__.p = "http://localhost:3200";`));
     });
   });
 
