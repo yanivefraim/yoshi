@@ -10,7 +10,9 @@ tryRequire('wix-eyes-env');
 
 // Private Wix environment config for screenshot reporter
 // Read how to set your own params (if needed) here: https://github.com/wix/screenshot-reporter#usage
-tryRequire('screenshot-reporter-env');
+try {
+  require('screenshot-reporter-env');
+} catch (e) {}
 
 
 require('../lib/require-hooks');
