@@ -38,7 +38,7 @@ module.exports = {
   tpaStyle: () => getConfig('tpaStyle', false),
   externals: () => getConfig('externals'),
   babel: () => _.get(packagejson, 'babel'),
-  noServerTranspile: () => getConfig('noServerTranspile'),
+  runIndividualTranspiler: () => getConfig('runIndividualTranspiler', true),
   unprocessedModules: () => externalUnprocessedModules
     .map(m => new RegExp(`node_modules/${m}`))
     .concat(allSourcesButExternalModules),

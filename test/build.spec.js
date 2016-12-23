@@ -345,7 +345,7 @@ describe('Aggregator: Build', () => {
     });
   });
 
-  describe('No transpilation', () => {
+  describe('No individual transpilation', () => {
     it('should not transpile if no tsconfig/babelrc', () => {
       const resp = test
         .setup({
@@ -353,24 +353,22 @@ describe('Aggregator: Build', () => {
           'src/a/a.js': 'const a = 1;',
           'package.json': fx.packageJson()
         })
-        .execute('build')
-      ;
+        .execute('build');
 
       expect(resp.stdout).to.not.contain('Compiling with Babel');
       expect(resp.code).to.equal(0);
       expect(test.list('/')).not.to.include('dist');
     });
 
-    it('should not transpile if "noServerTranspile" flag', () => {
+    it('should not transpile if runIndividualTranspiler = false', () => {
       const resp = test
         .setup({
           '.babelrc': '{}',
           'src/b.ts': 'const b = 2;',
           'src/a/a.js': 'const a = 1;',
-          'package.json': fx.packageJson({noServerTranspile: true})
+          'package.json': fx.packageJson({runIndividualTranspiler: false})
         })
-        .execute('build')
-      ;
+        .execute('build');
 
       expect(resp.stdout).to.not.contain('Compiling with Babel');
       expect(resp.code).to.equal(0);
