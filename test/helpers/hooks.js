@@ -4,7 +4,7 @@ const sh = require('shelljs');
 
 module.exports = {
   installProtractor: tmp => {
-    sh.exec('npm install protractor@3.3.0', {cwd: tmp});
+    sh.exec('npm install protractor@^4.0.0', {cwd: tmp});
   },
   installDependencies: tmp => {
     sh.exec('npm install', {cwd: tmp});
