@@ -51,9 +51,7 @@ describe('Aggregator: start', () => {
         })
         .spawn('start', '--entry-point=entry');
 
-      return checkServerLogCreated().then(() =>
-        expect(test.content('target/server.log')).to.contains('hello world!')
-      );
+      return checkServerLogContains('hello world!');
     });
 
     it('should run index.js by default', () => {
@@ -66,9 +64,7 @@ describe('Aggregator: start', () => {
         })
         .spawn('start');
 
-      return checkServerLogCreated().then(() =>
-        expect(test.content('target/server.log')).to.contains('hello world!')
-      );
+      return checkServerLogContains('hello world!');
     });
   });
 
@@ -194,8 +190,7 @@ describe('Aggregator: start', () => {
         })
         .spawn('start');
 
-      return checkServerLogCreated()
-        .then(() => expect(test.content('target/server.log')).to.contains('port 3001'));
+      return checkServerLogContains('port 3001');
     });
   });
 
@@ -363,6 +358,16 @@ describe('Aggregator: start', () => {
       test.contains('target/server.log') ?
         Promise.resolve() :
         Promise.reject()
+    );
+  }
+
+  function checkServerLogContains(str) {
+    return checkServerLogCreated().then(() =>
+      retryPromise({backoff: 100}, () =>
+        test.content('target/server.log').includes(str) ?
+          Promise.resolve() :
+          Promise.reject()
+      )
     );
   }
 
