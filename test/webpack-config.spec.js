@@ -51,6 +51,10 @@ describe('Webpack basic configs', () => {
         expect(test.content('dist/statics/app.bundle.js')).to.contain('//# sourceMappingURL=app.bundle.js.map');
         expect(test.list('dist/statics/')).to.contain('app.bundle.js.map');
       });
+
+      it('should generate filenames comments for each module', () => {
+        expect(test.content('dist/statics/app.bundle.js')).to.contain('!*** ./dep.js ***!');
+      });
     });
 
     describe('Custom configurations per project', () => {

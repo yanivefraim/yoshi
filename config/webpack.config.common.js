@@ -8,7 +8,8 @@ const config = {
   context,
 
   output: {
-    path: path.resolve('./dist')
+    path: path.resolve('./dist'),
+    pathinfo: true
   },
 
   resolve: {
