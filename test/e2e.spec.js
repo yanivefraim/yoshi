@@ -18,8 +18,8 @@ describe('Aggregator: e2e', () => {
 
     it('should support single module structure by default', () => {
       const res = test
-          .setup(singleModuleWithJasmine(), [hooks.installProtractor])
-          .execute('test', ['--protractor'], outsideTeamCity);
+        .setup(singleModuleWithJasmine(), [hooks.installProtractor])
+        .execute('test', ['--protractor'], outsideTeamCity);
 
       expect(res.code).to.equal(0);
       expect(res.stdout).to.contain('Running E2E with Protractor');
@@ -28,10 +28,21 @@ describe('Aggregator: e2e', () => {
       expect(res.stdout).to.contain('1 spec, 0 failures');
     });
 
+    it('should take a screenshot at the end of a failing test', () => {
+      const res = test
+        .setup(singleModuleWithFailingJasmine(), [hooks.installProtractor])
+        .execute('test', ['--protractor'], outsideTeamCity, {silent: true}); // run in silent so that TC won't fail with the screenshot log
+
+      expect(res.code).to.equal(1);
+      expect(res.stdout).to.contain('Running E2E with Protractor');
+      expect(res.stdout).to.contain('1 spec, 1 failure');
+      expect(res.stdout).to.contain('Screenshot link:');
+    });
+
     it(`should support multiple modules structure and consider clientProjectName configuration`, () => {
       const res = test
-          .setup(multipleModuleWithJasmine(), [hooks.installProtractor])
-          .execute('test', ['--protractor'], outsideTeamCity);
+        .setup(multipleModuleWithJasmine(), [hooks.installProtractor])
+        .execute('test', ['--protractor'], outsideTeamCity);
 
       expect(res.code).to.equal(0);
       expect(res.stdout).to.contain('Running E2E with Protractor');
@@ -40,8 +51,8 @@ describe('Aggregator: e2e', () => {
 
     it('should run protractor with mocha', () => {
       const res = test
-          .setup(singleModuleWithMocha(), [hooks.installProtractor])
-          .execute('test', ['--protractor'], outsideTeamCity);
+        .setup(singleModuleWithMocha(), [hooks.installProtractor])
+        .execute('test', ['--protractor'], outsideTeamCity);
 
       expect(res.code).to.equal(0);
       expect(res.stdout).to.contain('Running E2E with Protractor');
@@ -50,8 +61,8 @@ describe('Aggregator: e2e', () => {
 
     it('should run protractor with mocha and use TeamCity reporter', () => {
       const res = test
-          .setup(singleModuleWithMocha(), [hooks.installProtractor])
-          .execute('test', ['--protractor'], insideTeamCity);
+        .setup(singleModuleWithMocha(), [hooks.installProtractor])
+        .execute('test', ['--protractor'], insideTeamCity);
 
       expect(res.code).to.equal(0);
       expect(res.stdout).to.contain('Running E2E with Protractor');
@@ -75,10 +86,10 @@ describe('Aggregator: e2e', () => {
 
   it('should not run protractor if protractor.conf is not present', () => {
     const res = test
-        .setup({
-          'package.json': fx.packageJson()
-        })
-        .execute('test', ['--protractor']);
+      .setup({
+        'package.json': fx.packageJson()
+      })
+      .execute('test', ['--protractor']);
 
     expect(res.code).to.equal(0);
     expect(res.stdout).to.contains('Protractor configurations file was not found, not running e2e.');
@@ -113,6 +124,15 @@ describe('Aggregator: e2e', () => {
     return {
       'protractor.conf.js': fx.protractorConf(),
       'dist/test/subFolder/some.e2e.js': fx.e2eTestJasmine(),
+      'dist/statics/app.bundle.js': fx.e2eClient(),
+      'package.json': fx.packageJson(cdnConfigurations())
+    };
+  }
+
+  function singleModuleWithFailingJasmine() {
+    return {
+      'protractor.conf.js': fx.protractorConf(),
+      'dist/test/subFolder/some.e2e.js': fx.e2eTestJasmineFailing(),
       'dist/statics/app.bundle.js': fx.e2eClient(),
       'package.json': fx.packageJson(cdnConfigurations())
     };

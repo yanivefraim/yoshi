@@ -70,6 +70,13 @@ const fx = {
       expect(element(by.css("body")).getText()).toEqual("Hello Kitty");
     });
   `,
+  e2eTestJasmineFailing: () => `
+    it("should fail", () => {
+      browser.ignoreSynchronization = true;
+      browser.get("http://localhost:1337");
+      expect(1).toBe(0);
+    });
+  `,
   e2eTestJasmineES6Imports: () => `
     import path from 'path';
 

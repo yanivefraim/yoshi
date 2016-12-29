@@ -51,11 +51,13 @@ class Test {
     return null;
   }
 
-  execute(command, options, environment) {
-    const args = [command].concat(options);
-    const env = Object.assign({}, this.env, environment || {});
+  execute(command, cliArgs = [], environment = {}, execOptions = {}) {
+    const args = [command].concat(cliArgs).join(' ');
+    const env = Object.assign({}, this.env, environment);
+    const options = Object.assign({}, {cwd: this.tmp, env}, execOptions);
+
     if (this.hasTmp()) {
-      return sh.exec(`node '${this.script}' ${args.join(' ')}`, {cwd: this.tmp, env});
+      return sh.exec(`node '${this.script}' ${args}`, options);
     }
   }
 
