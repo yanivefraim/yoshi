@@ -38,7 +38,8 @@ module.exports = function (wallaby) {
     },
     workers: {
       initial: 1,
-      regular: 1
+      regular: 1,
+      recycle: true
     }
   };
 };
