@@ -139,6 +139,16 @@ const fx = {
   karmaWithJasmine: () => `
     'use strict';
     module.exports = {frameworks: ['jasmine']};
+  `,
+  petriSpec: () => `
+  {
+    "specs.infra.Dummy": {
+      "scope": "infra",
+      "owner": "tomasm@wix.com",
+      "onlyForLoggedInUsers": true,
+      "testGroups": ["true", "false"]
+    }
+  }
   `
 };
 

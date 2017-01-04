@@ -1284,4 +1284,32 @@ describe('Aggregator: Build', () => {
       expect(test.list('.nvmrc').length).to.equal(0);
     });
   });
+
+  describe('petri specs', () => {
+    it('should create petri-experiments.json file inside dist/statics folder', () => {
+      test
+        .setup({
+          'petri-specs/specs.infra.Dummy.json': fx.petriSpec(),
+          'package.json': fx.packageJson()
+        })
+        .execute('build');
+
+      expect(test.list('dist', '-R')).to.contain('statics/petri-experiments.json');
+    });
+
+    it('should not run petri specs if there are no spec files', () => {
+      test
+        .setup({
+          'petri-specs/dummy.txt': '',
+          'package.json': fx.packageJson()
+        })
+        .execute('build');
+
+      expect(test.stdout).not.to.contain('Building petri specs');
+    });
+
+    it.skip('should do nothing if there is no petri-specs installed', () => {
+      // TODO: figure out how to simulate module doesn't exist in registry
+    });
+  });
 });

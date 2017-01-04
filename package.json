@@ -113,6 +113,7 @@
     "extends": "wix"
   },
   "optionalDependencies": {
+    "petri-specs": "latest",
     "screenshot-reporter-env": "^1.0.12",
     "wix-eyes-env": "^1.0.18"
   }
