@@ -253,6 +253,23 @@ describe('Loaders', () => {
       expect(content).to.match(/"font.woff2\?\w+"/);
       expect(content).to.match(/"font.eot\?\w+"/);
     });
+
+    it('should load files that have a path with query string ', () => {
+      test
+        .setup({
+          'src/client.js': `require('./font.ttf?version=1.0.0');
+            require('./image.svg?version=1.0.2&some-other-param=value');`,
+          'src/font.ttf': _.repeat('a', 10001),
+          'src/image.svg': _.repeat('a', 10001)
+        })
+        .execute('build');
+
+      const content = test.content('dist/statics/app.bundle.js');
+
+      expect(content).to.contain('font.ttf?version=1.0.0');
+      expect(content).to.contain('./image.svg?version=1.0.2&some-other-param=value');
+    });
+
   });
 
   describe('Json', () => {
