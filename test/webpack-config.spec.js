@@ -54,6 +54,7 @@ describe('Webpack basic configs', () => {
 
       it('should generate filenames comments for each module', () => {
         expect(test.content('dist/statics/app.bundle.js')).to.contain('!*** ./dep.js ***!');
+        expect(test.content('dist/statics/app.bundle.min.js')).not.to.contain('!*** ./dep.js ***!');
       });
     });
 
