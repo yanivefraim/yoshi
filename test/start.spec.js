@@ -182,7 +182,7 @@ describe('Aggregator: start', () => {
     beforeEach(() => server = takePort(3000));
     afterEach(() => server.close());
 
-    it('it should use the next available port', () => {
+    it.skip('it should use the next available port', () => {
       child = test
         .setup({
           'index.js': `console.log('port', process.env.PORT)`,
