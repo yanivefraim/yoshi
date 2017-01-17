@@ -363,11 +363,13 @@ describe('Aggregator: start', () => {
 
   function checkServerLogContains(str) {
     return checkServerLogCreated().then(() =>
-      retryPromise({backoff: 100}, () =>
-        test.content('target/server.log').includes(str) ?
+      retryPromise({backoff: 100}, () => {
+        const content = test.content('target/server.log');
+
+        return content.includes(str) ?
           Promise.resolve() :
-          Promise.reject()
-      )
+          Promise.reject(new Error(`Expect server.log to contain "${str}", got "${content}" instead`));
+      })
     );
   }
 
