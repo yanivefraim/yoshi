@@ -9,7 +9,10 @@ const config = packagejson.wix || {};
 const externalUnprocessedModules = [
   'wix-style-react/src'
 ].concat(getConfig('externalUnprocessedModules', []));
-const allSourcesButExternalModules = /^(?!.*?node_modules).*$/;
+
+const allSourcesButExternalModules = function (path) {
+  return path.startsWith(process.cwd()) && !path.includes('node_modules');
+};
 
 module.exports = {
   specs: {
@@ -39,9 +42,13 @@ module.exports = {
   externals: () => getConfig('externals'),
   babel: () => _.get(packagejson, 'babel'),
   runIndividualTranspiler: () => getConfig('runIndividualTranspiler', true),
-  unprocessedModules: () => externalUnprocessedModules
-    .map(m => new RegExp(`node_modules/${m}`))
-    .concat(allSourcesButExternalModules),
+  unprocessedModules: () => path => {
+    const externalRegexList = externalUnprocessedModules
+      .map(m => new RegExp(`node_modules/${m}`));
+
+    return externalRegexList.some(regex => regex.test(path)) ||
+      allSourcesButExternalModules(path);
+  },
   jestConfig: () => _.get(packagejson, 'jest', {})
 };
 
