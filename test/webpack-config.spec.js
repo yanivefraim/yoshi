@@ -86,6 +86,16 @@ describe('Webpack basic configs', () => {
       expect(test.content('dist/statics/app.bundle.js')).to.contain('const some');
     });
 
+    it('should set chunk filename', () => {
+      test.setup({
+        'src/client.js': `require.ensure('./tmp', function(){}, 'tmp');`,
+        'src/tmp.js': `var x = '(^_^)';`
+      })
+      .execute('build');
+
+      expect(test.list('dist/statics/')).to.contain('tmp.chunk.js');
+    });
+
     it('should prepend dynamic public path (AKA __webpack_public_path__)', () => {
       test.setup({
         'src/image.jpg': '(^_^)'.repeat(2500),

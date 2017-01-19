@@ -44,6 +44,7 @@ const config = ({debug, separateCss = projectConfig.separateCss()} = {}) => {
     output: {
       path: path.resolve('./dist/statics'),
       filename: debug ? '[name].bundle.js' : '[name].bundle.min.js',
+      chunkFilename: debug ? '[name].chunk.js' : '[name].chunk.min.js',
       pathinfo: debug
     },
 
