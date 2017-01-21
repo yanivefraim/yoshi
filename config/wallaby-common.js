@@ -33,7 +33,7 @@ module.exports = function (wallaby) {
     env: {
       type: 'node',
       params: {
-        env: `SRC_PATH=./src;NODE_ENV=test;`
+        env: `SRC_PATH=./src;NODE_ENV=test;WIX_NODE_BUILD_WATCH_MODE=true;`
       }
     },
     workers: {
