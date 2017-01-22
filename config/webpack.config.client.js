@@ -41,6 +41,8 @@ const config = ({debug, separateCss = projectConfig.separateCss()} = {}) => {
       ]
     ],
 
+    devtool: debug ? 'cheap-module-source-map' : 'source-map',
+
     output: {
       path: path.resolve('./dist/statics'),
       filename: debug ? '[name].bundle.js' : '[name].bundle.min.js',
