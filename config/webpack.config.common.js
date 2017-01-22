@@ -25,6 +25,7 @@ const config = {
     loaders: [
       require('../lib/loaders/babel')(projectConfig.isAngularProject()),
       require('../lib/loaders/typescript')(projectConfig.isAngularProject()),
+      require('../lib/loaders/graphql')(),
       require('../lib/loaders/images')(),
       require('../lib/loaders/json')(),
       require('../lib/loaders/html')(),

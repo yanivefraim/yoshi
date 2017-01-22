@@ -316,4 +316,23 @@ describe('Loaders', () => {
       expect(test.content('dist/statics/app.bundle.js')).to.contain('### title')
     );
   });
+
+  describe('GraphQL', () => {
+    beforeEach(() =>
+      test
+        .setup({
+          'src/getData1.graphql': 'query GetData1 { id, name }',
+          'src/getData2.gql': 'query GetData2 { id, name }',
+          'src/client.js': `require('./getData1.graphql'); require('./getData2.gql')`
+        })
+        .execute('build')
+    );
+
+    it('should embed parsed graphql query into bundle', () => {
+      const content = test.content('dist/statics/app.bundle.js');
+
+      expect(content).to.contain('{"kind":"Name","value":"GetData1"}');
+      expect(content).to.contain('{"kind":"Name","value":"GetData2"}');
+    });
+  });
 });

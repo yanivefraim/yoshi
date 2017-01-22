@@ -261,6 +261,29 @@ describe('Aggregator: Test', () => {
       expect(res.stdout).to.contain('2 passing');
     });
 
+    it('should load graphql files', function () {
+      this.timeout(30000);
+
+      const res = test
+        .setup({
+          'src/getData1.graphql': 'query GetData1 { id, name }',
+          'src/getData2.gql': 'query GetData2 { id, name }',
+          'src/some.spec.js': `
+            const assert = require('assert');
+            const getData1 = require('./getData1.graphql');
+            const getData2 = require('./getData2.gql');
+
+            it("pass", () => assert.equal(getData1.kind, 'Document'));
+            it("pass", () => assert.equal(getData2.kind, 'Document'));
+          `,
+          'package.json': fx.packageJson()
+        })
+        .execute('test', ['--mocha']);
+
+      expect(res.code).to.equal(0);
+      expect(res.stdout).to.contain('2 passing');
+    });
+
     it('should fail with exit code 1', function () {
       this.timeout(60000);
 
