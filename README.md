@@ -254,7 +254,7 @@ In case you don't want to transpile your server (node) code, and you still need 
 
 ##### `wix.externalUnprocessedModules`
 
-You can explicitly ask build process to transpile some node modules in case those modules do not ontain transpiled code.
+You can explicitly ask build process to transpile some node modules in case those modules do not contain transpiled code.
 Note that this is not a recommended workflow. It can be very error prone:
  1. It might be for example that your app babel config and the node module babel config will be conflicting.
  2. Any babel plugin that is used by your dependencies will need to be installed by your app as well.
