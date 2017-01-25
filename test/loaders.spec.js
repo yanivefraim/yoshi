@@ -173,6 +173,31 @@ describe('Loaders', () => {
         expect(test.content('dist/statics/app.css')).not.to.contain('color-1');
         expect(test.content('dist/statics/app.css')).not.to.contain('body-m');
       });
+
+      describe('composes keyword', () => {
+        const commonConfig = {
+          'src/client.js': `require('./some-css.scss');`,
+          'src/server.js': `require('./some-css.scss');`,
+          'src/some-css.scss': ` .some-rule { composes: foo from './base.scss';}`,
+          'src/base.scss': `.foo{background: blue;} // comments are only possible in sass`
+        };
+
+        it('should support nested sass imports when using "compose"', () => {
+          test.setup(Object.assign({'package.json': fx.packageJson({})}, commonConfig))
+            .execute('build');
+          expect(test.content('dist/statics/app.css')).to.contain('background: blue');
+          expect(test.content('dist/statics/app.bundle.js'))
+            .to.match(/"some-rule":"some-css__some-rule\w+ base__foo\w+"/);
+        });
+
+        it('should support nested sass imports when using "compose", when using wix-tpa-style-loader', () => {
+          test.setup(Object.assign({'package.json': fx.packageJson({tpaStyle: true})}, commonConfig))
+            .execute('build');
+          expect(test.content('dist/statics/app.css')).to.contain('background: blue');
+          expect(test.content('dist/statics/app.bundle.js'))
+            .to.match(/"some-rule":"some-css__some-rule\w+ base__foo\w+"/);
+        });
+      });
     });
 
     describe('detach css', () => {
