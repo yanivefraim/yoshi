@@ -96,7 +96,7 @@ describe('Loaders', () => {
     it('should apply ng-annotate loader on angular project', () => {
       test
         .setup({
-          'src/app.ts': `angular.module('fakeModule', []).config(function($typescript){});`,
+          'src/app.ts': `declare var angular: any; angular.module('fakeModule', []).config(function($typescript){});`,
           'tsconfig.json': fx.tsconfig(),
           'package.json': fx.packageJson({
             entry: './app.ts'
@@ -123,7 +123,7 @@ describe('Loaders', () => {
         .execute('build');
 
       expect(resp.code).to.equal(1);
-      expect(resp.stdout).to.contain('TypeScript: 1 syntax error');
+      expect(resp.stdout).to.contain('error TS1003: Identifier expected');
     });
   });
 
