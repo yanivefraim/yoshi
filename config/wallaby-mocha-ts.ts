@@ -23,8 +23,7 @@ module.exports = function (wallaby) {
     setup(wallaby) {
       const mocha = wallaby.testFramework;
       mocha.timeout(30000);
-      require('wix-node-build/lib/ignore-extensions');
-      require('./test/mocha-setup');
+      require('wix-node-build/lib/setup/mocha-setup');
     },
 
     env: {
