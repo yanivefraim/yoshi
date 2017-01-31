@@ -7,10 +7,7 @@ const projectConfig = require('./project');
 const config = {
   context,
 
-  output: {
-    path: path.resolve('./dist'),
-    pathinfo: true
-  },
+  output: getOutput(),
 
   resolve: {
     root: context,
@@ -37,5 +34,22 @@ const config = {
 
   externals: projectConfig.externals()
 };
+
+function getOutput() {
+  const libraryExports = projectConfig.exports();
+  const output = {
+    path: path.resolve('./dist'),
+    pathinfo: true
+  };
+
+  if (libraryExports) {
+    return Object.assign({}, output, {
+      library: libraryExports,
+      libraryTarget: 'umd'
+    });
+  }
+
+  return output;
+}
 
 module.exports = config;

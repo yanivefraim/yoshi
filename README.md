@@ -262,6 +262,12 @@ Note that this is not a recommended workflow. It can be very error prone:
 
 Anyway, if you don't have a better alternative you can pass array with module names in this property.
 
+##### `wix.exports`
+
+If set, export the bundle as library. `wix.exports` is the name.
+
+Use this if you are writing a library and want to publish it as single file. Library will be exported with `UMD` format.
+
 ##Examples
 
 1. [React Fullstack Seed](https://github.com/wix/react-fullstack-seed)

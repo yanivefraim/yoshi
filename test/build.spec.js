@@ -661,6 +661,23 @@ describe('Aggregator: Build', () => {
     });
   });
 
+  describe('Bundle output with library support', () => {
+    it('should generate a bundle with umd library support', () => {
+      const res = test
+          .setup({
+            'src/client.js': '',
+            'package.json': fx.packageJson({
+              exports: 'MyLibraryEndpoint'
+            })
+          })
+          .execute('build');
+
+      expect(res.code).to.equal(0);
+      expect(test.content('dist/statics/app.bundle.js')).to.contain('exports["MyLibraryEndpoint"]');
+      expect(test.content('dist/statics/app.bundle.js')).to.contain('root["MyLibraryEndpoint"]');
+    });
+  });
+
   describe('Bundle - sass', () => {
     it('should generate a bundle with css', () => {
       const res = test
