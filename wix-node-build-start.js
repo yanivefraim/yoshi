@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
-const gulp = require('gulp');
-const plugins = require('gulp-load-plugins')();
 const program = require('commander');
 const {suffix, watchMode} = require('./lib/utils');
-const {startWebpack} = require('./lib/tasks/webpack');
-const runServer = require('./lib/tasks/run-server');
+
+watchMode(true);
+
+const run = require('./lib/run');
+const start = require('./lib/tasks/aggregators/start');
 
 program
   .option('-e, --entry-point <entry>', 'entry point of the application', suffix('.js'), 'index.js')
@@ -14,12 +15,4 @@ program
   .option('-s, --silent', 'deprecated, for backward comp.')
   .parse(process.argv);
 
-const options = Object.assign(program, {
-  done: () => program.server && runServer({entryPoint: program.entryPoint})
-});
-
-watchMode(true);
-require('./lib/tasks/aggregators/build')(gulp, plugins, options);
-gulp.start('start');
-
-startWebpack({debug: true});
+run(program)(start);

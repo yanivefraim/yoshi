@@ -30,7 +30,7 @@ describe('Aggregator: Build', () => {
         .execute('build');
 
       expect(resp.code).to.equal(0);
-      expect(resp.stdout).to.contain('Compiling with Sass');
+      expect(resp.stdout).to.contain(`Finished 'sass'`);
       expect(test.content('dist/app/a/style.scss')).to.contain(compiledStyle);
       expect(test.content('dist/src/b/style.scss')).to.contain(compiledStyle);
       expect(test.content('dist/test/c/style.scss')).to.contain(compiledStyle);
@@ -49,7 +49,7 @@ describe('Aggregator: Build', () => {
         .execute('build');
 
       expect(resp.code).to.equal(1);
-      expect(resp.stdout).to.contain('Compiling with Sass');
+      expect(resp.stdout).to.contain(`Failed 'sass'`);
       expect(resp.stderr).to.contain('Invalid CSS after ".a {');
     });
 
@@ -73,7 +73,7 @@ describe('Aggregator: Build', () => {
         .execute('build');
 
       expect(resp.code).to.equal(0);
-      expect(resp.stdout).to.contain('Compiling with Sass');
+      expect(resp.stdout).to.contain(`Finished 'sass'`);
       expect(test.content('dist/app/a/style.scss')).to.contain('.a {\n  color: black; }');
     });
   });
@@ -94,7 +94,7 @@ describe('Aggregator: Build', () => {
         .execute('build')
       ;
 
-      expect(resp.stdout).to.contain('Compiling with Babel');
+      expect(resp.stdout).to.contain(`Finished 'babel'`);
       expect(resp.code).to.equal(0);
       expect(test.list('dist')).to.include.members(['src', 'app', 'test', 'testkit', 'index.js']);
     });
@@ -118,7 +118,7 @@ describe('Aggregator: Build', () => {
         .execute('build')
       ;
 
-      expect(resp.stdout).to.contain('Compiling with Babel');
+      expect(resp.stdout).to.contain(`Finished 'babel'`);
       expect(resp.code).to.equal(0);
       expect(test.content('dist/src/a/a.js')).to.contain('var a = 1;');
       expect(test.content('dist/src/a/a.js')).to.contain('//# sourceMappingURL=a.js.map');
@@ -139,7 +139,7 @@ describe('Aggregator: Build', () => {
         .execute('build')
       ;
 
-      expect(resp.stdout).to.contain('Compiling with Babel');
+      expect(resp.stdout).to.contain(`Finished 'babel'`);
       expect(resp.code).to.equal(0);
       expect(test.content('dist/src/a/a.js')).to.contain('const a = 1;');
       expect(test.content('dist/src/a/a.js')).to.contain('//# sourceMappingURL=a.js.map');
@@ -232,7 +232,7 @@ describe('Aggregator: Build', () => {
         })
         .execute('build');
 
-      expect(resp.stdout).to.contain('Compiling TypeScript');
+      expect(resp.stdout).to.contain(`Finished 'typescript'`);
       expect(resp.code).to.equal(0);
       expect(test.content('dist/app/a.js')).to.contain('var a = 1');
       expect(test.content('dist/app/b.js')).to.contain('var b = 2');
@@ -356,7 +356,7 @@ describe('Aggregator: Build', () => {
         })
         .execute('build');
 
-      expect(resp.stdout).to.not.contain('Compiling with Babel');
+      expect(resp.stdout).to.not.contain(`Finished 'babel'`);
       expect(resp.code).to.equal(0);
       expect(test.list('/')).not.to.include('dist');
     });
@@ -371,7 +371,7 @@ describe('Aggregator: Build', () => {
         })
         .execute('build');
 
-      expect(resp.stdout).to.not.contain('Compiling with Babel');
+      expect(resp.stdout).to.not.contain(`Finished 'babel'`);
       expect(resp.code).to.equal(0);
       expect(test.list('/')).not.to.include('dist');
     });
@@ -1272,7 +1272,7 @@ describe('Aggregator: Build', () => {
           .execute('build');
 
         expect(res.code).to.be.equal(0);
-        expect(res.stdout).to.include(`Cleaning up '${folderName}'...`);
+        expect(res.stdout).to.include(`Finished 'clean'`);
         expect(test.list(folderName)).to.not.include('old.js');
         expect(test.list('dist/src')).to.include('new.js');
       })

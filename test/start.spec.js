@@ -309,7 +309,7 @@ describe('Aggregator: start', () => {
           .spawn('start');
 
         return checkServerLogCreated().then(() => {
-          expect(test.stdout).to.contains(`Cleaning up '${folderName}'...`);
+          expect(test.stdout).to.contains(`Finished 'clean'`);
           expect(test.list(folderName)).to.not.include('old.js');
           expect(test.list('dist/src')).to.include('new.js');
         });

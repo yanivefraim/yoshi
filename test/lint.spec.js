@@ -93,7 +93,7 @@ p {
         })
         .execute('lint', ['--client']);
 
-      expect(res.stdout).to.contain('Linting with Stylelint');
+      expect(res.stdout).to.contain(`Starting 'stylelint'`);
       expect(res.stdout).to.contain('2 sources checked');
       expect(res.code).to.equal(0);
     });

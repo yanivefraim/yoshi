@@ -2,9 +2,9 @@
 'use strict';
 
 const _ = require('lodash');
-const gulp = require('gulp');
-const plugins = require('gulp-load-plugins')();
 const program = require('commander');
+const run = require('./lib/run');
+const test = require('./lib/tasks/aggregators/test');
 
 program
   .option('--mocha', 'run unit tests on mocha')
@@ -15,8 +15,4 @@ program
   .option('--watch', 'watch for changes')
   .parse(process.argv);
 
-const options = ['mocha', 'jasmine', 'karma', 'jest', 'protractor'];
-const command = options.find(option => program[option]);
-
-require('./lib/tasks/aggregators/test')(gulp, plugins, program);
-gulp.start(command ? `test:${command}` : 'test');
+run(program)(test);

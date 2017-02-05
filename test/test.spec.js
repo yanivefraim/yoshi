@@ -14,7 +14,8 @@ describe('Aggregator: Test', () => {
   afterEach(() => test.teardown());
 
   describe('defaults', () => {
-    it('should pass with exit code 0 with mocha as default', () => {
+    it('should pass with exit code 0 with mocha as default', function () {
+      this.timeout(40000);
       const res = test
         .setup({
           'test/component.spec.js': 'it.only("pass", () => 1);',
@@ -46,7 +47,7 @@ describe('Aggregator: Test', () => {
         .execute('test');
 
       expect(res.code).to.equal(0);
-      expect(res.stdout).to.contain('Testing with Mocha');
+      expect(res.stdout).to.contain(`Finished 'mocha'`);
       expect(res.stdout).to.contain('1 passing');
     });
 
@@ -528,7 +529,7 @@ describe('Aggregator: Test', () => {
           .execute('test', ['--karma']);
 
         expect(res.code).to.equal(0);
-        expect(res.stdout).to.contain('Testing with Karma');
+        expect(res.stdout).to.contain(`Finished 'karma'`);
         expect(res.stdout).to.contain('Executed 1 of 1 SUCCESS');
       });
 
@@ -543,7 +544,7 @@ describe('Aggregator: Test', () => {
 
         expect(res.code).to.equal(1);
         expect(res.stdout).to.contain(`Module not found: Error: Cannot resolve 'file' or 'directory' ./ballsack`);
-        expect(res.stdout).not.to.contain('Testing with Karma');
+        expect(res.stdout).not.to.contain(`Finished 'karma'`);
       });
 
       it('should fail with exit code 1', () => {
@@ -557,7 +558,7 @@ describe('Aggregator: Test', () => {
           .execute('test', ['--karma']);
 
         expect(res.code).to.equal(1);
-        expect(res.stdout).to.contain('Testing with Karma');
+        expect(res.stdout).to.contain(`Failed 'karma'`);
         expect(res.stdout).to.contain('1 FAILED');
       });
 
@@ -614,7 +615,7 @@ describe('Aggregator: Test', () => {
 
         expect(res.code).to.equal(0);
         expect(res.stdout)
-          .to.contain('Testing with Karma')
+          .to.contain(`Finished 'karma'`)
           .and.contain('Executed 1 of 1 SUCCESS');
       });
 
@@ -625,7 +626,7 @@ describe('Aggregator: Test', () => {
 
         expect(res.code).to.equal(0);
         expect(res.stdout)
-          .to.contain('Testing with Karma')
+          .to.contain(`Finished 'karma'`)
           .and.contain('##teamcity[testStarted name=\'should just pass\']');
       });
     });
@@ -641,7 +642,7 @@ describe('Aggregator: Test', () => {
           .execute('test', ['--karma']);
 
         expect(res.code).to.equal(0);
-        expect(res.stdout).to.contain('Testing with Karma');
+        expect(res.stdout).to.contain(`Finished 'karma'`);
         expect(res.stdout).to.contain('Executed 1 of 1 SUCCESS');
       });
 
@@ -655,7 +656,7 @@ describe('Aggregator: Test', () => {
           .execute('test', ['--karma']);
 
         expect(res.code).to.equal(1);
-        expect(res.stdout).to.contain('Testing with Karma');
+        expect(res.stdout).to.contain(`Finished 'karma'`);
         expect(res.stdout).to.contain('Executed 1 of 1 (1 FAILED)');
       });
     });

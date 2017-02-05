@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-const gulp = require('gulp');
-const plugins = require('gulp-load-plugins')();
+const run = require('./lib/run');
+const release = require('./lib/tasks/aggregators/release');
 
-require('./lib/tasks/aggregators/release')(gulp, plugins);
-gulp.start('release');
+run()(release);
