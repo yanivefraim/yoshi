@@ -3,7 +3,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const autoprefixer = require('autoprefixer');
-const {mergeByConcat, isSingleEntry, inTeamCity} = require('../lib/utils');
+const {mergeByConcat, isSingleEntry} = require('../lib/utils');
 const webpackConfigCommon = require('./webpack.config.common');
 const projectConfig = require('./project');
 const DynamicPublicPath = require('../lib/plugins/dynamic-public-path');
@@ -41,7 +41,7 @@ const config = ({debug, separateCss = projectConfig.separateCss()} = {}) => {
       ]
     ],
 
-    devtool: inTeamCity() ? 'source-map' : 'cheap-module-source-map',
+    devtool: debug ? 'cheap-module-source-map' : 'source-map',
 
     output: {
       path: path.resolve('./dist/statics'),
