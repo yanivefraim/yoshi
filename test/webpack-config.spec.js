@@ -1,8 +1,9 @@
 'use strict';
 
+const {expect} = require('chai');
 const tp = require('./helpers/test-phases');
 const fx = require('./helpers/fixtures');
-const expect = require('chai').expect;
+const {insideTeamCity} = require('./helpers/env-variables');
 
 describe('Webpack basic configs', () => {
   let res, test;
@@ -23,7 +24,7 @@ describe('Webpack basic configs', () => {
   describe('Common configurations', () => {
     describe('Basic flow', () => {
       beforeEach(() => {
-        res = test.execute('build');
+        res = test.execute('build', [], insideTeamCity);
       });
 
       it('should exit with exit code 0 on success', () =>
@@ -40,7 +41,7 @@ describe('Webpack basic configs', () => {
         // in project itself: require('dep')
 
         // dep.js
-        expect(test.content('dist/statics/app.bundle.js')).to.contain('function (a) {\n\t  return 1;\n\t\t}')
+        expect(test.content('dist/statics/app.bundle.js')).to.contain('function (a) {\n\t  return 1;\n\t}')
       );
 
       // it('should display webpack stats with colors', () => {
