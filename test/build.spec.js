@@ -50,7 +50,7 @@ describe('Aggregator: Build', () => {
 
       expect(resp.code).to.equal(1);
       expect(resp.stdout).to.contain(`Failed 'sass'`);
-      expect(resp.stderr).to.contain('Invalid CSS after ".a {');
+      expect(resp.stdout).to.contain('Invalid CSS after ".a {');
     });
 
     it('should consider node_modules for path', () => {
