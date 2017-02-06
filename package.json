@@ -29,6 +29,7 @@
     "babel-loader": "^6.2.5",
     "babel-register": "^6.14.0",
     "commander": "^2.9.0",
+    "cross-spawn": "^5.0.1",
     "css-loader": "^0.23.1",
     "detect-port": "1.0.7",
     "eslint": "^3.6.1",

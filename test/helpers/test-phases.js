@@ -3,7 +3,7 @@
 const process = require('process');
 const path = require('path');
 const sh = require('shelljs');
-const {spawn} = require('child_process');
+const spawn = require('cross-spawn');
 const cwd = path.join(__dirname, '..', '..');
 
 class Test {
