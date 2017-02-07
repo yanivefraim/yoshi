@@ -45,6 +45,8 @@
     "gulp-file-transform-cache": "~1.0.6",
     "gulp-jasmine": "^2.3.0",
     "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-spawn-mocha": "^2.2.2",
     "gulp-stylelint": "^2.0.2",
