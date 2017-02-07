@@ -41,7 +41,6 @@
     "graphql-tag": "^1.2.3",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
-    "gulp-eslint": "^3.0.1",
     "gulp-file-transform-cache": "~1.0.6",
     "gulp-jasmine": "^2.3.0",
     "gulp-plumber": "^1.1.0",
