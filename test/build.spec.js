@@ -18,14 +18,11 @@ describe('Aggregator: Build', () => {
       const compiledStyle = '.a .b {\n  color: red; }';
       const resp = test
         .setup({
-          'src/server.js': '',
-          'src/config.js': '',
           'src/client.js': '',
           'app/a/style.scss': fx.scss(),
           'src/b/style.scss': fx.scss(),
           'test/c/style.scss': fx.scss(),
-          'package.json': fx.packageJson(),
-          'pom.xml': fx.pom()
+          'package.json': fx.packageJson()
         })
         .execute('build');
 
@@ -39,12 +36,9 @@ describe('Aggregator: Build', () => {
     it('should fail with exit code 1', () => {
       const resp = test
         .setup({
-          'src/server.js': '',
-          'src/config.js': '',
           'src/client.js': '',
           'app/a/style.scss': fx.scssInvalid(),
-          'package.json': fx.packageJson(),
-          'pom.xml': fx.pom()
+          'package.json': fx.packageJson()
         })
         .execute('build');
 
@@ -56,25 +50,31 @@ describe('Aggregator: Build', () => {
     it('should consider node_modules for path', () => {
       const resp = test
         .setup({
-          'src/server.js': '',
-          'src/config.js': '',
           'src/client.js': '',
-          'node_modules/some-module/style.scss': `
-            .a {
-              color: black;
-            }
-          `,
-          'app/a/style.scss': `
-            @import 'some-module/style.scss'
-          `,
-          'package.json': fx.packageJson(),
-          'pom.xml': fx.pom()
+          'node_modules/some-module/style.scss': `.a { color: black; }`,
+          'src/a/style.scss': `@import 'some-module/style.scss'`,
+          'package.json': fx.packageJson()
         })
         .execute('build');
 
       expect(resp.code).to.equal(0);
       expect(resp.stdout).to.contain(`Finished 'sass'`);
-      expect(test.content('dist/app/a/style.scss')).to.contain('.a {\n  color: black; }');
+      expect(test.content('dist/src/a/style.scss')).to.contain('.a {\n  color: black; }');
+    });
+
+    it('should not render partial files with the name starting with _', () => {
+      const resp = test
+        .setup({
+          'src/client.js': '',
+          'src/a/_partial.scss': '$text-color: #ff0000',
+          'src/a/style.scss': `@import './partial'; body {color: $text-color;}`,
+          'package.json': fx.packageJson()
+        })
+        .execute('build');
+
+      expect(resp.code).to.equal(0);
+      expect(resp.stdout).to.contain(`Finished 'sass'`);
+      expect(test.list('dist', '-R')).not.to.contain('app/a/_partial.scss');
     });
   });
 
