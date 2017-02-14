@@ -28,7 +28,7 @@ module.exports = class Runner {
     shelljs.pushd(this._clonedDir);
 
     try {
-      const scriptToRun = path.join(__dirname, '../../yoshi.js');
+      const scriptToRun = path.join(__dirname, '../../wix-node-build.js');
       return shelljs.exec(`node '${scriptToRun}' ${this._args.join(' ')}`);
     } finally {
       shelljs.popd();

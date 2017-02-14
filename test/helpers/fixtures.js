@@ -16,7 +16,7 @@ const fx = {
     name: 'b',
     version: '1.1.0',
     scripts: {
-      build: 'yoshi build'
+      build: 'wix-node-build build'
     }
   }, null, 2),
   css: () => '.a {\ncolor: red;\n}\n',
