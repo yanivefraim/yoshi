@@ -12,7 +12,7 @@ class Test {
     const script = typeof args[0] === 'string' && args[0];
     const env = typeof args[0] === 'object' ? args[0] : args[1];
 
-    this.script = script || path.join(cwd, 'wix-node-build.js');
+    this.script = script || path.join(cwd, 'yoshi.js');
     this.env = Object.assign({}, process.env, env);
     this.child = null;
     this.stdout = '';
