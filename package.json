@@ -12,7 +12,8 @@
     "release": "wnpm-release --no-shrinkwrap"
   },
   "bin": {
-    "wix-node-build": "./wix-node-build.js"
+    "wix-node-build": "./wix-node-build.js",
+    "yoshi": "./yoshi.js"
   },
   "repository": {
     "type": "git",

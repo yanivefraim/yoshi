@@ -1,6 +1,2 @@
-#!/usr/bin/env node
+require('./yoshi-release');
 
-const run = require('./lib/run');
-const release = require('./lib/tasks/aggregators/release');
-
-run()(release);

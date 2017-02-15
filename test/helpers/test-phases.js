@@ -7,12 +7,10 @@ const spawn = require('cross-spawn');
 const cwd = path.join(__dirname, '..', '..');
 
 class Test {
-  constructor() {
-    const args = Array.prototype.slice.call(arguments);
+  constructor(...args) {
     const script = typeof args[0] === 'string' && args[0];
     const env = typeof args[0] === 'object' ? args[0] : args[1];
-
-    this.script = script || path.join(cwd, 'wix-node-build.js');
+    this.script = script || path.join(cwd, 'yoshi.js');
     this.env = Object.assign({}, process.env, env);
     this.child = null;
     this.stdout = '';
@@ -128,7 +126,7 @@ function flattenTree(tree, prefix) {
 }
 
 module.exports = {
-  create: script => new Test(script)
+  create: (...args) => new Test(...args)
 };
 
 /*

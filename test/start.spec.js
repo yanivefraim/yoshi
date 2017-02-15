@@ -10,109 +10,22 @@ const fetch = require('node-fetch');
 const retryPromise = require('retry-promise').default;
 const {outsideTeamCity} = require('./helpers/env-variables');
 const {readFileSync} = require('fs');
+const path = require('path');
 
-describe('Aggregator: start', () => {
+describe('Aggregator: Start', () => {
   let test, child;
+  describe('Old wix-node-build', () => {
 
-  beforeEach(() => {
-    test = tp.create();
-    child = null;
-  });
-
-  afterEach(done => {
-    test.teardown();
-    killSpawnProcessAndHidChildren(done);
-  });
-
-  describe('tests', function () {
-    it('should run tests initially', () => {
-      child = test
-        .setup({
-          'src/test.spec.js': '',
-          'src/client.js': '',
-          'entry.js': '',
-          'package.json': fx.packageJson(),
-          'pom.xml': fx.pom()
-        })
-        .spawn('start');
-
-      return checkStdout('Testing with Mocha');
-    });
-  });
-
-  describe('--entry-point', () => {
-    it('should run the entry point provided', () => {
-      child = test
-        .setup({
-          'src/client.js': '',
-          'entry.js': `console.log('hello world!')`,
-          'package.json': fx.packageJson(),
-          'pom.xml': fx.pom()
-        })
-        .spawn('start', '--entry-point=entry');
-
-      return checkServerLogContains('hello world!');
+    beforeEach(() => {
+      test = tp.create(path.join(__dirname, '..', 'wix-node-build.js'));
+      child = null;
     });
 
-    it('should run index.js by default', () => {
-      child = test
-        .setup({
-          'src/client.js': '',
-          'index.js': `console.log('hello world!')`,
-          'package.json': fx.packageJson(),
-          'pom.xml': fx.pom()
-        })
-        .spawn('start');
-
-      return checkServerLogContains('hello world!');
-    });
-  });
-
-  describe('--no-server', () => {
-    it('should not start a server if --no-server is passed', () => {
-      child = test
-        .setup({
-          'src/assets/image.png': '',
-          'index.js': `console.log('should not run');`,
-          'package.json': fx.packageJson({servers: {cdn: {port: 3005}}}),
-          '.babelrc': '{}'
-        })
-        .spawn('start', ['--no-server']);
-
-      return cdnIsServing('assets/image.png')
-        .then(() => expect(test.stdout).not.to.contain('should not run'));
-    });
-  });
-
-  describe('HMR', () => {
-    it('should create bundle with enabled hot module replacement', () => {
-      child = test
-        .setup({
-          'src/client.js': `module.exports.wat = 'hmr';\n`,
-          'package.json': fx.packageJson()
-        })
-        .spawn('start');
-
-      return checkServerIsServing({port: 3200, file: 'app.bundle.js'})
-        .then(content =>
-          expect(content).to.contain(`if (false) {\n\t  throw new Error("[HMR] Hot Module Replacement is disabled.");`));
+    afterEach(done => {
+      test.teardown();
+      killSpawnProcessAndHidChildren(done);
     });
 
-    it('should set proper public path', () => {
-      child = test
-        .setup({
-          'src/client.js': `module.exports.wat = 'hmr';\n`,
-          'package.json': fx.packageJson()
-        })
-        .spawn('start');
-
-      return checkServerIsServing({port: 3200, file: 'app.bundle.js'})
-        .then(content =>
-          expect(content).to.contain(`__webpack_require__.p = "http://localhost:3200/";`));
-    });
-  });
-
-  describe('CDN server', () => {
     it('should run cdn server with default dir', () => {
       child = test
         .setup({
@@ -124,213 +37,328 @@ describe('Aggregator: start', () => {
 
       return cdnIsServing('assets/test.json');
     });
-
-    it('should run cdn server with configured dir', () => {
-      child = test
-        .setup({
-          'src/assets/test.json': '{a: 1}',
-          'src/index.js': 'var a = 1;',
-          'package.json': fx.packageJson({servers: {cdn: {port: 3005, dir: 'dist/statics'}}})
-        })
-        .spawn('start');
-
-      return cdnIsServing('assets/test.json');
-    });
-
-    it('should run cdn server from node_modules, on n-build project, using default dir', () => {
-      child = test
-        .setup({
-          'node_modules/my-client-project/dist/test.json': '{a: 1}',
-          'src/index.js': 'var a = 1;',
-          'package.json': fx.packageJson({clientProjectName: 'my-client-project', servers: {cdn: {port: 3005}}})
-        })
-        .spawn('start');
-
-      return cdnIsServing('test.json');
-    });
-
-    it('should run cdn server from node_modules, on n-build project, using configured dir', () => {
-      child = test
-        .setup({
-          'node_modules/my-client-project/dist/statics/test.json': '{a: 1}',
-          'src/index.js': 'var a = 1;',
-          'package.json': fx.packageJson({clientProjectName: 'my-client-project', servers: {cdn: {port: 3005, dir: 'dist/statics'}}})
-        })
-        .spawn('start');
-
-      return cdnIsServing('test.json');
-    });
-
-    it('should support cross origin requests headers', () => {
-      child = test
-        .setup({
-          'package.json': fx.packageJson()
-        })
-        .spawn('start');
-
-
-      return fetchCDN().then(res => {
-        expect(res.headers.get('Access-Control-Allow-Methods')).to.equal('GET, OPTIONS');
-        expect(res.headers.get('Access-Control-Allow-Origin')).to.equal('*');
-      });
-    });
   });
 
-  describe('when the default port is taken', () => {
-    let server;
+  describe('Yoshi', () => {
 
-    beforeEach(() => server = takePort(3000));
-    afterEach(() => server.close());
-
-    it('it should use the next available port', () => {
-      child = test
-        .setup({
-          'index.js': `console.log('port', process.env.PORT)`,
-          'package.json': fx.packageJson()
-        })
-        .spawn('start');
-
-      return checkServerLogContains('port 3001');
+    beforeEach(() => {
+      test = tp.create();
+      child = null;
     });
-  });
 
-  describe('Watch', function () {
-    this.timeout(30000);
+    afterEach(done => {
+      test.teardown();
+      killSpawnProcessAndHidChildren(done);
+    });
 
-    describe('when using typescript', () => {
-      it(`should rebuild and restart server after a file has been changed with typescript files`, () => {
+    describe('tests', function () {
+      it('should run tests initially', () => {
         child = test
           .setup({
-            'tsconfig.json': fx.tsconfig(),
-            'src/server.ts': `declare var require: any; ${fx.httpServer('hello')}`,
-            'src/config.ts': '',
-            'src/client.ts': '',
-            'index.js': `require('./dist/src/server')`,
+            'src/test.spec.js': '',
+            'src/client.js': '',
+            'entry.js': '',
             'package.json': fx.packageJson(),
             'pom.xml': fx.pom()
           })
           .spawn('start');
 
-        return checkServerIsServing({max: 100})
-          .then(() => checkServerIsRespondingWith('hello'))
-          .then(() => test.modify('src/server.ts', `declare var require: any; ${fx.httpServer('world')}`))
-          .then(() => checkServerIsRespondingWith('world'));
+        return checkStdout('Testing with Mocha');
       });
     });
 
-    describe('when using es6', () => {
-      it(`should rebuild and restart server after a file has been changed`, () => {
+    describe('--entry-point', () => {
+      it('should run the entry point provided', () => {
         child = test
           .setup({
-            'src/server.js': fx.httpServer('hello'),
-            'src/config.js': '',
             'src/client.js': '',
-            'index.js': `require('./src/server')`,
+            'entry.js': `console.log('hello world!')`,
             'package.json': fx.packageJson(),
-            'pom.xml': fx.pom(),
+            'pom.xml': fx.pom()
+          })
+          .spawn('start', '--entry-point=entry');
+
+        return checkServerLogContains('hello world!');
+      });
+
+      it('should run index.js by default', () => {
+        child = test
+          .setup({
+            'src/client.js': '',
+            'index.js': `console.log('hello world!')`,
+            'package.json': fx.packageJson(),
+            'pom.xml': fx.pom()
+          })
+          .spawn('start');
+
+        return checkServerLogContains('hello world!');
+      });
+    });
+
+    describe('--no-server', () => {
+      it('should not start a server if --no-server is passed', () => {
+        child = test
+          .setup({
+            'src/assets/image.png': '',
+            'index.js': `console.log('should not run');`,
+            'package.json': fx.packageJson({servers: {cdn: {port: 3005}}}),
             '.babelrc': '{}'
           })
-          .spawn('start');
+          .spawn('start', ['--no-server']);
 
-        return checkServerIsServing()
-          .then(() => checkServerIsRespondingWith('hello'))
-          .then(() => test.modify('src/server.js', fx.httpServer('world')))
-          .then(() => checkServerIsRespondingWith('world'));
+        return cdnIsServing('assets/image.png')
+          .then(() => expect(test.stdout).not.to.contain('should not run'));
       });
     });
 
-    describe('when using no transpile', () => {
-      it(`should rebuild and restart server after a file has been changed`, () => {
+    describe('HMR', () => {
+      it('should create bundle with enabled hot module replacement', () => {
         child = test
           .setup({
-            'src/server.js': fx.httpServer('hello'),
-            'src/config.js': '',
-            'src/client.js': '',
-            'index.js': `require('./src/server')`,
-            'package.json': fx.packageJson(),
-            'pom.xml': fx.pom()
-          })
-          .spawn('start');
-
-        return checkServerIsServing()
-          .then(() => checkServerIsRespondingWith('hello'))
-          .then(() => test.modify('src/server.js', fx.httpServer('world')))
-          .then(() => checkServerIsRespondingWith('world'));
-      });
-    });
-
-    describe('client side code', () => {
-      it('should recreate and serve a bundle after file changes', () => {
-        const file = {port: 3200, file: 'app.bundle.js'};
-        const newSource = `module.exports = 'wat';\n`;
-
-        child = test
-          .setup({
-            'src/client.js': `module.exports = function () {};\n`,
+            'src/client.js': `module.exports.wat = 'hmr';\n`,
             'package.json': fx.packageJson()
           })
           .spawn('start');
 
-        return checkServerIsServing(file)
-          .then(() => test.modify('src/client.js', newSource))
-          .then(() => checkServerReturnsDifferentContent(file))
-          .then(content => expect(content).to.contain(newSource));
+        return checkServerIsServing({port: 3200, file: 'app.bundle.js'})
+          .then(content =>
+            expect(content).to.contain(`if (false) {\n\t  throw new Error("[HMR] Hot Module Replacement is disabled.");`));
       });
-    });
-  });
 
-  it('should update .nvmrc to relevant version as shown in dockerfile', () => {
-    const nodeVersion = readFileSync(require.resolve('../templates/.nvmrc'), {encoding: 'utf-8'});
-    child = test
-      .setup({
-        'src/test.spec.js': '',
-        'src/client.js': '',
-        'entry.js': '',
-        'package.json': fx.packageJson(),
-        'pom.xml': fx.pom()
-      })
-      .spawn('start', [], outsideTeamCity);
-
-    return checkServerLogCreated().then(() =>
-      expect(test.content('.nvmrc')).to.equal(nodeVersion)
-    );
-  });
-
-  describe('Clean', () => {
-    ['dist', 'target'].forEach(folderName =>
-      it(`should remove "${folderName}" folder before building`, () => {
+      it('should set proper public path', () => {
         child = test
           .setup({
-            [`${folderName}/src/old.js`]: `const hello = "world!";`,
-            'src/new.js': 'const world = "hello!";',
-            'package.json': fx.packageJson(),
-            '.babelrc': '{}'
+            'src/client.js': `module.exports.wat = 'hmr';\n`,
+            'package.json': fx.packageJson()
           })
           .spawn('start');
 
-        return checkServerLogCreated().then(() => {
-          expect(test.stdout).to.contains(`Finished 'clean'`);
-          expect(test.list(folderName)).to.not.include('old.js');
-          expect(test.list('dist/src')).to.include('new.js');
-        });
-      })
-    );
-  });
+        return checkServerIsServing({port: 3200, file: 'app.bundle.js'})
+          .then(content =>
+            expect(content).to.contain(`__webpack_require__.p = "http://localhost:3200/";`));
+      });
+    });
 
-  describe('when there are runtime errors', () => {
-    it('should display a warning message on the terminal', () => {
+    describe('CDN server', () => {
+      it('should run cdn server with default dir', () => {
+        child = test
+          .setup({
+            'src/assets/test.json': '{a: 1}',
+            'src/index.js': 'var a = 1;',
+            'package.json': fx.packageJson({servers: {cdn: {port: 3005}}})
+          })
+          .spawn('start');
+
+        return cdnIsServing('assets/test.json');
+      });
+
+      it('should run cdn server with configured dir', () => {
+        child = test
+          .setup({
+            'src/assets/test.json': '{a: 1}',
+            'src/index.js': 'var a = 1;',
+            'package.json': fx.packageJson({servers: {cdn: {port: 3005, dir: 'dist/statics'}}})
+          })
+          .spawn('start');
+
+        return cdnIsServing('assets/test.json');
+      });
+
+      it('should run cdn server from node_modules, on n-build project, using default dir', () => {
+        child = test
+          .setup({
+            'node_modules/my-client-project/dist/test.json': '{a: 1}',
+            'src/index.js': 'var a = 1;',
+            'package.json': fx.packageJson({clientProjectName: 'my-client-project', servers: {cdn: {port: 3005}}})
+          })
+          .spawn('start');
+
+        return cdnIsServing('test.json');
+      });
+
+      it('should run cdn server from node_modules, on n-build project, using configured dir', () => {
+        child = test
+          .setup({
+            'node_modules/my-client-project/dist/statics/test.json': '{a: 1}',
+            'src/index.js': 'var a = 1;',
+            'package.json': fx.packageJson({clientProjectName: 'my-client-project', servers: {cdn: {port: 3005, dir: 'dist/statics'}}})
+          })
+          .spawn('start');
+
+        return cdnIsServing('test.json');
+      });
+
+      it('should support cross origin requests headers', () => {
+        child = test
+          .setup({
+            'package.json': fx.packageJson()
+          })
+          .spawn('start');
+
+
+        return fetchCDN().then(res => {
+          expect(res.headers.get('Access-Control-Allow-Methods')).to.equal('GET, OPTIONS');
+          expect(res.headers.get('Access-Control-Allow-Origin')).to.equal('*');
+        });
+      });
+    });
+
+    describe('when the default port is taken', () => {
+      let server;
+
+      beforeEach(() => server = takePort(3000));
+      afterEach(() => server.close());
+
+      it('it should use the next available port', () => {
+        child = test
+          .setup({
+            'index.js': `console.log('port', process.env.PORT)`,
+            'package.json': fx.packageJson()
+          })
+          .spawn('start');
+
+        return checkServerLogContains('port 3001');
+      });
+    });
+
+    describe('Watch', function () {
+      this.timeout(30000);
+
+      describe('when using typescript', () => {
+        it(`should rebuild and restart server after a file has been changed with typescript files`, () => {
+          child = test
+            .setup({
+              'tsconfig.json': fx.tsconfig(),
+              'src/server.ts': `declare var require: any; ${fx.httpServer('hello')}`,
+              'src/config.ts': '',
+              'src/client.ts': '',
+              'index.js': `require('./dist/src/server')`,
+              'package.json': fx.packageJson(),
+              'pom.xml': fx.pom()
+            })
+            .spawn('start');
+
+          return checkServerIsServing({max: 100})
+            .then(() => checkServerIsRespondingWith('hello'))
+            .then(() => test.modify('src/server.ts', `declare var require: any; ${fx.httpServer('world')}`))
+            .then(() => checkServerIsRespondingWith('world'));
+        });
+      });
+
+      describe('when using es6', () => {
+        it(`should rebuild and restart server after a file has been changed`, () => {
+          child = test
+            .setup({
+              'src/server.js': fx.httpServer('hello'),
+              'src/config.js': '',
+              'src/client.js': '',
+              'index.js': `require('./src/server')`,
+              'package.json': fx.packageJson(),
+              'pom.xml': fx.pom(),
+              '.babelrc': '{}'
+            })
+            .spawn('start');
+
+          return checkServerIsServing()
+            .then(() => checkServerIsRespondingWith('hello'))
+            .then(() => test.modify('src/server.js', fx.httpServer('world')))
+            .then(() => checkServerIsRespondingWith('world'));
+        });
+      });
+
+      describe('when using no transpile', () => {
+        it(`should rebuild and restart server after a file has been changed`, () => {
+          child = test
+            .setup({
+              'src/server.js': fx.httpServer('hello'),
+              'src/config.js': '',
+              'src/client.js': '',
+              'index.js': `require('./src/server')`,
+              'package.json': fx.packageJson(),
+              'pom.xml': fx.pom()
+            })
+            .spawn('start');
+
+          return checkServerIsServing()
+            .then(() => checkServerIsRespondingWith('hello'))
+            .then(() => test.modify('src/server.js', fx.httpServer('world')))
+            .then(() => checkServerIsRespondingWith('world'));
+        });
+      });
+
+      describe('client side code', () => {
+        it('should recreate and serve a bundle after file changes', () => {
+          const file = {port: 3200, file: 'app.bundle.js'};
+          const newSource = `module.exports = 'wat';\n`;
+
+          child = test
+            .setup({
+              'src/client.js': `module.exports = function () {};\n`,
+              'package.json': fx.packageJson()
+            })
+            .spawn('start');
+
+          return checkServerIsServing(file)
+            .then(() => test.modify('src/client.js', newSource))
+            .then(() => checkServerReturnsDifferentContent(file))
+            .then(content => expect(content).to.contain(newSource));
+        });
+      });
+    });
+
+    it('should update .nvmrc to relevant version as shown in dockerfile', () => {
+      const nodeVersion = readFileSync(require.resolve('../templates/.nvmrc'), {encoding: 'utf-8'});
       child = test
         .setup({
-          'index.js': `throw new Error('wix:error')`,
+          'src/test.spec.js': '',
+          'src/client.js': '',
+          'entry.js': '',
           'package.json': fx.packageJson(),
           'pom.xml': fx.pom()
-
         })
-        .spawn('start');
+        .spawn('start', [], outsideTeamCity);
 
-      return checkServerLogCreated()
-        .then(wait(1000))
-        .then(() => expect(test.stdout).to.contains(`There are errors! Please check ./target/server.log`));
+      return checkServerLogCreated().then(() =>
+        expect(test.content('.nvmrc')).to.equal(nodeVersion)
+      );
+    });
+
+    describe('Clean', () => {
+      ['dist', 'target'].forEach(folderName =>
+        it(`should remove "${folderName}" folder before building`, () => {
+          child = test
+            .setup({
+              [`${folderName}/src/old.js`]: `const hello = "world!";`,
+              'src/new.js': 'const world = "hello!";',
+              'package.json': fx.packageJson(),
+              '.babelrc': '{}'
+            })
+            .spawn('start');
+
+          return checkServerLogCreated().then(() => {
+            expect(test.stdout).to.contains(`Finished 'clean'`);
+            expect(test.list(folderName)).to.not.include('old.js');
+            expect(test.list('dist/src')).to.include('new.js');
+          });
+        })
+      );
+    });
+
+    describe('when there are runtime errors', () => {
+      it('should display a warning message on the terminal', () => {
+        child = test
+          .setup({
+            'index.js': `throw new Error('wix:error')`,
+            'package.json': fx.packageJson(),
+            'pom.xml': fx.pom()
+
+          })
+          .spawn('start');
+
+        return checkServerLogCreated()
+          .then(wait(1000))
+          .then(() => expect(test.stdout).to.contains(`There are errors! Please check ./target/server.log`));
+      });
     });
   });
 

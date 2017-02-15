@@ -5,6 +5,50 @@ const tp = require('./helpers/test-phases');
 const fx = require('./helpers/fixtures');
 const {outsideTeamCity, insideTeamCity} = require('./helpers/env-variables');
 const hooks = require('./helpers/hooks');
+const path = require('path');
+
+describe('Old wix-node-build, aggregator: Test', () => {
+  let test;
+  beforeEach(() => test = tp.create(path.join(__dirname, '..', 'wix-node-build.js'), outsideTeamCity));
+  afterEach(() => test.teardown());
+
+  it('should pass with exit code 0 with mocha as default', function () {
+    this.timeout(40000);
+    const res = test
+      .setup({
+        'test/component.spec.js': 'it.only("pass", () => 1);',
+        'protractor.conf.js': `
+          const http = require("http");
+
+          exports.config = {
+            framework: "jasmine",
+            specs: ["dist/test/**/*.e2e.js"],
+            onPrepare: () => {
+              const server = http.createServer((req, res) => {
+                const response = "<html><body><script src=http://localhost:3200/app.bundle.js></script></body></html>";
+                res.end(response);
+              });
+
+              return server.listen(1337);
+            }
+          };
+        `,
+        'dist/test/some.e2e.js': `
+          it("should write to body", () => {
+            browser.ignoreSynchronization = true;
+            browser.get("http://localhost:1337");
+            expect(element(by.css("body")).getText()).toEqual("");
+          });
+        `,
+        'package.json': fx.packageJson()
+      }, [tmp => hooks.installDependency(tmp)('babel-register')])
+      .execute('test');
+
+    expect(res.code).to.equal(0);
+    expect(res.stdout).to.contain(`Finished 'mocha'`);
+    expect(res.stdout).to.contain('1 passing');
+  });
+});
 
 describe('Aggregator: Test', () => {
   let test;

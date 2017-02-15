@@ -4,6 +4,25 @@ const fx = require('./helpers/fixtures');
 const hooks = require('./helpers/hooks');
 const {outsideTeamCity, insideTeamCity} = require('./helpers/env-variables');
 const {readFileSync} = require('fs');
+const path = require('path');
+
+describe('Old wix-node-build, aggregator: Build', () => {
+  let test;
+  beforeEach(() => test = tp.create(path.join(__dirname, '..', 'wix-node-build.js')));
+  afterEach(() => test.teardown());
+
+  it('should pass build', () => {
+    const res = test
+      .setup({
+        'src/client.js': 'const a = 1',
+        'package.json': fx.packageJson()
+      })
+      .execute('build');
+
+    expect(res.code).to.equal(0);
+    expect(test.list('dist/statics')).to.contain('app.bundle.js');
+  });
+});
 
 describe('Aggregator: Build', () => {
   // const baseFolders = ['app', 'src', 'test'];
