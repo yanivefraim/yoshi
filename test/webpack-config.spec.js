@@ -112,4 +112,16 @@ describe('Webpack basic configs', () => {
       expect(content).to.contain('module.exports = __webpack_require__.p + "image.jpg?');
     });
   });
+
+  describe('Case sensitive plugin', () => {
+    it('Should fail on wrong file referance casing not matching', () => {
+      const res = test.setup({
+        'src/client.js': `require('./casesensivitetest')`,
+        'src/caseSensiviteTest.js': `return true;`
+      })
+      .execute('build');
+
+      expect(res.code).to.equal(1);
+    });
+  });
 });

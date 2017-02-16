@@ -3,6 +3,7 @@
 const path = require('path');
 const context = path.resolve('./src');
 const projectConfig = require('./project');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 
 const config = {
   context,
@@ -17,6 +18,10 @@ const config = {
   resolveLoader: {
     root: path.join(__dirname, '..', 'node_modules')
   },
+
+  plugins: [
+    new CaseSensitivePathsPlugin()
+  ],
 
   module: {
     loaders: [

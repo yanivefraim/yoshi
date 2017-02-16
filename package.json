@@ -29,6 +29,7 @@
     "babel-eslint": "^6.0.2",
     "babel-loader": "6.2.10",
     "babel-register": "^6.14.0",
+    "case-sensitive-paths-webpack-plugin": "^1.1.4",
     "commander": "^2.9.0",
     "cross-spawn": "^5.0.1",
     "css-loader": "^0.23.1",
@@ -103,7 +104,9 @@
   "eslintConfig": {
     "extends": "wix",
     "rules": {
-      "func-names": [0]
+      "func-names": [
+        0
+      ]
     }
   },
   "optionalDependencies": {
