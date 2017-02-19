@@ -27,7 +27,7 @@
     "babel-cli": "^6.11.4",
     "babel-core": "^6.13.2",
     "babel-eslint": "^6.0.2",
-    "babel-loader": "6.2.10",
+    "babel-loader": "^6.3.2",
     "babel-register": "^6.14.0",
     "case-sensitive-paths-webpack-plugin": "^1.1.4",
     "commander": "^2.9.0",
