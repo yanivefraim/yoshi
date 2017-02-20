@@ -81,6 +81,20 @@ describe('Aggregator: Build', () => {
       expect(test.content('dist/src/a/style.scss')).to.contain('.a {\n  color: black; }');
     });
 
+    it('should support compass', () => {
+      const resp = test
+        .setup({
+          'src/style.scss': `@import 'compass'; .a { color: black; }`,
+          'node_modules/compass-mixins/lib/_compass.scss': '',
+          'package.json': fx.packageJson()
+        })
+        .execute('build');
+
+      expect(resp.code).to.equal(0);
+      expect(resp.stdout).to.contain(`Finished 'sass'`);
+      expect(test.content('dist/src/style.scss')).to.contain('.a {\n  color: black; }');
+    });
+
     it('should not render partial files with the name starting with _', () => {
       const resp = test
         .setup({

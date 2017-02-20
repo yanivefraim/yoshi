@@ -158,6 +158,19 @@ describe('Loaders', () => {
         expect(test.content('dist/statics/app.css')).to.contain('color: red');
       });
 
+      it('should support compass', () => {
+        test
+          .setup({
+            'src/client.js': `require('./foo.scss');`,
+            'src/foo.scss': '@import "compass"; .bar{color:red}',
+            'node_modules/compass-mixins/lib/_compass.scss': '',
+            'package.json': fx.packageJson({}),
+          })
+          .execute('build');
+
+        expect(test.content('dist/statics/app.css')).to.contain('color: red');
+      });
+
       it('should support TPA style params', () => {
         test
           .setup({
