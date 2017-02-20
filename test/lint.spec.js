@@ -82,6 +82,21 @@ describe('Aggregator: Lint', () => {
       expect(res.code).to.equal(1);
       expect(res.stdout).to.contain('Missing radix parameter');
     });
+
+    it('should skip d.ts files', () => {
+      // tslint would fail on app/a.d.ts, but it would be skipped
+      // and thus the res.code should be 0.
+      const res = test
+        .setup({
+          'app/a.d.ts': `parseInt("1");`,
+          'package.json': fx.packageJson(),
+          'tsconfig.json': fx.tsconfig(),
+          'tslint.json': fx.tslint()
+        })
+        .execute('lint');
+
+      expect(res.code).to.equal(0);
+    });
   });
 
   describe('ESLint', () => {
