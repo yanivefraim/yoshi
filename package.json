@@ -45,6 +45,7 @@
     "gulp-babel": "^6.1.2",
     "gulp-file-transform-cache": "~1.0.6",
     "gulp-jasmine": "^2.3.0",
+    "gulp-json-angular-translate": "^1.0.0",
     "gulp-plumber": "^1.1.0",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-spawn-mocha": "^2.2.2",
@@ -95,6 +96,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "gulp-rm": "^1.0.2",
     "node-fetch": "^1.6.0",
     "ps-tree": "^1.1.0",
     "retry-promise": "~1.0.0",
