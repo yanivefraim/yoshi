@@ -1416,8 +1416,9 @@ describe('Aggregator: Build', () => {
         expect(test.content('dist/src/app/scripts/locale/messages_en.json')).to.equal('{ "namespace.key": "Hello" }');
       });
       it('messages_XX.json -> messages_XX.js', () => {
-        expect(test.contains('dist/src/app/scripts/locale/messages_en.js')).to.be.true;
-        expect(test.contains('dist/src/app/scripts/locale/messages_en.json')).to.be.false;
+        expect(test.contains('dist/src/app/scripts/locale/messages_en.js')).to.be.false;
+        expect(test.contains('dist/src/app/scripts/locale/messages_en.json')).to.be.true;
+        expect(test.contains('dist/statics/app/scripts/locale/messages_en.js')).to.be.true;
       });
     });
 
@@ -1426,7 +1427,7 @@ describe('Aggregator: Build', () => {
 
       it('uses the translationModuleName if available', () => {
         initProject({translationModuleName: 'bTranslation'});
-        const moduleContent = test.content('dist/src/app/scripts/locale/messages_en.js');
+        const moduleContent = test.content('dist/statics/app/scripts/locale/messages_en.js');
         const moduleName = moduleNameRegex.exec(moduleContent)[1];
 
         expect(moduleName).to.equal('bTranslation');
@@ -1434,24 +1435,24 @@ describe('Aggregator: Build', () => {
 
       it('uses the clientProjectName if available', () => {
         initProject({clientProjectName: 'c'});
-        const moduleContent = test.content('dist/src/app/scripts/locale/messages_en.js');
+        const moduleContent = test.content('dist/statics/app/scripts/locale/messages_en.js');
         const moduleName = moduleNameRegex.exec(moduleContent)[1];
 
-        expect(moduleName).to.equal('cTranslation');
+        expect(moduleName).to.equal('cTranslations');
       });
 
       it('generates translations module name according to convention', () => {
-        const moduleContent = test.content('dist/src/app/scripts/locale/messages_en.js');
+        const moduleContent = test.content('dist/statics/app/scripts/locale/messages_en.js');
         const moduleName = moduleNameRegex.exec(moduleContent)[1];
 
-        expect(moduleName).to.equal('aTranslation');
+        expect(moduleName).to.equal('aTranslations');
       });
     });
 
     it('handles custom translation path', () => {
       initProject({translationJsonFilePath: '/src/translations'});
-      expect(test.contains('dist/src/app/scripts/locale/messages_en.js')).to.be.false;
-      expect(test.contains('dist/src/translations/messages_en.js')).to.be.true;
+      expect(test.contains('dist/statics/app/scripts/locale/messages_en.js')).to.be.false;
+      expect(test.contains('dist/statics/translations/messages_en.js')).to.be.true;
     });
   });
 });

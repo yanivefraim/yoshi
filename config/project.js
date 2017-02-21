@@ -27,11 +27,11 @@ module.exports = {
     if (translationModuleName) {
       return translationModuleName;
     } else if (clientProjectName) {
-      return `${clientProjectName}Translation`;
+      return `${clientProjectName}Translations`;
     } else {
       // Translation module name was not explicitly defined,
       // try to use the package name to generate it according to convention.
-      return `${_.camelCase(packagejson.name)}Translation`;
+      return `${_.camelCase(packagejson.name)}Translations`;
     }
   },
   clientFilesPath: () => {
