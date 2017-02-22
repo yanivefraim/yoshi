@@ -220,6 +220,10 @@ Explanation is in [cli/build](#build) section.
 
 Explanation is in [cli/start](#start) section.
 
+##### `wix.translationModuleName`
+
+For angular project, this will be the name of the angular module containing the processed trasnlation files. If not specified, the name `${wix.clientProjectName}Translations` will be used if available, otherwise, the project name will be taken from the `package.json` name property. 
+
 ##### `wix.specs`
 
 Specs globs are configurable. `browser` is for karma, `node` is for mocha and jasmine.
