@@ -10,3 +10,16 @@ before_install:
  - sudo apt-get install -y libappindicator1 fonts-liberation
  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
  - sudo dpkg -i google-chrome*.deb
+
+notifications:
+  slack: wix:oww36qEFAfCLZ38i1jHFS05G
+    on_success: never
+    on_failure: always
+  email:
+    recipients:
+      - yanivef@wix.com
+      - shahart@wix.com
+      - ronena@wix.com
+      - tomasm@wix.com
+    on_success: never
+    on_failure: always
