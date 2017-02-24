@@ -1,19 +1,10 @@
 {
   "name": "client-react-example",
   "version": "1.0.0",
-  "homepage": "",
-  "private": true,
-  "author": {
-    "name": "master-author-name",
-    "email": "master-author-email",
-    "url": ""
-  },
   "scripts": {
     "start": "yoshi start --entry-point=./test/mock/start-fake-server.js",
     "pretest": "yoshi lint && yoshi build",
-    "build": ":",
-    "test": "yoshi test",
-    "release": "yoshi release"
+    "test": "yoshi test"
   },
   "wix": {
     "entry": "./app.js"
@@ -34,8 +25,6 @@
     "yoshi": "~1.1.0"
   },
   "dependencies": {
-    "i18next": "^3.4.3",
-    "i18next-xhr-backend": "^1.2.0",
     "babel-polyfill": "^6.9.1",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
