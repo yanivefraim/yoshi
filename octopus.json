@@ -1,1 +1,3 @@
-{}
+{
+  "exclude": ["yoshi-monorepo"]
+ } 
