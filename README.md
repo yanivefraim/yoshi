@@ -276,7 +276,7 @@ Use this if you are writing a library and want to publish it as single file. Lib
 
 ##FAQ
 
-- [How to add external assets to my client part of the project?](docs/faq/ASSETS.md)
-- [How do I setup Enzyme test environment?](docs/faq/SETUP-TESTING-WITH-ENZYME.md)
-- [How to disable css modules in specific places](docs/faq/DISABLE-SPECIFIC-CSS-MODULES.md)
-- [How to I analyze my webpack bundle contents](docs/faq/WEBPACK-ANALYZE.md)
+- [How to add external assets to my client part of the project?](yoshi/docs/faq/ASSETS.md)
+- [How do I setup Enzyme test environment?](yoshi/docs/faq/SETUP-TESTING-WITH-ENZYME.md)
+- [How to disable css modules in specific places](yoshi/docs/faq/DISABLE-SPECIFIC-CSS-MODULES.md)
+- [How to I analyze my webpack bundle contents](yoshi/docs/faq/WEBPACK-ANALYZE.md)
