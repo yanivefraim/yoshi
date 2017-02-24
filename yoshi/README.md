@@ -4,6 +4,8 @@
 yoshi
 </h1>
 
+[![Build Status](https://travis-ci.org/wix/yoshi.svg?branch=master)](https://travis-ci.org/wix/yoshi)
+
 > A tool for common tasks in Javascript projects.
 
 ## Features
