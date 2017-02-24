@@ -22,7 +22,8 @@ yoshi
 * async/await (`babel-polyfill` needed)
 * Minify/Uglify
 * Bundle JS/CSS using Webpack
-* External/Inline css
+* External/Inline css,
+* Webpack 2 (tree shaking)
 
 
 ## Install

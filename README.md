@@ -23,7 +23,7 @@ yoshi
 * Minify/Uglify
 * Bundle JS/CSS using Webpack
 * External/Inline css
-
+* Webpack 2 (tree shaking)
 
 ## Install
 
