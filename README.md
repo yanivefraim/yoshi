@@ -1,5 +1,5 @@
 <h1 align="center">
-<img width="241" src ="media/wix-node-build_logo-sm.png" />
+<img width="241" src ="yoshi/media/wix-node-build_logo-sm.png" />
 <br>
 yoshi
 </h1>
