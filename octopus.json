@@ -1,3 +1,4 @@
 {
-  "exclude": ["yoshi-monorepo"]
+  "exclude": ["yoshi-monorepo"],
+  "engine": "yarn"
 } 

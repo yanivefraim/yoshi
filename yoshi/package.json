@@ -7,6 +7,7 @@
   "author": "Roy Miloh <roymi@wix.com>",
   "license": "ISC",
   "scripts": {
+    "postinstall": "npm install screenshot-reporter-env wix-eyes-env || true",
     "build": "eslint .",
     "test": "mocha './test/{,!(fixtures)/**/}/*.spec.js' --timeout 20000 --reporter mocha-env-reporter",
     "release": "wnpm-release --no-shrinkwrap"
@@ -88,7 +89,8 @@
     "webpack-hot-middleware": "~2.13.2",
     "wix-tpa-style-loader": "^1.0.0",
     "wnpm-ci": "latest",
-    "xml2js": "^0.4.16"
+    "xml2js": "^0.4.16",
+    "petri-specs": "latest"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
@@ -108,10 +110,5 @@
         0
       ]
     }
-  },
-  "optionalDependencies": {
-    "petri-specs": "latest",
-    "screenshot-reporter-env": "^1.0.12",
-    "wix-eyes-env": "^1.0.18"
   }
 }
