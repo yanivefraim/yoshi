@@ -1313,7 +1313,7 @@ describe('Aggregator: Build', () => {
     });
   });
 
-  describe.skip('petri specs', () => {
+  describe('petri specs', () => {
     it('should create petri-experiments.json file inside dist/statics folder', () => {
       test
         .setup({
