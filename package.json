@@ -4,7 +4,7 @@
     "postinstall": "octo bootstrap -n",
     "build": ":",
     "pretest": "octo modules sync --save && octo deps sync --save",
-    "test": "octo run test"
+    "test": "octo run test --v"
   },
   "devDependencies": {
     "octopus-cli": "0.0.8"
