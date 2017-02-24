@@ -271,8 +271,8 @@ Use this if you are writing a library and want to publish it as single file. Lib
 
 ##Examples
 
-1. [React Fullstack Seed](https://github.com/wix/react-fullstack-seed)
-2. [React Universal Seed](https://github.com/wix/react-universal-seed)
+1. [React Fullstack Example](examples/fullstack-react)
+2. [React Client Example](examples/client-react)
 
 ##FAQ
 
