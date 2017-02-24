@@ -1,11 +1,12 @@
 {
   "name": "yoshi-monorepo",
   "scripts": {
-    "postinstall": "octo bootstrap",
+    "postinstall": "octo bootstrap -n",
     "build": ":",
+    "pretest": "octo modules sync --save && octo deps sync --save",
     "test": "octo run test"
   },
   "devDependencies": {
-    "octopus": "^0.1.1-2"
+    "octopus-cli": "0.0.8"
   }
 }
