@@ -1,0 +1,8 @@
+{
+  "name": "a",
+  "version": "1.0.4",
+  "wix": {
+    "cssModules": true,
+    "separateCss": true
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "yoshi-monorepo",
+  "scripts": {
+    "postinstall": "octo bootstrap",
+    "build": ":",
+    "test": "octo run test"
+  },
+  "devDependencies": {
+    "octopus": "^0.1.1-2"
+  }
+}
