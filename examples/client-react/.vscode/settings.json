@@ -32,6 +32,5 @@
   "files.trimTrailingWhitespace": true,
   "editor.tabSize": 2,
   "html.format.indentInnerHtml": true,
-  "html.format.extraLiners": "",
-  "typescript.check.workspaceVersion": false
+  "html.format.extraLiners": ""
 }

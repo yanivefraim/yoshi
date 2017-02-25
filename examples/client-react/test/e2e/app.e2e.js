@@ -1,8 +1,9 @@
 describe('React application', () => {
   describe('open page', () => {
-    it('should display title', () => {
+    it('should display title', async () => {
       browser.get('/');
-      expect($('h2').getText()).toBe('Hello World!');
+      const title = await $('h2').getText();
+      expect(title).toBe('Hello World!');
     });
   });
 });
