@@ -2,8 +2,8 @@
   "name": "client-react-example",
   "version": "1.0.0",
   "scripts": {
-    "start": "yoshi start --entry-point=./test/mock/start-fake-server.js",
-    "pretest": "yoshi lint && yoshi build",
+    "start": "yoshi start --entry-point=./test/fakes/start-fake-server.js",
+    "pretest": "yoshi lint --client && yoshi build",
     "test": "yoshi test"
   },
   "devDependencies": {
