@@ -4,7 +4,6 @@ const fx = require('./helpers/fixtures');
 const hooks = require('./helpers/hooks');
 const {outsideTeamCity, insideTeamCity} = require('./helpers/env-variables');
 const {readFileSync} = require('fs');
-const path = require('path');
 
 describe('Aggregator: Build', () => {
   // const baseFolders = ['app', 'src', 'test'];
