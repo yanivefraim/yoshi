@@ -12,7 +12,6 @@ before_install:
  - sudo dpkg -i google-chrome*.deb
 
 notifications:
-  slack: wix:oww36qEFAfCLZ38i1jHFS05G
   email:
     recipients:
       - fed-infra@wix.com
