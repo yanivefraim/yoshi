@@ -1,5 +1,3 @@
-### this is work in progress. Please note that this doc is not ready, yet!!!</dt>
-
 # Table of contents
 
 1. [Debug mocha tests (node-server/client)](#debug-mocha-tests)
