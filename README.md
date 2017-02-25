@@ -268,7 +268,7 @@ If set, export the bundle as library. `yoshi.exports` is the name.
 Use this if you are writing a library and want to publish it as single file. Library will be exported with `UMD` format.
 
 ##FAQ
-
+- [How do I debug my application/tests?](docs/faq/DEBUGGING.md)
 - [How to add external assets to my client part of the project?](docs/faq/ASSETS.md)
 - [How do I setup Enzyme test environment?](docs/faq/SETUP-TESTING-WITH-ENZYME.md)
 - [How to disable css modules in specific places](docs/faq/DISABLE-SPECIFIC-CSS-MODULES.md)
