@@ -1,7 +1,7 @@
 {
   "name": "a",
   "version": "1.0.4",
-  "wix": {
+  "yoshi": {
     "separateCss": true
   }
 }

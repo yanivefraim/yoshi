@@ -10,34 +10,9 @@ const fetch = require('node-fetch');
 const retryPromise = require('retry-promise').default;
 const {outsideTeamCity} = require('./helpers/env-variables');
 const {readFileSync} = require('fs');
-const path = require('path');
 
 describe('Aggregator: Start', () => {
   let test, child;
-  describe('Old wix-node-build', () => {
-
-    beforeEach(() => {
-      test = tp.create(path.join(__dirname, '..', 'wix-node-build.js'));
-      child = null;
-    });
-
-    afterEach(done => {
-      test.teardown();
-      killSpawnProcessAndHidChildren(done);
-    });
-
-    it('should run cdn server with default dir', () => {
-      child = test
-        .setup({
-          'src/assets/test.json': '{a: 1}',
-          'src/index.js': 'var a = 1;',
-          'package.json': fx.packageJson({servers: {cdn: {port: 3005}}})
-        })
-        .spawn('start');
-
-      return cdnIsServing('assets/test.json');
-    });
-  });
 
   describe('Yoshi', () => {
 

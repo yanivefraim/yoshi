@@ -2,40 +2,6 @@ const expect = require('chai').expect;
 
 const tp = require('./helpers/test-phases');
 const fx = require('./helpers/fixtures');
-const path = require('path');
-
-describe('Old wix-node-build, aggregator: Lint', () => {
-  let test;
-  beforeEach(() => test = tp.create(path.join(__dirname, '..', 'wix-node-build.js')));
-  afterEach(() => test.teardown());
-
-  it('should pass with exit code 0', () => {
-    const res = test
-      .setup({
-        'app/a.ts': `parseInt("1", 10);`,
-        'package.json': fx.packageJson(),
-        'tsconfig.json': fx.tsconfig(),
-        'tslint.json': fx.tslint()
-      })
-      .execute('lint');
-
-    expect(res.code).to.equal(0);
-  });
-
-  it('should fail with exit code 1', () => {
-    const res = test
-      .setup({
-        'app/a.ts': `parseInt("1");`,
-        'package.json': fx.packageJson(),
-        'tsconfig.json': fx.tsconfig(),
-        'tslint.json': fx.tslint()
-      })
-      .execute('lint');
-
-    expect(res.code).to.equal(1);
-    expect(res.stdout).to.contain('Missing radix parameter');
-  });
-});
 
 describe('Aggregator: Lint', () => {
   const test = tp.create();

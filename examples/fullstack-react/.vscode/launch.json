@@ -16,7 +16,7 @@
       "--harmony",
       "--require", "babel-register",
       "--require", "${workspaceRoot}/test/mocha-setup",
-      "--require", "${workspaceRoot}/node_modules/wix-node-build/lib/ignore-extensions.js"
+      "--require", "${workspaceRoot}/node_modules/yoshi/lib/ignore-extensions.js"
     ]
   },
   {
@@ -24,7 +24,7 @@
     "type": "node",
     "request": "launch",
     "program": "${workspaceRoot}/node_modules/protractor/bin/protractor",
-    "args": ["${workspaceRoot}/node_modules/wix-node-build/config/protractor.conf.js"],
+    "args": ["${workspaceRoot}/node_modules/yoshi/config/protractor.conf.js"],
     "cwd": "${workspaceRoot}",
     "sourceMaps": true,
     "env": {
@@ -49,7 +49,7 @@
     "runtimeArgs": [
       "--nolazy",
       "--require", "babel-register",
-      "--require", "${workspaceRoot}/node_modules/wix-node-build/lib/ignore-extensions.js"
+      "--require", "${workspaceRoot}/node_modules/yoshi/lib/ignore-extensions.js"
     ]
   }]
 }

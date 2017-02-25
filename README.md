@@ -1,5 +1,5 @@
 <h1 align="center">
-<img width="241" src ="yoshi/media/wix-node-build_logo-sm.png" />
+<img width="241" src ="yoshi/media/yoshi_logo-sm.png" />
 <br>
 yoshi
 </h1>
@@ -71,7 +71,7 @@ This will run the specified (server) `entryPoint` file and mount a CDN server.
 The following are the default values for the CDN server's port and the mount directory. You can change them in your `package.json`:
 
 ```json
-"wix": {
+"yoshi": {
   "servers": {
     "cdn": {
       "port": 3200,
@@ -90,14 +90,14 @@ Flag | Short Flag | Description | Default Value
 
 This task will perform the following:
 
-1. Compile using `TypeScript` (`*.ts`) or `babel` (`*.js`) files into `dist/`. In case you do not want to transpile server (node), you can remove `.babelrc`/`tsconfig`/package json's `babel` key. If you still need those (for transpiling client code), please use `wix.runIndividualTranspiler`.
+1. Compile using `TypeScript` (`*.ts`) or `babel` (`*.js`) files into `dist/`. In case you do not want to transpile server (node), you can remove `.babelrc`/`tsconfig`/package json's `babel` key. If you still need those (for transpiling client code), please use `yoshi.runIndividualTranspiler`.
 2. Copy assets to `dist` folder (ejs/html/images...).
 3. Bundle the entry points using Webpack and compile `sass` files when `--bundle` flag is on.
 
 You can specify multiple entry points in your `package.json` file. This gives the ability build multiple bundles at once. More info about Webpack entries can be found [here](http://webpack.github.io/docs/configuration.html#entry).
 
 ```json
-"wix": {
+"yoshi": {
   "entry": {
     "a": "./a",
     "b": "./b",
@@ -113,7 +113,7 @@ You can specify multiple entry points in your `package.json` file. This gives th
 - By default, your `require`d css will bundled to a separate `app.css` bundle. You can leave your css in main js bundle by adding the following to your `package.json`:
 
   ```json
-  "wix": {
+  "yoshi": {
     "separateCss": false
   }
   ```
@@ -121,7 +121,7 @@ You can specify multiple entry points in your `package.json` file. This gives th
 - We use [css modules](https://github.com/css-modules/css-modules) as default. You can disable this option any time by adding the following to wix section inside your `package.json`:
 
   ```json
-  "wix": {
+  "yoshi": {
     "cssModules": false
   }
   ```
@@ -156,7 +156,7 @@ By default, this task executes both unit test (using `mocha` as default) and e2e
 Default unit test glob is `{test,app,src}/**/*.spec.+(js|ts)`. You can change this by adding the following to your package.json:
 
 ```js
-wix: {
+yoshi: {
   specs: {
     node: 'my-crazy-tests-glob-here'
   }
@@ -183,7 +183,7 @@ wix: {
 
 #### Karma
 
-When running tests using Karma, make sure you have the right configurations in your `package.json` as described in [`wix.specs`](#wixspecs) section. In addition, if you have a `karma.conf.js` file, the configurations will be merged with our [built-in configurations](config/karma.conf.js).
+When running tests using Karma, make sure you have the right configurations in your `package.json` as described in [`yoshi.specs`](#wixspecs) section. In addition, if you have a `karma.conf.js` file, the configurations will be merged with our [built-in configurations](config/karma.conf.js).
 
 ### lint
 
@@ -201,7 +201,7 @@ Bump `package.json` version and publish to npm using `wnpm-release`.
 
 ## Configurations
 
-Configurations are meant to be inside `package.json` under `wix` section or by passing flags to common tasks.
+Configurations are meant to be inside `package.json` under `yoshi` section or by passing flags to common tasks.
 
 #### Flags
 
@@ -209,25 +209,25 @@ See above sections.
 
 #### Configurations in `package.json`
 
-##### `wix.separateCss`
+##### `yoshi.separateCss`
 
 Explanation is in [cli/build](#build) section.
 
-##### `wix.entry`
+##### `yoshi.entry`
 
 Explanation is in [cli/build](#build) section.
 
-##### `wix.servers.cdn`
+##### `yoshi.servers.cdn`
 
 Explanation is in [cli/start](#start) section.
 
-##### `wix.specs`
+##### `yoshi.specs`
 
 Specs globs are configurable. `browser` is for karma, `node` is for mocha and jasmine.
 
 ```json
 {
-  "wix": {
+  "yoshi": {
     "specs": {
       "browser": "dist/custom/globs/**/*.spec.js",
       "node": "dist/custom/globs/**/*.spec.js"
@@ -240,7 +240,7 @@ For example:
 
 ```json
 {
-  "wix": {
+  "yoshi": {
     "specs": {
       "browser": "dist/src/client/**/*.spec.js",
       "node": "dist/src/server/**/*.spec.js"
@@ -249,11 +249,11 @@ For example:
 }
 ```
 
-##### `wix.runIndividualTranspiler`
+##### `yoshi.runIndividualTranspiler`
 
 In case you don't want to transpile your server (node) code, and you still need `.babelrc`/`tsconfig`, you can add `runIndividualTranspiler` flag to skip server transpiling.
 
-##### `wix.externalUnprocessedModules`
+##### `yoshi.externalUnprocessedModules`
 
 You can explicitly ask build process to transpile some node modules in case those modules do not contain transpiled code.
 Note that this is not a recommended workflow. It can be very error prone:
@@ -263,16 +263,11 @@ Note that this is not a recommended workflow. It can be very error prone:
 
 Anyway, if you don't have a better alternative you can pass array with module names in this property.
 
-##### `wix.exports`
+##### `yoshi.exports`
 
-If set, export the bundle as library. `wix.exports` is the name.
+If set, export the bundle as library. `yoshi.exports` is the name.
 
 Use this if you are writing a library and want to publish it as single file. Library will be exported with `UMD` format.
-
-##Examples
-
-1. [React Fullstack Example](examples/fullstack-react)
-2. [React Client Example](examples/client-react)
 
 ##FAQ
 

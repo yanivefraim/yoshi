@@ -2,10 +2,10 @@
 const _ = require('lodash');
 
 const fx = {
-  packageJson: (wixConfig = {}, dependencies = {}) => JSON.stringify({
+  packageJson: (yoshiConfig = {}, dependencies = {}) => JSON.stringify({
     name: 'a',
     version: '1.0.4',
-    wix: wixConfig,
+    yoshi: yoshiConfig,
     scripts: {
       build: 'echo npm-run-build',
       test: 'echo Testing with Mocha'
@@ -16,7 +16,7 @@ const fx = {
     name: 'b',
     version: '1.1.0',
     scripts: {
-      build: 'wix-node-build build'
+      build: 'yoshi build'
     }
   }, null, 2),
   css: () => '.a {\ncolor: red;\n}\n',

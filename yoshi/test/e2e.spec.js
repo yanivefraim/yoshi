@@ -111,7 +111,7 @@ describe('Aggregator: e2e', () => {
       'package.json': `{
           "name": "a",\n
           "version": "1.0.4",\n
-          "wix": ${JSON.stringify(cdnConfigurations())},
+          "yoshi": ${JSON.stringify(cdnConfigurations())},
           "dependencies": {
             "babel-plugin-transform-es2015-modules-commonjs": "latest"
           },

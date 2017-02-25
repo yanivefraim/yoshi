@@ -5,7 +5,7 @@ const _ = require('lodash');
 const packagejson = require(path.resolve('package.json'));
 const globs = require('../lib/globs');
 
-const config = packagejson.wix || {};
+const config = packagejson.yoshi || {};
 const externalUnprocessedModules = [
   'wix-style-react/src'
 ].concat(getConfig('externalUnprocessedModules', []));
