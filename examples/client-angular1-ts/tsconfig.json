@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es5",
+    "jsx": "react",
+    "lib": ["dom", "es2016"],
+    "types": ["mocha", "chai", "node", "protractor", "angular-mocks"]
+  },
+  "include": [
+    "./test/**/*.ts"
+  ],
+  "files": [
+    "./src/app.ts"
+  ]
+}

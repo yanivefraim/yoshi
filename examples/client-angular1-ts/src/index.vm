@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>${title}</title>
+    <link rel="stylesheet" href="${staticsBaseUrl}app#if(!${debug}).min#{end}.css">
+  </head>
+  <body>
+    <div id="visit-count">Visit count: ${visitCount}</div>
+    <app hero="Superman"></app>
+    <script>
+      window.__BASEURL__ = '${basename}';
+      window.__STATICS_BASE_URL__ = '${staticsBaseUrl}';
+    </script>
+    <script src="${staticsBaseUrl}app.bundle#if(!${debug}).min#{end}.js"></script>
+  </body>
+</html>

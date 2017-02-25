@@ -1,0 +1,39 @@
+{
+  "name": "client-angular1-ts",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "yoshi start --entry-point=./test/fakes/start-fake-server.js",
+    "pretest": "yoshi lint && yoshi build",
+    "test": "yoshi test --karma && yoshi test --protractor"
+  },
+  "yoshi": {
+    "entry": "./app.ts",
+    "specs": {
+      "browser": "{src/app.ts,src/**/*.spec.+(js|ts)}"
+    }
+  },
+  "devDependencies": {
+    "@types/angular": "^1.6.3",
+    "@types/angular-mocks": "^1.5.8",
+    "@types/chai": "^3.4.34",
+    "@types/chai-as-promised": "^0.0.29",
+    "@types/history": "2.0.44",
+    "@types/i18next": "^2.3.34",
+    "@types/mocha": "^2.2.37",
+    "@types/protractor": "^4.0.0",
+    "angular-mocks": "^1.6.1",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "express": "^4.13.4",
+    "express-session": "^1.14.2",
+    "jsdom-global": "^2.1.0",
+    "react-addons-test-utils": "^15.3.2",
+    "require-reload": "^0.2.2",
+    "turnerjs": "^1.0.256",
+    "velocity": "^0.7.2",
+    "yoshi": "latest"
+  },
+  "dependencies": {
+    "angular": "^1.6.1"
+  }
+}
