@@ -108,40 +108,6 @@ You can specify multiple entry points in your `package.json` file. This gives th
 
 **Note:** the decision whether to use `TypeScript` or `babel` is done by searching `tsconfig.json` inside the root directory.
 
-### css
-
-- By default, your `require`d css will bundled to a separate `app.css` bundle. You can leave your css in main js bundle by adding the following to your `package.json`:
-
-  ```json
-  "yoshi": {
-    "separateCss": false
-  }
-  ```
-
-- We use [css modules](https://github.com/css-modules/css-modules) as default. You can disable this option any time by adding the following to wix section inside your `package.json`:
-
-  ```json
-  "yoshi": {
-    "cssModules": false
-  }
-  ```
-
-  Using css modules inside your component is easy:
-
-  ```js
-  import s from './Counter.scss';//import css/scss
-
-  <p className={s.mainColor}>{counterValue}</p>
-  ```
-
-  Using css when css modules are turned off:
-
-  ```js
-  import s from './Counter.scss';//import css/scss
-
-  <p className="mainColor">{counterValue}</p>
-  ```
-
 ### test
 
 Flag | Description
@@ -181,7 +147,7 @@ yoshi: {
   chai.use(chaiAsPromised);
   ```
 
-#### Karma
+* Karma tests setup:
 
 When running tests using Karma, make sure you have the right configurations in your `package.json` as described in [`yoshi.specs`](#wixspecs) section. In addition, if you have a `karma.conf.js` file, the configurations will be merged with our [built-in configurations](config/karma.conf.js).
 
@@ -203,25 +169,57 @@ Bump `package.json` version and publish to npm using `wnpm-release`.
 
 Configurations are meant to be inside `package.json` under `yoshi` section or by passing flags to common tasks.
 
-#### Flags
+### Flags
 
 See above sections.
 
-#### Configurations in `package.json`
+### Configurations in `package.json`
 
-##### `yoshi.separateCss`
+##### yoshi.separateCss
+
+By default, your `require`d css will bundled to a separate `app.css` bundle. You can leave your css in main js bundle by adding the following to your `package.json`:
+
+  ```json
+  "yoshi": {
+    "separateCss": false
+  }
+  ```
+
+##### yoshi.cssModules
+
+We use [css modules](https://github.com/css-modules/css-modules) as default. You can disable this option any time by adding the following to wix section inside your `package.json`:
+
+  ```json
+  "yoshi": {
+    "cssModules": false
+  }
+  ```
+
+  Using css modules inside your component is easy:
+
+  ```js
+  import s from './Counter.scss';//import css/scss
+
+  <p className={s.mainColor}>{counterValue}</p>
+  ```
+
+  Using css when css modules are turned off:
+
+  ```js
+  import s from './Counter.scss';//import css/scss
+
+  <p className="mainColor">{counterValue}</p>
+  ```
+
+##### yoshi.entry
 
 Explanation is in [cli/build](#build) section.
 
-##### `yoshi.entry`
-
-Explanation is in [cli/build](#build) section.
-
-##### `yoshi.servers.cdn`
+##### yoshi.servers.cdn
 
 Explanation is in [cli/start](#start) section.
 
-##### `yoshi.specs`
+##### yoshi.specs
 
 Specs globs are configurable. `browser` is for karma, `node` is for mocha and jasmine.
 
@@ -249,11 +247,11 @@ For example:
 }
 ```
 
-##### `yoshi.runIndividualTranspiler`
+##### yoshi.runIndividualTranspiler
 
 In case you don't want to transpile your server (node) code, and you still need `.babelrc`/`tsconfig`, you can add `runIndividualTranspiler` flag to skip server transpiling.
 
-##### `yoshi.externalUnprocessedModules`
+##### yoshi.externalUnprocessedModules
 
 You can explicitly ask build process to transpile some node modules in case those modules do not contain transpiled code.
 Note that this is not a recommended workflow. It can be very error prone:
@@ -263,7 +261,7 @@ Note that this is not a recommended workflow. It can be very error prone:
 
 Anyway, if you don't have a better alternative you can pass array with module names in this property.
 
-##### `yoshi.exports`
+##### yoshi.exports
 
 If set, export the bundle as library. `yoshi.exports` is the name.
 
