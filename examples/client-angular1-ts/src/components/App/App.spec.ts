@@ -1,5 +1,5 @@
 import * as angular from 'angular';
-import { TurnerComponentDriver } from 'turnerjs';
+import {TurnerComponentDriver} from 'turnerjs';
 import {expect} from 'chai';
 
 class AppDriver extends TurnerComponentDriver {
