@@ -21,6 +21,17 @@ module.exports = {
   },
   exports: () => getConfig('exports'),
   clientProjectName: () => getConfig('clientProjectName'),
+  translationModuleName: () => {
+    const translationModuleName = getConfig('translationModuleName');
+    const clientProjectName = getConfig('clientProjectName');
+    if (translationModuleName) {
+      return translationModuleName;
+    } else {
+      // Translation module name was not explicitly defined,
+      // try to use the package name to generate it according to convention.
+      return `${_.camelCase(packagejson.name)}Translations`;
+    }
+  },
   clientFilesPath: () => {
     const clientProjectName = getConfig('clientProjectName');
     const dir = getConfig('servers.cdn.dir');

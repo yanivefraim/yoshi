@@ -1321,4 +1321,63 @@ describe('Aggregator: Build', () => {
       // TODO: figure out how to simulate module doesn't exist in registry
     });
   });
+
+  describe('Generate locale scripts', () => {
+    function initProject(wixConfig = {}, dependencies = {angular: 'latest'}) {
+      test.teardown();
+
+      const translationJsonFilePath = wixConfig.translationJsonFilePath || 'src/app/scripts/locale';
+
+      test
+        .setup({
+          'src/client.js': '',
+          [`${translationJsonFilePath}/messages_en.json`]: '{ "namespace.key": "Hello" }',
+          [`${translationJsonFilePath}/messages_es.json`]: '{ "namespace.key": "Hola" }',
+          'package.json': fx.packageJson(wixConfig, dependencies)
+        })
+        .execute('build');
+    }
+
+    beforeEach(() => {
+      initProject();
+    });
+
+    describe('only process locale json on angular project', () => {
+      it('copies the messages_XX.json files as is on non-angular project', () => {
+        initProject({}, {});
+        expect(test.contains('dist/src/app/scripts/locale/messages_en.json')).to.be.true;
+        expect(test.content('dist/src/app/scripts/locale/messages_en.json')).to.equal('{ "namespace.key": "Hello" }');
+      });
+      it('messages_XX.json -> messages_XX.js', () => {
+        expect(test.contains('dist/src/app/scripts/locale/messages_en.js')).to.be.false;
+        expect(test.contains('dist/src/app/scripts/locale/messages_en.json')).to.be.true;
+        expect(test.contains('dist/statics/app/scripts/locale/messages_en.js')).to.be.true;
+      });
+    });
+
+    describe('translation module names', () => {
+      const moduleNameRegex = /angular.module\('(.*)'\)/;
+
+      it('uses the translationModuleName if available', () => {
+        initProject({translationModuleName: 'bTranslation'});
+        const moduleContent = test.content('dist/statics/app/scripts/locale/messages_en.js');
+        const moduleName = moduleNameRegex.exec(moduleContent)[1];
+
+        expect(moduleName).to.equal('bTranslation');
+      });
+
+      it('generates translations module name according to convention', () => {
+        const moduleContent = test.content('dist/statics/app/scripts/locale/messages_en.js');
+        const moduleName = moduleNameRegex.exec(moduleContent)[1];
+
+        expect(moduleName).to.equal('aTranslations');
+      });
+    });
+
+    it('handles custom translation path', () => {
+      initProject({translationJsonFilePath: '/src/translations'});
+      expect(test.contains('dist/statics/app/scripts/locale/messages_en.js')).to.be.false;
+      expect(test.contains('dist/statics/translations/messages_en.js')).to.be.true;
+    });
+  });
 });

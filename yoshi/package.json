@@ -45,6 +45,7 @@
     "gulp-babel": "^6.1.2",
     "gulp-file-transform-cache": "~1.0.6",
     "gulp-jasmine": "^2.3.0",
+    "gulp-json-angular-translate": "^1.0.0",
     "gulp-plumber": "^1.1.0",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-spawn-mocha": "^2.2.2",
@@ -70,6 +71,7 @@
     "mocha-teamcity-reporter": "^1.1.1",
     "ng-annotate-loader": "^0.2.0",
     "node-sass": "~3.9.0",
+    "petri-specs": "latest",
     "phantomjs-polyfill": "0.0.2",
     "postcss-loader": "^0.10.1",
     "protractor": "^4.0.0",
@@ -88,8 +90,7 @@
     "webpack-hot-middleware": "~2.13.2",
     "wix-tpa-style-loader": "^1.0.0",
     "wnpm-ci": "latest",
-    "xml2js": "^0.4.16",
-    "petri-specs": "latest"
+    "xml2js": "^0.4.16"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
