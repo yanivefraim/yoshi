@@ -56,6 +56,23 @@ describe('Loaders', () => {
         .contain(`.config(["$javascript", function ($javascript)`);
     });
 
+    it('should apply ng-annotate loader on angular project with peerDependency', () => {
+      test
+        .setup({
+          'src/client.js': `angular.module('fakeModule', []).config(function($javascript){});`,
+          'package.json': `{\n
+            "name": "a",\n
+            "peerDependencies": {\n
+              "angular": "^1.5.0"\n
+            }
+          }`
+        })
+        .execute('build');
+
+      expect(test.content('dist/statics/app.bundle.js')).to
+        .contain(`.config(["$javascript", function ($javascript)`);
+    });
+
     it('should run over specified 3rd party modules', () => {
       const res = test
         .setup({
