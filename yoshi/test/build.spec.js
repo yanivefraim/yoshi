@@ -1321,4 +1321,69 @@ describe('Aggregator: Build', () => {
       // TODO: figure out how to simulate module doesn't exist in registry
     });
   });
+
+  describe('Less', () => {
+    it('should transpile to dist/, preserve folder structure, extensions and exit with code 0', () => {
+      const compiledStyle = '.a .b {\n  color: red;\n}';
+      const resp = test
+        .setup({
+          'src/client.js': '',
+          'app/a/style.less': '.a {\n.b {\ncolor: red;\n}\n}\n',
+          'src/b/style.less': '.a {\n.b {\ncolor: red;\n}\n}\n',
+          'test/c/style.less': '.a {\n.b {\ncolor: red;\n}\n}\n',
+          'package.json': fx.packageJson()
+        })
+        .execute('build');
+
+      expect(resp.code).to.equal(0);
+      expect(resp.stdout).to.contain(`Finished 'less'`);
+      expect(test.content('dist/app/a/style.less')).to.contain(compiledStyle);
+      expect(test.content('dist/src/b/style.less')).to.contain(compiledStyle);
+      expect(test.content('dist/test/c/style.less')).to.contain(compiledStyle);
+    });
+
+    it('should fail with exit code 1', () => {
+      const resp = test
+        .setup({
+          'src/client.js': '',
+          'app/a/style.less': '.a {\n.b\ncolor: red;\n}\n}\n',
+          'package.json': fx.packageJson()
+        })
+        .execute('build');
+
+      expect(resp.code).to.equal(1);
+      expect(resp.stdout).to.contain(`Failed 'less'`);
+      expect(resp.stdout).to.contain(`[style.less] Unrecognised input`);
+    });
+
+    it('should handle @import statements', () => {
+      const resp = test
+        .setup({
+          'src/client.js': '',
+          'src/style.less': `@import (once) './foobar.less';`,
+          'src/foobar.less': `.a { color: black; }`,
+          'package.json': fx.packageJson()
+        })
+        .execute('build');
+
+      expect(resp.code).to.equal(0);
+      expect(resp.stdout).to.contain(`Finished 'less'`);
+      expect(test.content('dist/src/style.less')).to.contain('.a {\n  color: black;\n}');
+    });
+
+    it('should consider node_modules for path', () => {
+      const resp = test
+        .setup({
+          'src/client.js': '',
+          'node_modules/some-module/style.less': `.a { color: black; }`,
+          'src/a/style.less': `@import (once) 'some-module/style.less';`,
+          'package.json': fx.packageJson()
+        })
+        .execute('build');
+
+      expect(resp.code).to.equal(0);
+      expect(resp.stdout).to.contain(`Finished 'less'`);
+      expect(test.content('dist/src/a/style.less')).to.contain('.a {\n  color: black;\n}');
+    });
+  });
 });

@@ -6,7 +6,7 @@ const gulpStylelint = require('gulp-stylelint');
 
 function stylelint() {
   return new Promise((resolve, reject) =>
-    gulp.src(['**/*.s+(a|c)ss', '!node_modules/**', '!dist/**'])
+    gulp.src(['**/*.less', '**/*.s+(a|c)ss', '!node_modules/**', '!dist/**'])
       .pipe(gulpStylelint({
         failAfterError: true,
         reporters: [

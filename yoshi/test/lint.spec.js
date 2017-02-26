@@ -104,12 +104,13 @@ p {
         .setup({
           'a.sass': goodStyle,
           'a.scss': goodStyle,
+          'a.less': goodStyle,
           'package.json': fx.packageJson()
         })
         .execute('lint', ['--client']);
 
       expect(res.stdout).to.contain(`Starting 'stylelint'`);
-      expect(res.stdout).to.contain('2 sources checked');
+      expect(res.stdout).to.contain('3 sources checked');
       expect(res.code).to.equal(0);
     });
 

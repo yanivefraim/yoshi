@@ -246,6 +246,62 @@ describe('Loaders', () => {
     }
   });
 
+  describe.only('Less', () => {
+    afterEach(() => test.teardown());
+
+    describe('client', () => {
+      beforeEach(() => setupAndBuild());
+
+      it('should run less and css loaders over imported .less files', () => {
+        expect(test.content('dist/statics/app.bundle.js')).to.match(/"some-rule":"some-css__some-rule__\w{5}",([\s\S]*?)"child":"some-css__child__\w{5}"/);
+      });
+
+      it('should allow import less from node_modules', () => {
+        test
+          .setup({
+            'src/client.js': `require('./foo.less');`,
+            'src/foo.less': '@import "~bar/baz.less";',
+            'node_modules/bar/baz.less': '.bar{color:red}',
+            'package.json': fx.packageJson({}),
+          })
+          .execute('build');
+
+        expect(test.content('dist/statics/app.css')).to.contain('color: red');
+      });
+
+      it('should support TPA style params', () => {
+        test
+          .setup({
+            'src/client.js': `require('./foo.less');`,
+            'src/foo.less': '.foo{color: unquote("{{color-1}}");font: unquote("; {{body-m}}");font-size: 16px;}',
+            'package.json': fx.packageJson({
+              tpaStyle: true
+            }),
+          })
+          .execute('build');
+
+        expect(test.content('dist/statics/app.css')).to.contain('font-size: 16px');
+        expect(test.content('dist/statics/app.css')).not.to.contain('color-1');
+        expect(test.content('dist/statics/app.css')).not.to.contain('body-m');
+      });
+    });
+
+    function setupAndBuild(config) {
+      test
+        .setup({
+          'src/client.js': `require('./some-css.less');require('./foo.css');`,
+          'src/server.js': `require('./some-css.less');require('./foo.css');`,
+          'src/some-css.less': `// comment
+                                  @import "./imported";
+                                  .some-rule { .child { color: red; } }`,
+          'src/imported.less': '.foo{appearance: none;}',
+          'src/foo.css': '.foo-rule { color: blue }',
+          'package.json': fx.packageJson(config || {}),
+        })
+        .execute('build');
+    }
+  });
+
   describe('Images', () => {
     afterEach(() => test.teardown());
 

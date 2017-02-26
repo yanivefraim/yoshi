@@ -25,6 +25,7 @@ module.exports = {
   tslint: () => [`${base}/**/*.ts{,x}`],
   eslint: () => ['*.js', `${base}/**/*.js`],
   sass: () => `${base}/**/*.scss`,
+  less: () => `${base}/**/*.less`,
   watch: () => ['./*.{j,t}s{x,}', `${watchBase}/**/*.*`],
   petri: () => petri,
   petriSpecs: () => path.join(petri, '**', '*.json'),
