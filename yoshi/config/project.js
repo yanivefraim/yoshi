@@ -23,7 +23,6 @@ module.exports = {
   clientProjectName: () => getConfig('clientProjectName'),
   translationModuleName: () => {
     const translationModuleName = getConfig('translationModuleName');
-    const clientProjectName = getConfig('clientProjectName');
     if (translationModuleName) {
       return translationModuleName;
     } else {
