@@ -1433,14 +1433,6 @@ describe('Aggregator: Build', () => {
         expect(moduleName).to.equal('bTranslation');
       });
 
-      it('uses the clientProjectName if available', () => {
-        initProject({clientProjectName: 'c'});
-        const moduleContent = test.content('dist/statics/app/scripts/locale/messages_en.js');
-        const moduleName = moduleNameRegex.exec(moduleContent)[1];
-
-        expect(moduleName).to.equal('cTranslations');
-      });
-
       it('generates translations module name according to convention', () => {
         const moduleContent = test.content('dist/statics/app/scripts/locale/messages_en.js');
         const moduleName = moduleNameRegex.exec(moduleContent)[1];

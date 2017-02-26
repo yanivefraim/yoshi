@@ -23,11 +23,8 @@ module.exports = {
   clientProjectName: () => getConfig('clientProjectName'),
   translationModuleName: () => {
     const translationModuleName = getConfig('translationModuleName');
-    const clientProjectName = getConfig('clientProjectName');
     if (translationModuleName) {
       return translationModuleName;
-    } else if (clientProjectName) {
-      return `${clientProjectName}Translations`;
     } else {
       // Translation module name was not explicitly defined,
       // try to use the package name to generate it according to convention.
