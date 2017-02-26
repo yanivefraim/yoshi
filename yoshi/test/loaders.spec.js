@@ -246,7 +246,7 @@ describe('Loaders', () => {
     }
   });
 
-  describe.only('Less', () => {
+  describe('Less', () => {
     afterEach(() => test.teardown());
 
     describe('client', () => {
