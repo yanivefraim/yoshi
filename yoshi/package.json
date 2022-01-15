@@ -99,7 +99,7 @@
     "node-fetch": "^1.6.0",
     "ps-tree": "^1.1.0",
     "retry-promise": "~1.0.0",
-    "shelljs": "^0.7.0",
+    "shelljs": "^0.8.5",
     "webpack-hot-middleware": "^2.13.1"
   },
   "eslintConfig": {
