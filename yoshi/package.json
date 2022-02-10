@@ -69,7 +69,7 @@
     "mocha-env-reporter": "^1.0.2",
     "mocha-teamcity-reporter": "^1.1.1",
     "ng-annotate-loader": "^0.2.0",
-    "node-sass": "~3.9.0",
+    "node-sass": "~7.0.0",
     "phantomjs-polyfill": "0.0.2",
     "postcss-loader": "^0.10.1",
     "protractor": "^4.0.0",
